@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HelenSkin.Data.Access.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTbToData : Migration
+    public partial class AddtbToData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,7 +72,7 @@ namespace HelenSkin.Data.Access.Migrations
                     SoLuong = table.Column<int>(type: "int", nullable: false),
                     NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TrangThai = table.Column<bool>(type: "bit", nullable: false),
-                    MoTa = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    MoTa = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
                     MaDanhMuc = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

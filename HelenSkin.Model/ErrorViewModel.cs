@@ -1,4 +1,4 @@
-namespace HelenSkin.Models
+namespace HelenSkin.Model
 {
     public class ErrorViewModel
     {

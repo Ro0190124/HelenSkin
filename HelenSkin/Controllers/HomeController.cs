@@ -1,4 +1,4 @@
-using HelenSkin.Models;
+using HelenSkin.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
