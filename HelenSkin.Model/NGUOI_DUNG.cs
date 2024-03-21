@@ -53,7 +53,7 @@ namespace HelenSkin.Model
         public DateTime NgayTao { get; set; } = DateTime.Now;
 
 
-        [RegularExpression(@"^[a-zA-Z0-9.,\s]+$", ErrorMessage = "Địa chỉ không được chứa ký tự đặc biệt.")]
+        [RegularExpression(@"^[a-zA-Z0-9., \/\(\)-'\""]+$", ErrorMessage = "Địa chỉ không được chứa ký tự đặc biệt.")]
         [MaxLength(150, ErrorMessage = "Địa chỉ không lớn hơn 150 kí tự ")]
         [MinLength(5, ErrorMessage = "Địa chỉ không dưới 5 kí tự")]
         public string DiaChi { get; set; }

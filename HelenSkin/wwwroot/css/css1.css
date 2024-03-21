@@ -321,3 +321,81 @@ ul .none {
         .ThemNV a:hover {
             background-color: #9EE89E; /* Màu nền hover */
         }
+
+
+.create-nd .ThenTK-form .row .col-lg-6 input {
+    width: 85%;
+}
+.create-nd .ThenTK-form .row .col-lg-6 {
+}
+.create-nd .ThenTK-form .ThemTK-btn button {
+    width: 200px; /* Đặt kích thước chiều rộng mong muốn */
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #7CD47C;
+    line-height: 40px; /* Đặt line-height bằng chiều cao của phần tử để căn giữa theo chiều dọc */
+    color: #fff; /* Màu chữ */
+    text-decoration: none; /* Loại bỏ gạch chân của liên kết */
+    font-weight: bold; /* Đậm chữ */
+}
+
+.ThemTK-btn button:hover {
+    background-color: #FF0302; /* Màu nền hover */
+}
+.ThemTK-btn{
+    text-align:center;
+
+}
+
+.ThenTK-form h2 {
+    font-size: 30px;
+    text-transform: capitalize;
+    color: #333;
+    font-weight: 700;
+    line-height: 22px;
+    margin-bottom: 38px;
+}
+
+.ThenTK-form form {
+    border: 1px solid #d3ced2;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.ThenTK-form label {
+    font-size: 15px;
+    font-weight: 400;
+    color: #555;
+}
+
+.ThenTK-form label {
+    font-size: 15px;
+    font-weight: 400;
+    color: #555;
+    cursor: pointer;
+    margin-bottom: 0.1rem;
+}
+
+.ThenTK-form input {
+    border: 1px solid #e5e5e5;
+    height: 35px;
+    max-width: 100%;
+    padding: 0 0 0 10px;
+    background: none;
+}
+.ThenTK-form .themtk-select {
+    width:85%;
+    border: 1px solid #e5e5e5;
+    height: 35px;
+    max-width: 100%;
+    padding: 0 0 0 10px;
+    background: none;
+}
+.ThenTK-form {
+    margin-bottom: 35px;
+}
+    .ThenTK-form label:hover {
+        color: #e84c3d;
+    }
