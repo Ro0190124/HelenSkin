@@ -1,0 +1,223 @@
+﻿.flex-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Can-giua {
+    height: 500px;
+    text-align: center;
+}
+
+    .Can-giua .img {
+        height: 250px;
+    }
+
+.row .img-big {
+    height: 500px;
+}
+
+.gach-n {
+    position: relative;
+    width: calc(70%); /* Chiều rộng của đường gạch, trừ đi 20px để bắt đầu từ h3 */
+    left: 20%; /* Cách xa 20px từ phần tử h3 */
+    border-bottom: 1px solid black;
+    top: -20px;
+}
+
+.tk-trangchu {
+    margin-right: 100px;
+    padding: 10px;
+    position: absolute;
+    background-color: white;
+    display: none;
+}
+
+.trangchu-spmoi h3 {
+    padding-left: 8%;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.tk-trangchu h6 {
+    height: 30px;
+    width: 200px;
+    border-bottom: 1px solid rgb(163, 163, 163);
+}
+
+.search-box {
+    width: 200px;
+    height: 100%;
+    display: flex;
+}
+
+    .search-box input {
+        width: 70%;
+        height: 30px;
+    }
+
+    .search-box button {
+        width: 25%;
+        height: 30px;
+        background-color: #9EE89E;
+        color: white;
+        border: none;
+    }
+
+        .search-box button:hover {
+            background-color: #7CD47C;
+        }
+
+.user-icon ul {
+    margin: 0;
+    padding: 0;
+}
+
+    .user-icon ul li {
+        padding: 5px;
+    }
+
+        .user-icon ul li:hover {
+            background-color: #9EE89E;
+        }
+
+ul .none {
+    text-decoration: none; /* Ẩn mũi tên */
+}
+
+.giohang-sp {
+    margin: 0;
+    padding: 0;
+}
+
+    /* Customize checkbox */
+    .giohang-sp input[type="checkbox"] {
+        transform: scale(0.8); /* Đặt kích thước của checkbox */
+        margin-top: 10px; /* Đặt khoảng cách giữa checkbox và nội dung */
+    }
+
+    /* Định dạng cột */
+    .giohang-sp .col-lg-1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .giohang-sp .col-lg-4 img {
+        width: 100%;
+        height: auto;
+    }
+
+    .giohang-sp .col-lg-5 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+        .giohang-sp .col-lg-5 input {
+            width: 55px;
+            height: 30px;
+        }
+
+    .giohang-sp .col-lg-2 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+        .giohang-sp .col-lg-2 a i {
+            font-size: 20px;
+            margin-top: 10px;
+            color: #7CD47C;
+        }
+
+        .giohang-sp .col-lg-2 p {
+            margin-bottom: -5px;
+        }
+
+    .giohang-sp input[type="checkbox"] {
+        width: 15px; /* Đặt chiều rộng của checkbox */
+        height: 15px; /* Đặt chiều cao của checkbox */
+        transform: scale(1.5); /* Đặt kích thước của checkbox */
+        margin-top: 10px; /* Đặt khoảng cách giữa checkbox và nội dung */
+        margin-bottom: 10px;
+    }
+
+    .giohang-sp .img {
+        width: 50px; /* Đặt chiều rộng của hình ảnh */
+        height: 50px; /* Đặt chiều cao của hình ảnh */
+        object-fit: cover; /* Đảm bảo hình ảnh được điều chỉnh kích thước mà không bị méo */
+    }
+
+.TTGH_button button {
+    background-color: #7CD47C;
+    height: 50px;
+    border: none;
+    color: white;
+    letter-spacing: 1px;
+}
+
+    .TTGH_button button:hover {
+        background-color: #62e062;
+    }
+
+.account_form select {
+    width: 50%;
+}
+
+.logo-helenskin {
+    color: #7CD47C;
+}
+
+.TTGiaoHang_ThanhToan .col-lg-3 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: #FF0302;
+}
+
+.border-bt {
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.TTGiaoHang_ThanhToan .ttgh1 input {
+    width: 70%;
+}
+
+.TTGiaoHang_ThanhToan .ttgh1 button {
+    width: 25%;
+    border: none;
+    background-color: #D9D9D9;
+    color: white;
+}
+
+.TTGiaoHang_ThanhToan img {
+    padding-left: 0;
+}
+
+.TTGiaoHang_ThanhToan .ttgh-a {
+    color: #4892DD;
+}
+
+.TTGiaoHang_ThanhToan .ttgh-sotien p {
+    color: black;
+}
+
+.TTGiaoHang_ThanhToan .ttgh-sotien, .ttgh-tong span {
+    color: #FF0302;
+}
+
+.TTGiaoHang_ThanhToan .ttgh-tong {
+    font-size: 20px;
+}
+
+.width40 {
+    width: 40%;
+}
+
+.width100 {
+    width: 100%;
+}
