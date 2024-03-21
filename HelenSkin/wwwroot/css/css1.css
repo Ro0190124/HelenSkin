@@ -221,3 +221,42 @@ ul .none {
 .width100 {
     width: 100%;
 }
+
+.table_user th {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: left;
+}
+
+.table_user td {
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    color: black;
+}
+
+.table_user {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.responsive-table {
+    overflow-x: auto;
+}
+/*table user*/
+.Tb-container {
+    max-width: 80%;
+    overflow-x: auto;
+    margin: 0 auto;
+}
+
+.table_user th,
+.table_user td {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid black;
+}
+.table_user thead th {
+    color: black;
+}

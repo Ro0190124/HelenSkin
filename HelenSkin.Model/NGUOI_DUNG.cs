@@ -60,8 +60,8 @@ namespace HelenSkin.Model
 
 
 
-        public bool PhanQuyen { get; set; } = true;
-        public bool TrangThai { get; set; } = true;
+        public bool PhanQuyen { get; set; } = true; //true = nguoi dung , false = admin
+        public bool TrangThai { get; set; } = true; //true = ton tai , false = nghi;
         public static ValidationResult KiemLoiNgaySinh(DateTime ngaySinh, ValidationContext context)
         {
             if (ngaySinh >= DateTime.Today)

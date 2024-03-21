@@ -13,7 +13,7 @@ namespace HelenSkin.Model
         [Key]
         public int MaHD { get; set; }
         public DateTime NgayTao { get; set; } = DateTime.Now;
-        public byte TrangThai { get; set; }
+        public byte TrangThai { get; set; } = 0;
         public int MaGioHang { get; set; }
         [ForeignKey("MaGioHang")]
         public GIO_HANG? GIO_HANG { get; set; }
