@@ -33,7 +33,7 @@ namespace HelenSkin
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=GioHang}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }
