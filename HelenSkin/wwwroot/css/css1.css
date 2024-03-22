@@ -230,7 +230,6 @@ ul .none {
 
 .table_user td {
     padding: 10px;
-    border-bottom: 1px solid #e0e0e0;
     color: black;
 }
 
@@ -255,8 +254,281 @@ ul .none {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: 1px solid black;
 }
 .table_user thead th {
     color: black;
+}
+
+.ngdung-tieude p{
+    color:#9EE89E;
+    font-size:30px;
+}
+.btn-cam {
+    background-color: #FF8A00;
+    color:white;
+}
+.btn-xanhLa {
+    background-color: #7CD47C;
+    color:white;
+}
+
+.ND_TimKiem_Ten {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ND_TimKiem_Ten {
+    display: flex;
+    justify-content: end;
+}
+
+.ND_TK_TenND p {
+    margin-right: 10px;
+    font-size: 17px;
+}
+
+.ND_TK_TenND i {
+    color: #E48700;
+    font-size: 30px;
+}
+
+.ND_TimKiem {
+    width: 600px;
+    height: 40px;
+}
+
+    .ND_TimKiem input {
+        width: 100%;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .ThemNV a {
+        width: 200px; /* Đặt kích thước chiều rộng mong muốn */
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        text-align: center;
+        line-height: 40px; /* Đặt line-height bằng chiều cao của phần tử để căn giữa theo chiều dọc */
+        color: #fff; /* Màu chữ */
+        text-decoration: none; /* Loại bỏ gạch chân của liên kết */
+        font-weight: bold; /* Đậm chữ */
+    }
+
+        .ThemNV a:hover {
+            background-color: #9EE89E; /* Màu nền hover */
+        }
+
+
+.create-nd .ThenTK-form .row .col-lg-6 input {
+    width: 85%;
+}
+.create-nd .ThenTK-form .row .col-lg-6 {
+}
+.create-nd .ThenTK-form .ThemTK-btn button {
+    width: 200px; /* Đặt kích thước chiều rộng mong muốn */
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #7CD47C;
+    line-height: 40px; /* Đặt line-height bằng chiều cao của phần tử để căn giữa theo chiều dọc */
+    color: #fff; /* Màu chữ */
+    text-decoration: none; /* Loại bỏ gạch chân của liên kết */
+    font-weight: bold; /* Đậm chữ */
+}
+
+.ThemTK-btn button:hover {
+    background-color: #FF0302; /* Màu nền hover */
+}
+.ThemTK-btn{
+    text-align:center;
+
+}
+
+.ThenTK-form h2 {
+    font-size: 30px;
+    text-transform: capitalize;
+    color: #333;
+    font-weight: 700;
+    line-height: 22px;
+    margin-bottom: 38px;
+}
+
+.ThenTK-form form {
+    border: 1px solid #d3ced2;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.ThenTK-form label {
+    font-size: 15px;
+    font-weight: 400;
+    color: #555;
+}
+
+.ThenTK-form label {
+    font-size: 15px;
+    font-weight: 400;
+    color: #555;
+    cursor: pointer;
+    margin-bottom: 0.1rem;
+}
+
+.ThenTK-form input {
+    border: 1px solid #e5e5e5;
+    height: 35px;
+    max-width: 100%;
+    padding: 0 0 0 10px;
+    background: none;
+}
+.ThenTK-form .themtk-select {
+    width:85%;
+    border: 1px solid #e5e5e5;
+    height: 35px;
+    max-width: 100%;
+    padding: 0 0 0 10px;
+    background: none;
+}
+.ThenTK-form {
+    margin-bottom: 35px;
+}
+    .ThenTK-form label:hover {
+        color: #e84c3d;
+    }
+
+  /*Popup*/
+.popup {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 1px solid #ADADAD;
+    padding: 20px;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+    .popup button {
+        margin: 10px;
+        padding: 5px 15px;
+        float: left; /* Đặt nút về phía trái */
+        background-color: #E48700;
+        color: white;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        outline: none;
+        border-radius: 10px;
+    }
+
+        .popup button:last-child {
+            float: right; /* Đặt nút cuối cùng về phía phải */
+        }
+
+        .popup button:hover {
+            background-color: #E46B00;
+        }
+
+    /* Đảm bảo rằng nội dung bên trong popup không bị ảnh hưởng bởi các nút float */
+    .popup:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .popup a {
+        margin: 10px;
+        padding: 5px 15px;
+        float: left; /* Đặt nút về phía trái */
+        background-color: #E48700;
+        color: white;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        outline: none;
+        border-radius: 10px;
+        text-decoration: none;
+    }
+
+        .popup a:last-child {
+            float: right; /* Đặt nút cuối cùng về phía phải */
+        }
+
+        .popup a:hover {
+            background-color: #E46B00;
+        }
+
+
+
+ .popup button {
+    width: unset;
+    margin: 10px;
+    padding: 5px 15px;
+    float: left; /* Đặt nút về phía trái */
+    background-color: #E48700;
+    color: white;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    outline: none;
+    border-radius: 10px;
+}
+
+ .popup button:last-child {
+        float: right; /* Đặt nút cuối cùng về phía phải */
+    }
+
+    .popup button:hover {
+        background-color: rgb(54 189 54);
+    }
+
+/* Đảm bảo rằng nội dung bên trong popup không bị ảnh hưởng bởi các nút float */
+.popup:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+    .popup a {
+        margin: 10px;
+        padding: 5px 15px;
+        float: left; /* Đặt nút về phía trái */
+        background-color: #7CD47C;
+        color: white;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        outline: none;
+        border-radius: 10px;
+        text-decoration: none;
+    }
+
+ .popup a:last-child {
+        float: right; /* Đặt nút cuối cùng về phía phải */
+    }
+
+ .popup a:hover {
+        background-color: #E46B00;
+    }
+
+.popup > button {
+margin: 10px;
+padding: 5px 15px;
+float: left; /* Đặt nút về phía trái */
+background-color: #7CD47C;
+color: white;
+cursor: pointer;
+border: 1px solid #ccc;
+outline: none;
+border-radius: 10px;
+}
+
+.popup > button:last-child {
+    float: right; /* Đặt nút cuối cùng về phía phải */
+}
+
+.khoa input {
+    background-color: #ededed;
 }

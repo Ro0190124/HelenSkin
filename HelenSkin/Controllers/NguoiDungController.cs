@@ -15,11 +15,14 @@ namespace HelenSkin.Controllers
             _db = db;
         }
         // GET: NguoiDungController
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            var users = from u in _db.db_NGUOI_DUNG // lấy toàn bộ liên kết
-                        select u;
-            return View(users);
+			var nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.TrangThai == true).OrderByDescending(x => x.MaND).ToList();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                nguoiDung = nguoiDung.Where(x => x.TenTaiKhoan.Contains(searchString) || x.TenND.Contains(searchString) || x.SoDienThoai.Contains(searchString)).ToList();
+            }
+            return View(nguoiDung);
         }
 
         // GET: NguoiDungController/Details/5
@@ -37,58 +40,111 @@ namespace HelenSkin.Controllers
         // POST: NguoiDungController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(NGUOI_DUNG nguoidung)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+			var m = _db.db_NGUOI_DUNG.Where(x => x.SoDienThoai == nguoidung.SoDienThoai && x.TrangThai == true).FirstOrDefault();
+			if (m != null)
+			{
+				ModelState.AddModelError("SoDienThoai", " Số điện thoại đã tồn tại");
+				return View(nguoidung);
+			}
+			var n = _db.db_NGUOI_DUNG.Where(x => x.TenTaiKhoan == nguoidung.TenTaiKhoan && x.TrangThai == true).FirstOrDefault();
+			if (n != null)
+			{
+				ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản đã tồn tại");
+				return View(nguoidung);
+			}
+			else
+			{
+				Console.WriteLine(nguoidung.MaND);
+				if (ModelState.IsValid)
+				{
+
+					_db.db_NGUOI_DUNG.Add(nguoidung);
+					_db.SaveChanges();
+					TempData["ThongBao"] = "Thêm người dùng thành công";
+					return RedirectToAction("Index", "NguoiDung");
+
+				}
+				else
+				{
+					return View(nguoidung);
+				}
+			}
+		}
 
         // GET: NguoiDungController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.First(x => x.MaND == id);
+            if (nguoiDung == null)
+            {
+                return NotFound();
+            }
+            return View(nguoiDung);
         }
 
         // POST: NguoiDungController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(NGUOI_DUNG nguoidung)
         {
-            try
+			var existingPhone = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.SoDienThoai == nguoidung.SoDienThoai && x.MaND != nguoidung.MaND && x.TrangThai == true);
+			var existingUsername = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == nguoidung.TenTaiKhoan && x.MaND != nguoidung.MaND && x.TrangThai == true);
+
+			if (existingPhone != null)
+			{
+				ModelState.AddModelError("SoDienThoai", "Số điện thoại đã tồn tại cho người dùng khác");
+			}
+
+			if (existingUsername != null)
+			{
+				ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản đã tồn tại cho người dùng khác");
+			}
+			if (!ModelState.IsValid)
+			{
+				return View(nguoidung);
+			}
+			else
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                if (ModelState.IsValid)
+                {
+                    _db.db_NGUOI_DUNG.Update(nguoidung);
+                    _db.SaveChanges();
+                    TempData["ThongBao"] = "Sửa người dùng thành công";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(nguoidung);
+                }
             }
         }
-
         // GET: NguoiDungController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
-        }
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == id);
+            if (nguoiDung == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                nguoiDung.TrangThai = false;
+                _db.db_NGUOI_DUNG.Update(nguoiDung);
+                TempData["ThongBaoXoa"] = "Xóa người dùng thành công";
+                _db.SaveChanges();
 
-        // POST: NguoiDungController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
     }
 }

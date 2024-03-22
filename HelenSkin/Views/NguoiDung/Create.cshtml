@@ -1,0 +1,79 @@
+﻿@model NGUOI_DUNG
+
+<div class="create-nd mt-3">
+    <div class="ThenTK-form register">
+        <h2>Thêm tài khoản</h2>
+        <form method="post">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p>
+                        <label>Họ và tên<span>:</span></label></br>
+                        <input type="text" name="TenND" asp-for="TenND"></br>
+                        <span asp-validation-for="TenND" class="text-danger"></span>
+                    </p>
+                </div>
+                <div class="col-lg-6">
+                    <p>
+                        <label>Số điện thoại<span>:</span></label></br>
+                        <input type="text" name="SoDienThoai" required asp-for="SoDienThoai"></br>
+                        <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p>
+                        <label>Email<span>:</span></label></br>
+                        <input type="email" name="Email" required asp-for="Email"></br>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </p>
+                </div>
+                <div class="col-lg-6">
+                    <p>
+                        <label>Tên tài khoản<span>:</span></label></br>
+                        <input type="text" name="TenTaiKhoan" required asp-for="TenTaiKhoan"></br>
+                        <span asp-validation-for="TenTaiKhoan" class="text-danger"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p>
+                        <label>Mật khẩu<span>:</span></label></br>
+                        <input type="password" name="MatKhau" required asp-for="MatKhau"></br>
+                        <span asp-validation-for="MatKhau" class="text-danger"></span>
+                    </p>
+                </div>
+                <div class="col-lg-6">
+                    <p>
+                        <label>Ngày sinh<span>:</span></label></br>
+                        <input type="date" name="NgaySinh" required asp-for="NgaySinh"></br>
+                        <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 ">
+                    <p>
+                        <label>Địa chỉ<span>:</span></label></br>
+                        <input type="text" name="DiaChi" required asp-for="DiaChi"></br>
+                        <span asp-validation-for="DiaChi" class="text-danger"></span>
+                    </p>
+                </div>
+                <div class="col-lg-6 ">
+                    <p>
+                        <label>Phân quyền<span>:</span></label></br>
+                        <select class="themtk-select" name="PhanQuyen" asp-for="PhanQuyen">
+                            <option value="true">Người dùng</option>
+                            <option value="false">Admin</option>
+                        </select></br>
+                        <span asp-validation-for="PhanQuyen" class="text-danger"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="ThemTK-btn mt-3">
+                <button type="submit">Thêm tài khoản</button>
+            </div>
+        </form>
+    </div>
+</div>
