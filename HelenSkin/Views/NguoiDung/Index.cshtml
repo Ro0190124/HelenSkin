@@ -58,7 +58,7 @@
 				@foreach (var item in Model)
 				{
 					string position;
-					@if (item.PhanQuyen == false)
+					@if (item.PhanQuyen == true)
 					{
 						position = "Admin";
 					}
@@ -80,17 +80,22 @@
 
 
 							<div class="bgr-x">
-								<a class="btn btn-cam" asp-controller="User" asp-action="Edit" asp-route-id="@item.MaND">
+								<a class="btn btn-cam" asp-controller="NguoiDung" asp-action="Edit" asp-route-id="@item.MaND">
 									Sửa
 								</a>
 
 							</div>
 
 							<div class="bgr-x">
-								<a class="btn btn-danger" asp-controller="User" asp-action="Delete" asp-route-id="@item.MaND">
+								<a class="btn btn-danger delete-btn" data-id="@item.MaND">
 									Xóa
 								</a>
 
+							</div>
+							<div id="deletePopup-@item.MaND" class="popup" style="display:none;">
+								<p>Bạn có muốn xóa tài khoản này không?</p>
+								<button onclick="deleteND(@item.MaND)">Có</button>
+								<button onclick="closePopup(@item.MaND)">Không</button>
 							</div>
 						</td>
 					</tr>
@@ -99,3 +104,38 @@
 		</table>
 	</div>
 </div>
+<script>
+	document.querySelectorAll('.delete-btn').forEach(button => {
+		button.addEventListener('click', function () {
+			const id = this.getAttribute('data-id');
+			const popup = document.getElementById(`deletePopup-${id}`);
+			popup.style.display = 'block';
+		});
+	});
+
+	// Đóng popup
+	function closePopup(id) {
+		const popup = document.getElementById(`deletePopup-${id}`);
+		popup.style.display = 'none';
+	}
+
+	// Hàm xóa nhà cung cấp
+	function deleteND(id) {
+		// Gửi request đến server để xóa nhà cung cấp
+		// Sử dụng fetch hoặc AJAX để gửi request đến action XoaNhaCungCap trong controller của bạn
+		fetch(`/NguoiDung/Delete?id=${id}`, {
+			method: 'GET' // hoặc 'POST' tùy thuộc vào cách bạn cấu hình route
+		})
+			.then(response => {
+				if (response.ok) {
+					// Nếu xóa thành công, cập nhật giao diện hoặc thông báo cho người dùng
+					// Ví dụ: có thể refresh trang hoặc cập nhật thông tin bằng JavaScript
+					window.location.reload(); // Refresh trang sau khi xóa
+				}
+			})
+			.catch(error => {
+				console.error('Lỗi khi xóa người dùng:', error);
+				// Xử lý lỗi nếu có
+			});
+	}
+</script>
