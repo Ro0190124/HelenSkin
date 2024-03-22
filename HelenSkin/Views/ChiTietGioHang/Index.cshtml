@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CHI_TIET_GIO_HANG>
+<div class="shopping_cart_area">
+    <form action="#">
+        <!--coupon code area start-->
+        <div class="coupon_area">
+            <div class="row">
+                @{
+                    int j = 0;
+                }
+                @foreach (var i in Model)
+                {
+                    <div class="col-lg-6 col-md-6">
+                        <div class="coupon_code d-flex giohang-sp row py-3">
+                            <div class="col-lg-1">
+                                <input type="checkbox">
+                            </div>
+                            <img class="col-lg-4" src="@ViewBag.HinhAnh">
+                            <div class="col-lg-5">
+                                <p><strong>@i.SAN_PHAM.TenSP</strong></p>
+                                <input asp-for="@i.SoLuong" min="0" max="100" value="@i.SoLuong" type="number">
+
+                            </div>
+                            <div class="col-lg-2">
+                                <a><i class="fas fa-trash"></i></a>
+                                <p>@i.SAN_PHAM.Gia đ</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="col-lg-6 col-md-6">
+                    <div class="coupon_code">
+                        <h3>Thông tin đơn hàng</h3>
+                        <div class="coupon_inner">
+                            <div class="cart_subtotal">
+                                <p>Tổng tiền</p>
+                                <p class="cart_amount">400000</p>
+                            </div>
+                            <div class="cart_subtotal">
+                                <p>Tổng tiền thanh toán</p>
+                                <p class="cart_amount">400000</p>
+                            </div>
+                            <div class="checkout_btn">
+                                <a href="/ThongTinGiaoHang.html">Thanh toán</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--coupon code area end-->
+    </form>
+</div>
