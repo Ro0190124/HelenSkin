@@ -3,6 +3,19 @@
 
 
  @model IEnumerable<GIO_HANG>
+ 	<div class="breadcrumbs_area">
+			<div class="row">
+				<div class="col-12">
+					<div class="breadcrumb_content">
+						<ul>
+							
+							<li>Giỏ Hàng</li>
+						</ul>
+
+					</div>
+				</div>
+			</div>
+		</div>
 <div class="shopping_cart_area">
     <form action="#">
         <!--coupon code area start-->
@@ -27,11 +40,11 @@
                                 Tên người dùng:
                                 <p>@i.NGUOI_DUNG.TenND</p>
                             </div>
-                            <div class="checkout_btn">
-                                <a asp-controller="GioHang" asp-action="ChiTietGioHang" asp-route-id="@i.MaGioHang"> Chi Tiết</a>
+                            <div class ="ThemNV">
+                                <a class="btn btn-xanhLa" asp-controller="GioHang" asp-action="ChiTietGioHang" asp-route-id="@i.MaGioHang"> Chi Tiết</a>
                             </div>
                             
-                            <a class=" delete-btn" data-id="@i.MaGioHang"></a>
+                            
                         </div>
                     </div>
                 }
