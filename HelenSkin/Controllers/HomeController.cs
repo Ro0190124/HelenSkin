@@ -37,34 +37,44 @@ namespace HelenSkin.Controllers
 
 
         [HttpPost]
-        public IActionResult DangNhap(string tenTaiKhoan, string matKhau)
+        public IActionResult DangNhap(string tenTaiKhoan, string matKhau , string action)
         {
-            var nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.MatKhau == matKhau && x.TrangThai == true);
-            var CheckTK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.TrangThai == true);
-            var CheckMK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MatKhau == matKhau && x.TrangThai == true);
-            if(CheckTK == null)
+            if(action == "login")
             {
-                ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản không tồn tại");
-                return View();
-            }else if(CheckMK == null)
-            {
-                ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
-                return View();
-            }else if (nguoiDung != null)
-            {
+                var nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.MatKhau == matKhau && x.TrangThai == true);
+                var CheckTK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.TrangThai == true);
+                var CheckMK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MatKhau == matKhau && x.TrangThai == true);
+                if (CheckTK == null)
+                {
+                    ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản không tồn tại");
+                    return View();
+                }
+                else if (CheckMK == null)
+                {
+                    ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
+                    return View();
+                }
+                else if (nguoiDung != null)
+                {
 
-                Response.Cookies.Append("ID", nguoiDung.MaND.ToString());
+                    Response.Cookies.Append("ID", nguoiDung.MaND.ToString());
 
-                //TempData.Add("TenNguoiDung", nguoiDung.TenTaiKhoan);
-                return RedirectToAction("Index", "Home");
+                    //TempData.Add("TenNguoiDung", nguoiDung.TenTaiKhoan);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+
+                    TempData["ThongBaoDangNhap"] = "Tên tài khoản hoặc mật khẩu không đúng";
+                    return View();
+
+                }
             }
             else
             {
-
-                TempData["ThongBaoDangNhap"] = "Tên tài khoản hoặc mật khẩu không đúng";
-                return View();
-
+                return RedirectToAction("DangKi");
             }
+
         }
 
 
