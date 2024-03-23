@@ -51,8 +51,8 @@
 /*  2.  header css here*/
 
 .pos_page {
-    background: url(../img/banner/background.png);
-}
+/*    background: url(../img/banner/background.png);
+*/}
 
 .pos_page_inner {
     background: #fff;
@@ -1179,7 +1179,7 @@
 
 .footer_area {
     color: #fff;
-    background: #00bba6;
+    background-color: #9EE89E;
     padding: 38px 70px 0;
     position: relative;
 }

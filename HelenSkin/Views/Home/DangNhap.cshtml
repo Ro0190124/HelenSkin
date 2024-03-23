@@ -30,26 +30,26 @@
         <div class="col-lg-6 col-md-6">
             <div class="account_form register">
                 <h2>Đăng ký</h2>
-                <form action="#">
+                <form method="post" asp-action="DangKy">
                     <p>
                         <label>Họ và tên<span>:</span></label>
-                        <input type="text">
-                        <span class="text-danger"></span>
+                        <input type="text" asp-for="TenND">
+                        <span class="text-danger" asp-validation-for="TenND"></span>
                     </p>
                     <p>
                         <label>Số điện thoại <span>:</span></label>
-                        <input type="text">
-                        <span class="text-danger"></span>
+                        <input type="text" asp-for="SoDienThoai">
+                        <span class="text-danger" asp-validation-for="SoDienThoai"></span>
                     </p>
                     <p>
                         <label>Tên đăng nhập <span>:</span></label>
-                        <input type="text">
-                        <span class="text-danger"></span>
+                        <input type="text" asp-for="TenTaiKhoan">
+                        <span class="text-danger" asp-validation-for="TenTaiKhoan"></span>
                     </p>
                     <p>
                         <label>Mật khẩu <span>:</span></label>
-                        <input type="password">
-                        <span class="text-danger"></span>
+                        <input type="password" asp-for="MatKhau">
+                        <span class="text-danger" asp-validation-for="MatKhau"></span>
                     </p>
                     <div class="login_submit">
                         <button type="submit">Đăng ký</button>

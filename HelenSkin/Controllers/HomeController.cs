@@ -69,7 +69,46 @@ namespace HelenSkin.Controllers
 
 
 
+        public IActionResult DangKi()
+        {
+            ViewData["HideHeader"] = true;
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DangKi(NGUOI_DUNG nguoiDung)
+        {
+            Console.WriteLine("Submit");
 
+            var n = _db.db_NGUOI_DUNG.Where(x => x.TenTaiKhoan == nguoiDung.TenTaiKhoan && x.TrangThai == true).FirstOrDefault();
+            var m = _db.db_NGUOI_DUNG.Where(x => x.SoDienThoai == nguoiDung.SoDienThoai && x.TrangThai == true).FirstOrDefault();
+            if (n != null)
+            {
+                ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản đã tồn tại");
+                return View(nguoiDung);
+            }
+            if (m != null)
+            {
+                ModelState.AddModelError("SoDienThoai", " Số điện thoại đã tồn tại");
+                return View(nguoiDung);
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+
+                    _db.db_NGUOI_DUNG.Add(nguoiDung);
+                    _db.SaveChanges();
+                    TempData["ThongBao"] = "Đăng kí thành công";
+                    return RedirectToAction("DangNhap", "Home");
+                }
+                else
+                {
+                    return View(nguoiDung);
+                }
+            }
+
+        }
 
 
 
