@@ -18,6 +18,15 @@ namespace HelenSkin.Controllers
 
         public IActionResult Index()
         {
+            var userIdCookieValue = HttpContext.Request.Cookies["ID"];
+            int userId;
+
+            if (!string.IsNullOrEmpty(userIdCookieValue) && int.TryParse(userIdCookieValue, out userId))
+            {
+                var tennd = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == userId);
+                // Tiếp tục xử lý dữ liệu...
+                ViewBag.TenNguoiDung = tennd.TenND;
+            }
             return View();
         }
 
@@ -34,7 +43,15 @@ namespace HelenSkin.Controllers
             return View();
 
         }
+        [HttpGet]
+        public IActionResult DangXuat()
+        {
+            // Xóa cookie với key "ID"
+            Response.Cookies.Delete("ID");
 
+            // Chuyển hướng người dùng đến trang chủ
+            return RedirectToAction("Index", "Home");
+        }
 
         [HttpPost]
         public IActionResult DangNhap(string tenTaiKhoan, string matKhau , string action)
@@ -57,7 +74,7 @@ namespace HelenSkin.Controllers
                 else if (nguoiDung != null)
                 {
 
-                    Response.Cookies.Append("ID", nguoiDung.MaND.ToString());
+                    HttpContext.Response.Cookies.Append("ID", nguoiDung.MaND.ToString());
 
                     //TempData.Add("TenNguoiDung", nguoiDung.TenTaiKhoan);
                     return RedirectToAction("Index", "Home");

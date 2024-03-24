@@ -37,6 +37,9 @@
                                         <ul>
                                             <li><a href="ThongTinGiaoHang.html" title="Contact">TikTok</a></li>
                                             <li><a href="cart.html" title="My cart">Facebook</a></li>
+                                            <li>
+                                                @ViewBag.TenNguoiDung
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -82,14 +85,25 @@
                                                             </div>
                                                         </div>
                                                     </li>
-
+                                                      
                                                     <li class="user-icon px-1 dropdown">
                                                         <a href="#" data-toggle="dropdown">
                                                             <i class="fa fa-user"></i>
                                                         </a>
                                                         <ul class="dropdown-menu">
-                                                            <li><a class="pl-3" asp-area="" asp-controller="Home" asp-action="DangNhap">Đăng nhập</a></li>
-                                                            <li><a class="pl-3" href="/login.html">Thông tin tài khoản</a></li>
+                                                            @{
+                                                                var userId = Context.Request.Cookies["ID"];
+                                                                var tenNguoiDung = ViewBag.TenNguoiDung as string;
+                                                            }  
+                                                            @if (!string.IsNullOrEmpty(userId))
+                                                            {
+                                                                <li><a class="pl-3" asp-area="" asp-controller="NguoiDung" asp-action="ThongTinTK" asp-route-id="@userId">Thông tin tài khoản</a></li>
+                                                                <li><a class="pl-3" asp-area="" asp-controller="Home" asp-action="DangXuat">Đăng xuất</a> </li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li><a class="pl-3" asp-area="" asp-controller="Home" asp-action="DangNhap">Đăng nhập</a></li>
+                                                            }
                                                         </ul>
                                                     </li>
                                                     <li class="px-1">

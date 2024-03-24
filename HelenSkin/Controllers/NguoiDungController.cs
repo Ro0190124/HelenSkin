@@ -146,5 +146,55 @@ namespace HelenSkin.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public ActionResult ThongTinTK(int id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.First(x => x.MaND == id);
+            if (nguoiDung == null)
+            {
+                return NotFound();
+            }
+            return View(nguoiDung);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ThongTinTK(NGUOI_DUNG nguoidung)
+        {
+            var existingPhone = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.SoDienThoai == nguoidung.SoDienThoai && x.MaND != nguoidung.MaND && x.TrangThai == true);
+            var existingUsername = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == nguoidung.TenTaiKhoan && x.MaND != nguoidung.MaND && x.TrangThai == true);
+
+            if (existingPhone != null)
+            {
+                ModelState.AddModelError("SoDienThoai", "Số điện thoại đã tồn tại");
+            }
+
+            if (existingUsername != null)
+            {
+                ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản đã tồn tại");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(nguoidung);
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    _db.db_NGUOI_DUNG.Update(nguoidung);
+                    _db.SaveChanges();
+                    TempData["ThongBao"] = "Sửa tài khoản thành công";
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return View(nguoidung);
+                }
+            }
+        }
+
     }
 }
