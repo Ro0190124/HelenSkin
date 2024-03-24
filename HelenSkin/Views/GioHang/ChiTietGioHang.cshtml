@@ -17,7 +17,6 @@
                     {
                         var item = gioHang.ElementAt(i);
                         var imageUrl = firstImages.ElementAtOrDefault(i) ?? "/path/to/default/image.jpg"; // Get the corresponding image URL from ViewBag
-
                         <div class="col-lg-12 col-md-12">
                             <div class="coupon_code d-flex giohang-sp row py-3">
                                 <div class="col-lg-1">
@@ -32,12 +31,11 @@
                                     <a><i class="fas fa-trash"></i></a>
                                     <p> Đơn giá: @item.SAN_PHAM.Gia đ</p>
                                 </div>
-                                
                             </div>
                         </div>
                     }
                 </div>
-               
+                
 
                 <div class="col-lg-3 col-md-3">
                     <div class="coupon_code">
@@ -55,8 +53,7 @@
                                 <a class="btn btn-xanhLa" href="/ThongTinGiaoHang.html">Thanh toán</a>
                                
                             </div>
-                          
-                        </div>
+                       </div>
                     </div>
                 </div>
             </div>

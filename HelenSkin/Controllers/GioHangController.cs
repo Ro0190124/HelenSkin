@@ -19,57 +19,79 @@ namespace HelenSkin.Controllers
 		// GET: GioHangController
 		public ActionResult Index()
 		{
-			IEnumerable<GIO_HANG> obj;
-            /*if(id == null || id == 0)
-			{
-				obj = _db.db_GIO_HANG.Include(x=> x.NGUOI_DUNG).ToList();
-			}
+            var cookie = Request.Cookies["ID"];
+            // check cookie
+            Console.WriteLine(cookie);
+            if (cookie == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 			else
 			{
-				obj = _db.db_GIO_HANG.Include(x => x.NGUOI_DUNG).Where(x=> x.MaNguoiDung == id).ToList();
-			}*/
-            obj = _db.db_GIO_HANG.Include(x => x.NGUOI_DUNG).ToList();
-			return View(obj) ;
+                NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+
+                IEnumerable<GIO_HANG> obj;
+                /*if(id == null || id == 0)
+                {
+                    obj = _db.db_GIO_HANG.Include(x=> x.NGUOI_DUNG).ToList();
+                }
+                else
+                {
+                    obj = _db.db_GIO_HANG.Include(x => x.NGUOI_DUNG).Where(x=> x.MaNguoiDung == id).ToList();
+                }*/
+                obj = _db.db_GIO_HANG.Include(x => x.NGUOI_DUNG).Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList();
+
+            }
+			
+			return View() ;
 		}
 
         // GET: GioHangController/Details/5
         // GET: GioHangController/Details/5
-        public ActionResult ChiTietGioHang(int id)
+        public ActionResult ChiTietGioHang()
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
+            var cookie = Request.Cookies["ID"];
+            // check cookie
+            Console.WriteLine(cookie);
+			if (cookie == null)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+			else
+			{
+                IEnumerable<CHI_TIET_GIO_HANG> gioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
+                                                                          .Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie))
+                                                                          .Include(x => x.SAN_PHAM)
+                                                                          .ToList();
+              
 
-            IEnumerable<CHI_TIET_GIO_HANG> gioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
-                                                                           .Where(x => x.MaGioHang == id)
-                                                                           .Include(x => x.SAN_PHAM)
-                                                                           .ToList();
-
-            if (gioHang == null)
-            {
-                return NotFound();
-            }
-
-            List<string> firstImages = new List<string>();
-            foreach (var item in gioHang)
-            {
-                var firstImage = _db.db_DS_MEDIA_HINH_ANH.FirstOrDefault(x => x.MaSP == item.SAN_PHAM.MaSP);
-                if (firstImage != null)
+                if (gioHang == null)
                 {
-                    firstImages.Add(firstImage.MediaHinhAnh);
+                    return NotFound();
                 }
-                else
+
+                List<string> firstImages = new List<string>();
+                foreach (var item in gioHang)
                 {
-                    // If no image is found, you can add a default image URL
-                    firstImages.Add("/path/to/default/image.jpg");
+                    var firstImage = _db.db_DS_MEDIA_HINH_ANH.FirstOrDefault(x => x.MaSP == item.SAN_PHAM.MaSP);
+                    if (firstImage != null)
+                    {
+                        firstImages.Add(firstImage.MediaHinhAnh);
+                    }
+                    else
+                    {
+                        // If no image is found, you can add a default image URL
+                        firstImages.Add("/path/to/default/image.jpg");
+                    }
                 }
+
+                // Pass both gioHang and firstImages to the view
+                ViewBag.GioHang = gioHang;
+                ViewBag.FirstImages = firstImages;
+
             }
-
-            // Pass both gioHang and firstImages to the view
-            ViewBag.GioHang = gioHang;
-            ViewBag.FirstImages = firstImages;
-
+          
+           
             return View();
         }
 
