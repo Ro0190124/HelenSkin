@@ -19,29 +19,30 @@ namespace HelenSkin.Controllers
 		// GET: GioHangController
 		public ActionResult Index()
 		{
-            var cookie = Request.Cookies["ID"];
-            // check cookie
-            Console.WriteLine(cookie);
-            if (cookie == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+			var cookie = Request.Cookies["ID"];
+			// check cookie
+			Console.WriteLine(cookie);
+			if (cookie == null)
+			{
+				TempData["tbGioHang"] = "Vui lòng đăng nhập để xem giỏ hàng";
+
+			}
 			else
 			{
-                NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+				NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+				TempData["tbGioHang"] = "Xin chào " + nguoiDung.TenND + "!";
+				IEnumerable<GIO_HANG> obj;
+				/*if(id == null || id == 0)
+				{
+					obj = _db.db_GIO_HANG.Include(x=> x.NGUOI_DUNG).ToList();
+				}
+				else
+				{
+					obj = _db.db_GIO_HANG.Include(x => x.NGUOI_DUNG).Where(x=> x.MaNguoiDung == id).ToList();
+				}*/
+				obj = _db.db_GIO_HANG.Include(x => x.NGUOI_DUNG).Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList();
 
-                IEnumerable<GIO_HANG> obj;
-                /*if(id == null || id == 0)
-                {
-                    obj = _db.db_GIO_HANG.Include(x=> x.NGUOI_DUNG).ToList();
-                }
-                else
-                {
-                    obj = _db.db_GIO_HANG.Include(x => x.NGUOI_DUNG).Where(x=> x.MaNguoiDung == id).ToList();
-                }*/
-                obj = _db.db_GIO_HANG.Include(x => x.NGUOI_DUNG).Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList();
-
-            }
+			}
 			
 			return View() ;
 		}
@@ -55,7 +56,8 @@ namespace HelenSkin.Controllers
             Console.WriteLine(cookie);
 			if (cookie == null)
 			{
-				return RedirectToAction("Index", "Home");
+                TempData["tbGioHang"] = "Vui lòng đăng nhập để xem giỏ hàng";
+                return RedirectToAction("Index", "Home");
 			}
 			else
 			{
