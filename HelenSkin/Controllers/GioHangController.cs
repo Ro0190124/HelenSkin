@@ -90,6 +90,7 @@ namespace HelenSkin.Controllers
                 // Pass both gioHang and firstImages to the view
                 ViewBag.GioHang = gioHang;
                 ViewBag.FirstImages = firstImages;
+				ViewBag.MaGioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).FirstOrDefault().MaGioHang;
 
             }
           
@@ -160,6 +161,31 @@ namespace HelenSkin.Controllers
 			{
 				return View();
 			}
+		}
+
+
+
+
+		public ActionResult DatHang(int? MaGioHang)
+		{
+			Console.WriteLine(MaGioHang);
+			if (MaGioHang == null)
+			{
+				return NotFound();
+			}
+			else
+			{
+				//tạo hóa đơn
+				HOA_DON hoaDon = new HOA_DON();
+				hoaDon.MaGioHang = (int)MaGioHang;
+				hoaDon.NgayTao = DateTime.Now;
+				hoaDon.TrangThai = 0 ;
+				hoaDon.MaDonViVanChuyen = 1;
+				_db.db_HOA_DON.Add(hoaDon);
+				_db.SaveChanges();
+				TempData["tbDatHang"] = "Đặt hàng thành công!";
+			}
+			return RedirectToAction("Index", "Home");
 		}
 	}
 }

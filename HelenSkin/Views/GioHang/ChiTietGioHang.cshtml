@@ -44,15 +44,20 @@
                         <div class="coupon_inner">
                             <div class="cart_subtotal">
                                 <p>Tổng tiền</p>
-                                <p class="cart_amount">400000</p>
-                            </div>
-                            <div class="cart_subtotal">
-                                <p>Tổng tiền thanh toán</p>
-                                <p class="cart_amount">400000</p>
+                                <p class="cart_amount">
+                                    @{
+                                        double total = 0;
+                                        for (int i = 0; i < gioHang.Count(); i++)
+                                        {
+                                            var item = gioHang.ElementAt(i);
+                                            total += item.SAN_PHAM.Gia * item.SoLuong;
+                                        }
+                                        @total
+                                    }
+                                </p>
                             </div>
                             <div class="ThemNV">
-                                <a class="btn btn-xanhLa" href="/ThongTinGiaoHang.html">Thanh toán</a>
-                               
+                                <a class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang" asp-route-MaGioHang="@ViewBag.MaGioHang">Đặt hàng</a>
                             </div>
                        </div>
                     </div>
