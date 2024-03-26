@@ -23,7 +23,7 @@
 
 
 </head>
-<body>
+<body ng-app="myApp">
     <partial name="_Notification" />
     <div class="pos_page">
         <div class="container">
@@ -75,8 +75,8 @@
                                                         <a href="#" data-toggle="dropdown">Quản lý</a>
                                                         <ul class="dropdown-menu">
                                                             <li><a class="pl-3" asp-area="" asp-controller="NguoiDung" asp-action="Index">Tài khoản</a></li>
-                                                            <li><a class="pl-3" href="#">Danh mục</a></li>
-                                                            <li><a class="pl-3" href="#">Sản phẩm</a></li>
+                                                            <li><a class="pl-3" asp-area="" asp-controller="DanhMuc" asp-action="Index">Danh mục</a></li>
+                                                            <li><a class="pl-3" asp-area="" asp-controller="SanPham" asp-action="Index">Sản phẩm</a></li>
                                                             <li><a class="pl-3" href="#">Đơn hàng</a></li>
                                                         </ul>
                                                     </li>
