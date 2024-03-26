@@ -48,6 +48,7 @@ namespace HelenSkin.Controllers
         {
             // Xóa cookie với key "ID"
             Response.Cookies.Delete("ID");
+            Response.Cookies.Delete("PhanQuyen");
 
             // Chuyển hướng người dùng đến trang chủ
             return RedirectToAction("Index", "Home");
@@ -75,6 +76,7 @@ namespace HelenSkin.Controllers
                 {
 
                     HttpContext.Response.Cookies.Append("ID", nguoiDung.MaND.ToString());
+                    HttpContext.Response.Cookies.Append("PhanQuyen", nguoiDung.PhanQuyen.ToString());
 
                     //TempData.Add("TenNguoiDung", nguoiDung.TenTaiKhoan);
                     return RedirectToAction("Index", "Home");

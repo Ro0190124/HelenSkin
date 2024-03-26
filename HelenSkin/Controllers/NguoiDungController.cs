@@ -184,6 +184,7 @@ namespace HelenSkin.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    nguoidung.PhanQuyen = false;
                     _db.db_NGUOI_DUNG.Update(nguoidung);
                     _db.SaveChanges();
                     TempData["ThongBao"] = "Sửa tài khoản thành công";
@@ -191,7 +192,7 @@ namespace HelenSkin.Controllers
                 }
                 else
                 {
-                    return View(nguoidung);
+                    return RedirectToAction("Index", "Home");
                 }
             }
         }
