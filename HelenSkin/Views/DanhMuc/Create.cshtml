@@ -1,0 +1,39 @@
+﻿@model DANH_MUC
+
+<div class="create-nd">
+    <div class="breadcrumbs_area">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index">Quản lý</a></li>
+                        <li><i class="fa fa-angle-right"></i></li>
+                        <li>Thêm danh mục</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ThenTK-form register  mt-3">
+        <h2>Thêm danh mục</h2>
+        <form method="post">
+            <div class="row">
+                <div class="col">
+                    <p>
+                        <label>Tên danh mục<span>:</span></label></br>
+                        <input type="text" name="TenDanhMuc" asp-for="TenDanhMuc"></br>
+                        <span asp-validation-for="TenDanhMuc" class="text-danger"></span>
+                    </p>
+                </div>
+                
+            </div>
+            
+            
+            
+            <div class="ThemTK-btn mt-3">
+                <button type="submit">Thêm danh mục</button>
+            </div>
+        </form>
+    </div>
+</div>

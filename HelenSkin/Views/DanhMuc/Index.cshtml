@@ -1,0 +1,114 @@
+﻿@model IEnumerable<DANH_MUC>
+
+<div class="">
+	<!--		<div class="mt-3 ngdung-tieude">
+				<p> danh mục </p>
+				</div>-->
+	<div class="breadcrumbs_area">
+		<div class="row">
+			<div class="col-12">
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a asp-controller="Home" asp-action="Index">Quản lý</a></li>
+						<li><i class="fa fa-angle-right"></i></li>
+						<li>Danh mục</li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row mt-3">
+		<div class="col-lg-2">
+			<div class="ThemNV">
+				<a asp-area="" asp-controller="DanhMuc" asp-action="Create" class="btn btn-xanhLa">Thêm danh mục</a>
+			</div>
+		</div>
+		<div class="col-lg-6">
+		</div>
+		<div class="col-lg-4">
+			<form method="get">
+				<div class="ND_TimKiem_Ten">
+					<div class="ND_TimKiem">
+						<input type="text" placeholder="Tìm kiếm Tên danh mục" name="searchString">
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</div>
+
+	<div class="Tb-Container mt-3">
+		<table class="table_user responsive-table">
+			<thead>
+				<tr>
+					<th> Tên danh mục</th>
+					<th class="ND_Table_Icon d-flex justify-content-around">Chỉnh sửa</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+
+					<tr>
+						<td>@item.TenDanhMuc</td>
+
+						<td class="ND_Table_Icon d-flex justify-content-around">
+
+
+							<div class="bgr-x">
+								<a class="btn btn-cam" asp-controller="DanhMuc" asp-action="Edit" asp-route-id="@item.MaDanhMuc">
+									Sửa
+								</a>
+
+							</div>
+
+							<div class="bgr-x">
+								<a class="btn btn-danger delete-btn" data-id="@item.MaDanhMuc">
+									Xóa
+								</a>
+
+							</div>
+							<div id="deletePopup-@item.MaDanhMuc" class="popup" style="display:none;">
+								<p>Bạn có muốn xóa danh mục này không?</p>
+								<button onclick="deleteND(@item.MaDanhMuc)">Có</button>
+								<button onclick="closePopup(@item.MaDanhMuc)">Không</button>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+<script>
+	document.querySelectorAll('.delete-btn').forEach(button => {
+		button.addEventListener('click', function () {
+			const id = this.getAttribute('data-id');
+			const popup = document.getElementById(`deletePopup-${id}`);
+			popup.style.display = 'block';
+		});
+	});
+
+	// Đóng popup
+	function closePopup(id) {
+		const popup = document.getElementById(`deletePopup-${id}`);
+		popup.style.display = 'none';
+	}
+
+	// Hàm xóa danh mục
+	function deleteND(id) {
+		fetch(`/DanhMuc/Delete?id=${id}`, {
+			method: 'GET' // hoặc 'POST' tùy thuộc vào cách bạn cấu hình route
+		})
+			.then(response => {
+				if (response.ok) {
+
+					window.location.reload(); // Refresh trang sau khi xóa
+				}
+			})
+			.catch(error => {
+				console.error('Lỗi khi xóa người dùng:', error);
+			});
+	}
+</script>
