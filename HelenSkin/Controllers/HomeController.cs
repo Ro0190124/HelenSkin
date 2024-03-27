@@ -1,6 +1,7 @@
 ﻿using HelenSkin.Data.Access.Data;
 using HelenSkin.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Diagnostics;
 
@@ -21,6 +22,12 @@ namespace HelenSkin.Controllers
         {
 
             return View();
+        }
+        public ActionResult SanPhamHome()
+        {
+            var sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).ToList();
+
+            return View(sanPhams);
         }
 
         public IActionResult Privacy()

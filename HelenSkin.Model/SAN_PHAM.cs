@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace HelenSkin.Model
 {
@@ -15,7 +16,8 @@ namespace HelenSkin.Model
         [MaxLength(100, ErrorMessage = "Tên sản phẩm không quá 100 kí tự")]
         [MinLength(5, ErrorMessage = "Tên sản phẩm không dưới 5 kí tự")]
         [Required(ErrorMessage = "Tên sản phẩm Không được trống")]
-        [RegularExpression(@"^[a-zA-Z0-9 ]*$", ErrorMessage = "Tên sản phẩm không được chứa kí tự đặc biệt")]
+        [RegularExpression(@"^[\p{L}a-zA-Z0-9\s]*$", ErrorMessage = "Tên sản phẩm không chứa kí tự đặc biệt")]
+
         public string TenSP { get; set; }
 
         [Range(0.01, Double.MaxValue, ErrorMessage = "Giá phải lớn hơn 0")]
@@ -33,8 +35,10 @@ namespace HelenSkin.Model
         public string MoTa { get; set; }
 
         public int MaDanhMuc { get; set; }
-
+        [ValidateNever]
         [ForeignKey("MaDanhMuc")]
         public DANH_MUC DANH_MUC { get; set; }
-    }
+		/*public virtual ICollection<DS_MEDIA_HINH_ANH> DS_MEDIA_HINH_ANH { get; set; }*/
+		
+	}
 }
