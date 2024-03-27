@@ -65,7 +65,8 @@ namespace HelenSkin.Controllers
                     ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
                     return View();
                 }
-                else if (nguoiDung != null)
+                else
+                if (nguoiDung != null)
                 {
 
                     HttpContext.Response.Cookies.Append("ID", nguoiDung.MaND.ToString());
@@ -97,13 +98,14 @@ namespace HelenSkin.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult DangKi(NGUOI_DUNG nguoiDung)
         {
             Console.WriteLine("Submit");
-
+            ModelState.Remove("Email");
+            ModelState.Remove("DiaChi");
             var n = _db.db_NGUOI_DUNG.Where(x => x.TenTaiKhoan == nguoiDung.TenTaiKhoan && x.TrangThai == true).FirstOrDefault();
             var m = _db.db_NGUOI_DUNG.Where(x => x.SoDienThoai == nguoiDung.SoDienThoai && x.TrangThai == true).FirstOrDefault();
+            var e = _db.db_NGUOI_DUNG.ToList();
             if (n != null)
             {
                 ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản đã tồn tại");

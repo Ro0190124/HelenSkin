@@ -47,12 +47,12 @@ namespace HelenSkin.Data.Access.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenND = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     SoDienThoai = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TenTaiKhoan = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     MatKhau = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: true),
                     NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DiaChi = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    DiaChi = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     PhanQuyen = table.Column<bool>(type: "bit", nullable: false),
                     TrangThai = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -160,6 +160,7 @@ namespace HelenSkin.Data.Access.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TrangThai = table.Column<byte>(type: "tinyint", nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     MaGioHang = table.Column<int>(type: "int", nullable: false),
                     MaDonViVanChuyen = table.Column<int>(type: "int", nullable: false)
                 },

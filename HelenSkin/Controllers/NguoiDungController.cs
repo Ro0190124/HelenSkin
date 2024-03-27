@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using HelenSkin.Model;
 using HelenSkin.Data;
+using Newtonsoft.Json;
 
 
 namespace HelenSkin.Controllers
@@ -18,42 +19,42 @@ namespace HelenSkin.Controllers
         private bool CheckPhanQuyen()
         {
             var phanquyenCookie = HttpContext.Request.Cookies["PhanQuyen"];
-            bool phanquyen = false;
+            bool quyen = false;
 
             if (!string.IsNullOrEmpty(phanquyenCookie))
             {
-                bool.TryParse(phanquyenCookie, out phanquyen);
+                bool.TryParse(phanquyenCookie, out quyen);
             }
 
-            return phanquyen;
+            return quyen;
         }
 
 
         public ActionResult Index(string searchString)
         {
-            var phanquyen = CheckPhanQuyen();
-            if (phanquyen)
-            {
-                var nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.TrangThai == true).OrderByDescending(x => x.MaND).ToList();
+            //var phanquyen = CheckPhanQuyen();
+            //if (phanquyen)
+            //{
+                var nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.TrangThai == true && x.PhanQuyen == true).OrderByDescending(x => x.MaND).ToList();
                 if (!string.IsNullOrEmpty(searchString))
                 {
                     nguoiDung = nguoiDung.Where(x => x.TenTaiKhoan.Contains(searchString) || x.TenND.Contains(searchString) || x.SoDienThoai.Contains(searchString)).ToList();
                 }
                 return View(nguoiDung);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Index", "Home");
 
-            }
+            //}
 
         }
 
         // GET: NguoiDungController/Details/5
         public ActionResult Details(int id)
         {
-            var phanquyen = CheckPhanQuyen();
-            if (phanquyen)
+            var quyen = CheckPhanQuyen();
+            if (quyen)
             {
                 return View();
             }
@@ -118,8 +119,8 @@ namespace HelenSkin.Controllers
         // GET: NguoiDungController/Edit/5
         public ActionResult Edit(int id)
         {
-            var phanquyen = CheckPhanQuyen();
-            if (phanquyen)
+            var quyen = CheckPhanQuyen();
+            if (quyen)
             {
                 if (id == null || id == 0)
             {
@@ -144,10 +145,11 @@ namespace HelenSkin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(NGUOI_DUNG nguoidung)
         {
-			var existingPhone = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.SoDienThoai == nguoidung.SoDienThoai && x.MaND != nguoidung.MaND && x.TrangThai == true);
+            var existingPhone = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.SoDienThoai == nguoidung.SoDienThoai && x.MaND != nguoidung.MaND && x.TrangThai == true);
 			var existingUsername = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == nguoidung.TenTaiKhoan && x.MaND != nguoidung.MaND && x.TrangThai == true);
 
-			if (existingPhone != null)
+
+            if (existingPhone != null)
 			{
 				ModelState.AddModelError("SoDienThoai", "Số điện thoại đã tồn tại cho người dùng khác");
 			}
@@ -164,6 +166,7 @@ namespace HelenSkin.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                   Console.WriteLine(nguoidung.PhanQuyen);
                     _db.db_NGUOI_DUNG.Update(nguoidung);
                     _db.SaveChanges();
                     TempData["ThongBao"] = "Sửa người dùng thành công";
@@ -248,7 +251,6 @@ namespace HelenSkin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    nguoidung.PhanQuyen = false;
                     _db.db_NGUOI_DUNG.Update(nguoidung);
                     _db.SaveChanges();
                     TempData["ThongBao"] = "Sửa tài khoản thành công";

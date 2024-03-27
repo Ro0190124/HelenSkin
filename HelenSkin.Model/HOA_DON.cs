@@ -14,6 +14,8 @@ namespace HelenSkin.Model
         public int MaHD { get; set; }
         public DateTime NgayTao { get; set; } = DateTime.Now;
         public byte TrangThai { get; set; } = 0;
+        [MaxLength(100, ErrorMessage = "Ghi chú không lớn hơn 100 ký tự")]
+        public string GhiChu { get; set; }
         public int MaGioHang { get; set; }
         [ForeignKey("MaGioHang")]
         public GIO_HANG? GIO_HANG { get; set; }
