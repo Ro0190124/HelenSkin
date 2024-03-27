@@ -44,20 +44,21 @@ namespace HelenSkin.Controllers
             Response.Cookies.Delete("PhanQuyen");
 
             // Chuyển hướng người dùng đến trang chủ
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("DangNhap", "Home");
         }
 
         [HttpPost]
         public IActionResult DangNhap(string tenTaiKhoan, string matKhau , string action)
         {
-            if(action == "login")
+            Console.WriteLine(tenTaiKhoan + " " + matKhau + " " + action); // nó bị mỗi tk có email với điachi == null thôi ( người dùng ms dk á) 
+            if (action == "login")
             {
-                var nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.MatKhau == matKhau && x.TrangThai == true);
+                var nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.TenTaiKhoan.Equals(tenTaiKhoan)).First();
                 var CheckTK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.TrangThai == true);
                 var CheckMK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MatKhau == matKhau && x.TrangThai == true);
                 if (CheckTK == null)
                 {
-                    ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản không tồn tại");
+                    ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản không tồn tại");// ổn kh bạn hay là để mai fix tiếp :<
                     return View();
                 }
                 else if (CheckMK == null)
@@ -88,6 +89,10 @@ namespace HelenSkin.Controllers
                 return RedirectToAction("DangKi");
             }
 
+
+
+            return View();
+
         }
 
 
@@ -105,7 +110,6 @@ namespace HelenSkin.Controllers
             ModelState.Remove("DiaChi");
             var n = _db.db_NGUOI_DUNG.Where(x => x.TenTaiKhoan == nguoiDung.TenTaiKhoan && x.TrangThai == true).FirstOrDefault();
             var m = _db.db_NGUOI_DUNG.Where(x => x.SoDienThoai == nguoiDung.SoDienThoai && x.TrangThai == true).FirstOrDefault();
-            var e = _db.db_NGUOI_DUNG.ToList();
             if (n != null)
             {
                 ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản đã tồn tại");

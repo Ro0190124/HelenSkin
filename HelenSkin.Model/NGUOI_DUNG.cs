@@ -25,7 +25,7 @@ namespace HelenSkin.Model
         public string SoDienThoai { get; set; }
 
         [RegularExpression(@"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]*$", ErrorMessage = "Địa chỉ email không hợp lệ")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
 
 
@@ -45,7 +45,7 @@ namespace HelenSkin.Model
 
         [CustomValidation(typeof(NGUOI_DUNG), "KiemLoiNgaySinh")]
 
-        public DateTime NgaySinh { get; set; }
+        public DateTime? NgaySinh { get; set; } =  new DateTime(2001, 01, 01);
 
 
         public DateTime NgayTao { get; set; } = DateTime.Now;
@@ -54,7 +54,7 @@ namespace HelenSkin.Model
         //[RegularExpression(@"^[a-zA-Z0-9., \/\(\)'""]+$", ErrorMessage = "Địa chỉ không được chứa ký tự đặc biệt.")]
         [MaxLength(150, ErrorMessage = "Địa chỉ không lớn hơn 150 kí tự ")]
         [MinLength(5, ErrorMessage = "Địa chỉ không dưới 5 kí tự")]
-        public string DiaChi { get; set; }
+        public string? DiaChi { get; set; }
 
 
 

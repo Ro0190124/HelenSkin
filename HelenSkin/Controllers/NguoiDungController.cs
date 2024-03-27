@@ -32,21 +32,21 @@ namespace HelenSkin.Controllers
 
         public ActionResult Index(string searchString)
         {
-            //var phanquyen = CheckPhanQuyen();
-            //if (phanquyen)
-            //{
+            var phanquyen = CheckPhanQuyen();
+            if (phanquyen)
+            {
                 var nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.TrangThai == true && x.PhanQuyen == true).OrderByDescending(x => x.MaND).ToList();
                 if (!string.IsNullOrEmpty(searchString))
                 {
                     nguoiDung = nguoiDung.Where(x => x.TenTaiKhoan.Contains(searchString) || x.TenND.Contains(searchString) || x.SoDienThoai.Contains(searchString)).ToList();
                 }
                 return View(nguoiDung);
-            //}
-            //else
-            //{
-            //    return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
 
-            //}
+            }
 
         }
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HelenSkin.Data.Access.Migrations
 {
     /// <inheritdoc />
-    public partial class AddtbToData : Migration
+    public partial class addTbToData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
