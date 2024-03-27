@@ -15,26 +15,68 @@ namespace HelenSkin.Controllers
             _db = db;
         }
         // GET: NguoiDungController
+        private bool CheckPhanQuyen()
+        {
+            var phanquyenCookie = HttpContext.Request.Cookies["PhanQuyen"];
+            bool phanquyen = false;
+
+            if (!string.IsNullOrEmpty(phanquyenCookie))
+            {
+                bool.TryParse(phanquyenCookie, out phanquyen);
+            }
+
+            return phanquyen;
+        }
+
+
         public ActionResult Index(string searchString)
         {
-			var nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.TrangThai == true).OrderByDescending(x => x.MaND).ToList();
-            if (!string.IsNullOrEmpty(searchString))
+            var phanquyen = CheckPhanQuyen();
+            if (phanquyen)
             {
-                nguoiDung = nguoiDung.Where(x => x.TenTaiKhoan.Contains(searchString) || x.TenND.Contains(searchString) || x.SoDienThoai.Contains(searchString)).ToList();
+                var nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.TrangThai == true).OrderByDescending(x => x.MaND).ToList();
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    nguoiDung = nguoiDung.Where(x => x.TenTaiKhoan.Contains(searchString) || x.TenND.Contains(searchString) || x.SoDienThoai.Contains(searchString)).ToList();
+                }
+                return View(nguoiDung);
             }
-            return View(nguoiDung);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+
+            }
+
         }
 
         // GET: NguoiDungController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var phanquyen = CheckPhanQuyen();
+            if (phanquyen)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+
+            }
         }
 
         // GET: NguoiDungController/Create
         public ActionResult Create()
         {
-            return View();
+            var phanquyen = CheckPhanQuyen();
+            if (phanquyen)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+
+            }
         }
 
         // POST: NguoiDungController/Create
@@ -76,7 +118,10 @@ namespace HelenSkin.Controllers
         // GET: NguoiDungController/Edit/5
         public ActionResult Edit(int id)
         {
-            if (id == null || id == 0)
+            var phanquyen = CheckPhanQuyen();
+            if (phanquyen)
+            {
+                if (id == null || id == 0)
             {
                 return NotFound();
             }
@@ -86,6 +131,12 @@ namespace HelenSkin.Controllers
                 return NotFound();
             }
             return View(nguoiDung);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+
+            }
         }
 
         // POST: NguoiDungController/Edit/5
@@ -149,16 +200,29 @@ namespace HelenSkin.Controllers
 
         public ActionResult ThongTinTK(int id)
         {
-            if (id == null || id == 0)
+            var userIdCookieValue = HttpContext.Request.Cookies["ID"];
+            int userId;
+
+            if (!string.IsNullOrEmpty(userIdCookieValue) && int.TryParse(userIdCookieValue, out userId))
             {
-                return NotFound();
+                // Kiểm tra nếu id không khớp với userId từ cookie thì chuyển hướng về trang chủ
+                if (id != userId)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == id);
+                if (nguoiDung == null)
+                {
+                    return NotFound();
+                }
+                return View(nguoiDung); 
             }
-            NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.First(x => x.MaND == id);
-            if (nguoiDung == null)
+            else
             {
-                return NotFound();
+                // Nếu không có cookie hoặc không thể chuyển đổi thành int, chuyển hướng về trang chủ
+                return RedirectToAction("Index", "Home");
             }
-            return View(nguoiDung);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

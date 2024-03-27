@@ -1,4 +1,6 @@
-﻿
+﻿@using HelenSkin.Data.Access.Data
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +28,6 @@
 <body ng-app="myApp">
     @{
         var userId = Context.Request.Cookies["ID"];
-        var tenNguoiDung = ViewBag.TenNguoiDung as string;
         var phanquyenCookie = Context.Request.Cookies["PhanQuyen"];
         bool phanquyen = false;
 
@@ -34,6 +35,17 @@
         {
             bool.TryParse(phanquyenCookie, out phanquyen);
         }
+        int userIdCookieValue;
+
+        string tenNguoiDung = string.Empty;
+
+        if (!string.IsNullOrEmpty(userId) && int.TryParse(userId, out userIdCookieValue))
+        {
+            var tennd = Context.RequestServices.GetRequiredService<ApplicationDbContext>().db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == userIdCookieValue);
+            tenNguoiDung = tennd?.TenND ?? string.Empty;
+        }
+
+        ViewBag.TenNguoiDung = tenNguoiDung;
     }
     <partial name="_Notification" />
     <div class="pos_page">

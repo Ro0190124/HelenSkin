@@ -1,6 +1,7 @@
 ﻿using HelenSkin.Data.Access.Data;
 using HelenSkin.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Diagnostics;
 
 namespace HelenSkin.Controllers
@@ -18,15 +19,7 @@ namespace HelenSkin.Controllers
 
         public IActionResult Index()
         {
-            var userIdCookieValue = HttpContext.Request.Cookies["ID"];
-            int userId;
 
-            if (!string.IsNullOrEmpty(userIdCookieValue) && int.TryParse(userIdCookieValue, out userId))
-            {
-                var tennd = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == userId);
-                // Tiếp tục xử lý dữ liệu...
-                ViewBag.TenNguoiDung = tennd.TenND;
-            }
             return View();
         }
 
