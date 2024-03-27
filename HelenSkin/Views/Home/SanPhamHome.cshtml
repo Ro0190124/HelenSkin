@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<SAN_PHAM>
+
 <div class="shopping_cart_area">
     <div class="row pos_home">
         <div class="col-lg-3 col-md-8 col-12">
@@ -53,45 +54,43 @@
             </div>
             <!--banner slider start-->
             <!--new product area start-->
-            <div class="new_product_area" >
+            <div class="new_product_area">
                 <div class="block_title">
                     <h3>New Products</h3>
                 </div>
-                <div class="row" ng-controller="HomeSanPhamController">
+                <div class="row">
                     <div class="product_active owl-carousel">
-                        <div class="col-lg-3" ng-repeat="product in products">
-                            <div class="single_product">
-                                <div class="product_thumb">
-                                    <a href="single-product.html"><img ng-src="{{product.image}}" alt=""></a>
-                                    <div class="product_action">
-                                        <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-                                        <a href="single-product.html" class="details">Chi tiết</a>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var sanPhams in Model)
+                            {
+                                <div class="col-lg-3">
+                                    <div class="single_product">
+                                        <div class="product_thumb">
+                                            <a href="single-product.html"><img alt=""></a>
+                                            <div class="product_action">
+                                                <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
+                                                <a href="single-product.html" class="details">Chi tiết</a>
+                                            </div>
+                                        </div>
+                                        <div class="product_content">
+                                            <h3 class="product_title"><a href="single-product.html">@sanPhams.TenSP</a></h3>
+                                            <p class="product_price">@sanPhams.Gia.ToString("C")</p>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="product_content">
-                                    <span class="product_price">{{product.price}} đ</span>
-                                    <h3 class="product_title"><a href="single-product.html">{{product.name}}</a></h3>
-                                </div>
-                            </div>
-                        </div>
+                            }
+                        }
+                        else
+                        {
+                            <p>Không có sản phẩm để hiển thị.</p>
+                        }
                     </div>
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>
 
-<script>
-    // Định nghĩa module AngularJS
-    var app = angular.module('myApp', []);
-
-    // Định nghĩa controller AngularJS
-    app.controller('HomeSanPhamController', function ($scope) {
-        // Dữ liệu sản phẩm
-        $scope.products = [
-            { image: '~/img/product/pro_1.webp', price: 300.000, name: 'Sản phẩm 1' },
-            { image: '~/img/product/pro_1.webp', price: 350.000, name: 'Sản phẩm 2' },
-            { image: '~/img/product/pro_1.webp', price: 300.000, name: 'Sản phẩm 3' }
-        ];
-    });
-</script>

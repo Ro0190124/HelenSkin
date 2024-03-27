@@ -1,5 +1,134 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<SAN_PHAM>
+
+<div class="">
+	<!--		<div class="mt-3 ngdung-tieude">
+				<p> Sản phẩm </p>
+				</div>-->
+	<div class="breadcrumbs_area">
+		<div class="row">
+			<div class="col-12">
+				<div class="breadcrumb_content">
+					<ul>
+						<li><a asp-controller="Home" asp-action="Index">Quản lý</a></li>
+						<li><i class="fa fa-angle-right"></i></li>
+						<li>sản phẩm</li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row mt-3">
+		<div class="col-lg-2">
+			<div class="ThemNV">
+				<a asp-area="" asp-controller="SanPham" asp-action="Create" class="btn btn-xanhLa">Thêm sản phẩm</a>
+			</div>
+		</div>
+		<div class="col-lg-6">
+		</div>
+		<div class="col-lg-4">
+			<form method="get">
+				<div class="ND_TimKiem_Ten">
+					<div class="ND_TimKiem">
+						<input type="text" placeholder="Tìm kiếm người dùng (Tên sản phẩm, tên danh mục)..." name="searchString">
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</div>
+
+	<div class="Tb-Container mt-3">
+		<table class="table_user responsive-table">
+			<thead>
+				<tr>
+					@* <th>Hình ảnh</th> *@
+					<th>Tên sản phẩm</th>
+					<th>Danh mục</th>
+					<th>Đơn giá</th>
+					<th>Số lượng</th>
+					<th>Ngày Tạo</th>
+					<th>Mô tả</th>
+					<th>Trạng thái</th>
+					<th>Chỉnh sửa</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						@* <td>
+							@if (item.DS_MEDIA_HINH_ANH != null && item.DS_MEDIA_HINH_ANH.Count > 0)
+							{
+								@foreach (var hinhAnh in item.DS_MEDIA_HINH_ANH.Take(4))
+								{
+									<img src="@Url.Content(hinhAnh.MediaHinhAnh)" alt="Hình ảnh sản phẩm" />
+								}
+							}
+							<input type="file" name="newImages" accept="image/*" multiple />
+						</td> *@
+
+						<td>@item.TenSP</td>
+						<td>@item.DANH_MUC.TenDanhMuc</td>
+						<td>@item.Gia.ToString("N0")</td>
+						<td>@item.SoLuong</td>
+						<td>@item.NgayTao.ToString("dd/MM/yyyy")</td>
+						<td>@item.MoTa</td>
+						<td>@item.TrangThai </td>
+						<td class="ND_Table_Icon d-flex justify-content-around">
+							<div class="bgr-x">
+								<a class="btn btn-cam" asp-controller="SanPham" asp-action="Edit" asp-route-id="@item.MaSP">
+									Sửa
+								</a>
+							</div>
+							<div class="bgr-x">
+								<a class="btn btn-danger delete-btn" data-id="@item.MaSP">
+									Xóa
+								</a>
+							</div>
+							<div id="deletePopup-@item.MaSP" class="popup" style="display:none;">
+								<p>Bạn có muốn xóa sản phẩm này không?</p>
+								<button onclick="deleteSP(@item.MaSP)">Có</button>
+								<button onclick="closePopup(@item.MaSP)">Không</button>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+
+</div>
+<script>
+	document.querySelectorAll('.delete-btn').forEach(button => {
+		button.addEventListener('click', function () {
+			const id = this.getAttribute('data-id');
+			const popup = document.getElementById(`deletePopup-${id}`);
+			popup.style.display = 'block';
+		});
+	});
+
+	// Đóng popup
+	function closePopup(id) {
+		const popup = document.getElementById(`deletePopup-${id}`);
+		popup.style.display = 'none';
+	}
+
+	// Hàm xóa sản phẩm
+	function deleteND(id) {
+
+		fetch(`/SanPham/Delete?id=${id}`, {
+			method: 'GET'
+		})
+			.then(response => {
+				if (response.ok) {
+					// Nếu xóa thành công, cập nhật giao diện hoặc thông báo cho người dùng
+					// Ví dụ: có thể refresh trang hoặc cập nhật thông tin bằng JavaScript
+					window.location.reload(); // Refresh trang sau khi xóa
+				}
+			})
+			.catch(error => {
+				console.error('Lỗi khi xóa người dùng:', error);
+			});
+	}
+</script>

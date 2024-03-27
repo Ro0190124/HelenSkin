@@ -1,6 +1,7 @@
 ﻿using HelenSkin.Data.Access.Data;
 using HelenSkin.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace HelenSkin.Controllers
@@ -28,6 +29,12 @@ namespace HelenSkin.Controllers
                 ViewBag.TenNguoiDung = tennd.TenND;
             }
             return View();
+        }
+        public ActionResult SanPhamHome()
+        {
+            var sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).ToList();
+
+            return View(sanPhams);
         }
 
         public IActionResult Privacy()
