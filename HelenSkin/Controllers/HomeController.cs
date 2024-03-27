@@ -2,6 +2,7 @@
 using HelenSkin.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Diagnostics;
 
 namespace HelenSkin.Controllers
@@ -19,15 +20,7 @@ namespace HelenSkin.Controllers
 
         public IActionResult Index()
         {
-            var userIdCookieValue = HttpContext.Request.Cookies["ID"];
-            int userId;
 
-            if (!string.IsNullOrEmpty(userIdCookieValue) && int.TryParse(userIdCookieValue, out userId))
-            {
-                var tennd = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == userId);
-                // Tiếp tục xử lý dữ liệu...
-                ViewBag.TenNguoiDung = tennd.TenND;
-            }
             return View();
         }
         public ActionResult SanPhamHome()
@@ -55,6 +48,7 @@ namespace HelenSkin.Controllers
         {
             // Xóa cookie với key "ID"
             Response.Cookies.Delete("ID");
+            Response.Cookies.Delete("PhanQuyen");
 
             // Chuyển hướng người dùng đến trang chủ
             return RedirectToAction("Index", "Home");
@@ -78,10 +72,12 @@ namespace HelenSkin.Controllers
                     ModelState.AddModelError("MatKhau", "Mật khẩu không chính xác");
                     return View();
                 }
-                else if (nguoiDung != null)
+                else
+                if (nguoiDung != null)
                 {
 
                     HttpContext.Response.Cookies.Append("ID", nguoiDung.MaND.ToString());
+                    HttpContext.Response.Cookies.Append("PhanQuyen", nguoiDung.PhanQuyen.ToString());
 
                     //TempData.Add("TenNguoiDung", nguoiDung.TenTaiKhoan);
                     return RedirectToAction("Index", "Home");
@@ -109,13 +105,14 @@ namespace HelenSkin.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult DangKi(NGUOI_DUNG nguoiDung)
         {
             Console.WriteLine("Submit");
-
+            ModelState.Remove("Email");
+            ModelState.Remove("DiaChi");
             var n = _db.db_NGUOI_DUNG.Where(x => x.TenTaiKhoan == nguoiDung.TenTaiKhoan && x.TrangThai == true).FirstOrDefault();
             var m = _db.db_NGUOI_DUNG.Where(x => x.SoDienThoai == nguoiDung.SoDienThoai && x.TrangThai == true).FirstOrDefault();
+            var e = _db.db_NGUOI_DUNG.ToList();
             if (n != null)
             {
                 ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản đã tồn tại");

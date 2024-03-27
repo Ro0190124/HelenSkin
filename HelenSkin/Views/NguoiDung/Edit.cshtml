@@ -64,9 +64,9 @@
                 <div class="col-lg-6 ">
                     <p>
                         <label>Phân quyền<span>:</span></label></br>
-                        <select class="themtk-select" name="PhanQuyen" asp-for="PhanQuyen">
-                            <option value="true">Người dùng</option>
-                            <option value="false">Admin</option>
+                        <select class="themtk-select" asp-for="PhanQuyen">
+                            <option value="True">Admin</option>
+                            <option value="False">Người dùng</option>
                         </select></br>
                         <span asp-validation-for="PhanQuyen" class="text-danger"></span>
                     </p>

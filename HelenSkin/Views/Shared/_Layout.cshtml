@@ -1,4 +1,6 @@
-﻿
+﻿@using HelenSkin.Data.Access.Data
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +26,27 @@
 
 </head>
 <body ng-app="myApp">
+    @{
+        var userId = Context.Request.Cookies["ID"];
+        var phanquyenCookie = Context.Request.Cookies["PhanQuyen"];
+        bool phanquyen = false;
+
+        if (!string.IsNullOrEmpty(phanquyenCookie))
+        {
+            bool.TryParse(phanquyenCookie, out phanquyen);
+        }
+        int userIdCookieValue;
+
+        string tenNguoiDung = string.Empty;
+
+        if (!string.IsNullOrEmpty(userId) && int.TryParse(userId, out userIdCookieValue))
+        {
+            var tennd = Context.RequestServices.GetRequiredService<ApplicationDbContext>().db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == userIdCookieValue);
+            tenNguoiDung = tennd?.TenND ?? string.Empty;
+        }
+
+        ViewBag.TenNguoiDung = tenNguoiDung;
+    }
     <partial name="_Notification" />
     <div class="pos_page">
         <div class="container">
@@ -71,15 +94,19 @@
                                                     <li>
                                                         <a href="portfolio.html">GIỚI THIỆU</a>
                                                     </li>
-                                                    <li class="user-icon">
-                                                        <a href="#" data-toggle="dropdown">Quản lý</a>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="pl-3" asp-area="" asp-controller="NguoiDung" asp-action="Index">Tài khoản</a></li>
-                                                            <li><a class="pl-3" asp-area="" asp-controller="DanhMuc" asp-action="Index">Danh mục</a></li>
-                                                            <li><a class="pl-3" asp-area="" asp-controller="SanPham" asp-action="Index">Sản phẩm</a></li>
-                                                            <li><a class="pl-3" href="#">Đơn hàng</a></li>
-                                                        </ul>
-                                                    </li>
+                                                    @if (phanquyen)
+                                                    {
+                                                        <li class="user-icon">
+                                                            <a href="#" data-toggle="dropdown">Quản lý</a>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="pl-3" asp-area="" asp-controller="NguoiDung" asp-action="Index">Tài khoản</a></li>
+                                                                <li><a class="pl-3" asp-area="" asp-controller="DanhMuc" asp-action="Index">Danh mục</a></li>
+                                                                <li><a class="pl-3" asp-area="" asp-controller="SanPham" asp-action="Index">Sản phẩm</a></li>
+                                                                <li><a class="pl-3" href="#">Đơn hàng</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    }
+
                                                 </ul>
                                                 <ul>
                                                     <li class="search-icon px-1">
@@ -97,11 +124,7 @@
                                                         <a href="#" data-toggle="dropdown">
                                                             <i class="fa fa-user"></i>
                                                         </a>
-                                                        <ul class="dropdown-menu">
-                                                            @{
-                                                                var userId = Context.Request.Cookies["ID"];
-                                                                var tenNguoiDung = ViewBag.TenNguoiDung as string;
-                                                            }  
+                                                        <ul class="dropdown-menu">  
                                                             @if (!string.IsNullOrEmpty(userId))
                                                             {
                                                                 <li><a class="pl-3" asp-area="" asp-controller="NguoiDung" asp-action="ThongTinTK" asp-route-id="@userId">Thông tin tài khoản</a></li>

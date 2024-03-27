@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HelenSkin.Data.Access.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240321043423_AddtbToData")]
+    [Migration("20240327111301_AddtbToData")]
     partial class AddtbToData
     {
         /// <inheritdoc />
@@ -144,6 +144,11 @@ namespace HelenSkin.Data.Access.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHD"));
+
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("MaDonViVanChuyen")
                         .HasColumnType("int");

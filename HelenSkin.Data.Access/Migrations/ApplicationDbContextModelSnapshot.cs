@@ -142,6 +142,11 @@ namespace HelenSkin.Data.Access.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHD"));
 
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<int>("MaDonViVanChuyen")
                         .HasColumnType("int");
 

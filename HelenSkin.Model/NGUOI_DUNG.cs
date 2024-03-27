@@ -24,9 +24,7 @@ namespace HelenSkin.Model
         [Required(ErrorMessage = "Không được trống")]
         public string SoDienThoai { get; set; }
 
-
-
-        [RegularExpression(@"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$", ErrorMessage = "Địa chỉ email không hợp lệ")]
+        [RegularExpression(@"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]*$", ErrorMessage = "Địa chỉ email không hợp lệ")]
         public string Email { get; set; }
 
 
@@ -60,7 +58,7 @@ namespace HelenSkin.Model
 
 
 
-        public bool PhanQuyen { get; set; } = true; //true = nguoi dung , false = admin
+        public bool PhanQuyen { get; set; }//true = admin , false = nguoidung
         public bool TrangThai { get; set; } = true; //true = ton tai , false = nghi;
         public static ValidationResult KiemLoiNgaySinh(DateTime ngaySinh, ValidationContext context)
         {
