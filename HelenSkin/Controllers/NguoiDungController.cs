@@ -105,13 +105,14 @@ namespace HelenSkin.Controllers
 
 					_db.db_NGUOI_DUNG.Add(nguoidung);
 					_db.SaveChanges();
-					TempData["ThongBao"] = "Thêm người dùng thành công";
+					TempData["ThanhCong"] = "Thêm người dùng thành công";
 					return RedirectToAction("Index", "NguoiDung");
 
 				}
 				else
 				{
-					return View(nguoidung);
+                    TempData["ThatBai"] = "Thêm người dùng không thành công";
+                    return View(nguoidung);
 				}
 			}
 		}
@@ -169,11 +170,12 @@ namespace HelenSkin.Controllers
                    Console.WriteLine(nguoidung.PhanQuyen);
                     _db.db_NGUOI_DUNG.Update(nguoidung);
                     _db.SaveChanges();
-                    TempData["ThongBao"] = "Sửa người dùng thành công";
+                    TempData["ThanhCong"] = "Sửa người dùng thành công";
                     return RedirectToAction("Index");
                 }
                 else
                 {
+                    TempData["ThatBai"] = "Sửa người dùng không thành công";
                     return View(nguoidung);
                 }
             }
@@ -188,13 +190,14 @@ namespace HelenSkin.Controllers
             NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == id);
             if (nguoiDung == null)
             {
+                TempData["ThatBai"] = "Xóa người dùng thất bại";
                 return NotFound();
             }
             else
             {
                 nguoiDung.TrangThai = false;
                 _db.db_NGUOI_DUNG.Update(nguoiDung);
-                TempData["ThongBaoXoa"] = "Xóa người dùng thành công";
+                TempData["ThanhCong"] = "Xóa người dùng thành công";
                 _db.SaveChanges();
 
             }
@@ -253,11 +256,12 @@ namespace HelenSkin.Controllers
                 {
                     _db.db_NGUOI_DUNG.Update(nguoidung);
                     _db.SaveChanges();
-                    TempData["ThongBao"] = "Sửa tài khoản thành công";
+                    TempData["ThanhCong"] = "Sửa tài khoản thành công";
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
+                    TempData["ThatBai"] = "Sửa tài khoản không thành công";
                     return RedirectToAction("Index", "Home");
                 }
             }
