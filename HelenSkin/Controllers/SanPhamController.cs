@@ -27,8 +27,10 @@ namespace HelenSkin.Controllers
         
         public ActionResult ManHinhSP()
 		{
-			return View();
-		}
+            var sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).ToList();
+
+            return View(sanPhams);
+        }
 
 		// GET: SanPhamController/Details/5
 		public ActionResult Details(int id)

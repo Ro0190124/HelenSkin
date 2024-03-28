@@ -45,7 +45,7 @@ namespace HelenSkin.Model
 
         [CustomValidation(typeof(NGUOI_DUNG), "KiemLoiNgaySinh")]
 
-        public DateTime? NgaySinh { get; set; } =  new DateTime(2001, 01, 01);
+        public DateTime NgaySinh { get; set; } =  new DateTime(2001, 01, 01);
 
 
         public DateTime NgayTao { get; set; } = DateTime.Now;
