@@ -1,4 +1,6 @@
-﻿<div class=" pos_home_section">
+﻿@model IEnumerable<SAN_PHAM>
+
+<div class=" pos_home_section">
     <div class="row pos_home">
         <div class="col-lg-3 col-md-12">
             <!--layere categorie"-->
@@ -83,114 +85,31 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="large" role="tabpanel">
                         <div class="row">
-                            <div class="col-lg-4 col-md-6">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="single-product.html"><img src="assets/img/product/pro_1.webp" alt=""></a>
-                                        <div class="product_action">
-                                            <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-                                            <a href="single-product.html" class="details">Chi tiết</a>
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var sanPhams in Model)
+                                {
+                                    <div class="col-lg-4 col-md-6">
+                                        <div class="single_product">
+                                            <div class="product_thumb">
+                                                <a href="single-product.html"><img  alt=""></a>
+                                                <div class="product_action">
+                                                    <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
+                                                    <a href="single-product.html" class="details">Chi tiết</a>
+                                                </div>
+                                            </div>
+                                            <div class="product_content">
+                                                <h3 class="product_title"><a href="single-product.html">@sanPhams.TenSP</a></h3>
+                                                <p class="product_price">@sanPhams.Gia.ToString("N0")</p>
+                                            </div>
                                         </div>
                                     </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="single-product.html"><img src="assets/img/product/pro_1.webp" alt=""></a>
-                                        <div class="product_action">
-                                            <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-                                            <a href="single-product.html" class="details">Chi tiết</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="single-product.html"><img src="assets/img/product/pro_1.webp" alt=""></a>
-                                        <div class="product_action">
-                                            <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-                                            <a href="single-product.html" class="details">Chi tiết</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="single-product.html"><img src="assets/img/product/pro_1.webp" alt=""></a>
-                                        <div class="product_action">
-                                            <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-                                            <a href="single-product.html" class="details">Chi tiết</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="single-product.html"><img src="assets/img/product/pro_1.webp" alt=""></a>
-                                        <div class="product_action">
-                                            <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-                                            <a href="single-product.html" class="details">Chi tiết</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="single-product.html"><img src="assets/img/product/pro_1.webp" alt=""></a>
-                                        <div class="product_action">
-                                            <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-                                            <a href="single-product.html" class="details">Chi tiết</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="single-product.html"><img src="assets/img/product/pro_1.webp" alt=""></a>
-                                        <div class="product_action">
-                                            <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-                                            <a href="single-product.html" class="details">Chi tiết</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="single-product.html"><img src="assets/img/product/pro_1.webp" alt=""></a>
-                                        <div class="product_action">
-                                            <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-                                            <a href="single-product.html" class="details">Chi tiết</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a href="single-product.html"><img src="assets/img/product/pro_1.webp" alt=""></a>
-                                        <div class="product_action">
-                                            <a href="#" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-                                            <a href="single-product.html" class="details">Chi tiết</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
+                                }
+                            }
+                            else
+                            {
+                                <p>Không có sản phẩm để hiển thị.</p>
+                            }
                         </div>
                     </div>
                 </div>
