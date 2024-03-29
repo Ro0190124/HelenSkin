@@ -51,7 +51,27 @@
         }
 
         // Display Toastr notification
-        toastr.Success('@TempData["tbDatHang"]');
+        toastr.success('@TempData["tbDatHang"]');
     </script>
 
+}
+
+
+@if(TempData["ThanhCong"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        toastr.options.timeOut = 2000;
+            toastr.success('@TempData["ThanhCong"]');
+    </script>
+}
+@if (TempData["ThatBai"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        toastr.options.timeOut = 2000;
+        toastr.error('@TempData["ThatBai"]');
+    </script>
 }

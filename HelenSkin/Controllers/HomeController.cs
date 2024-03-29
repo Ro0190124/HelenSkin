@@ -20,7 +20,7 @@ namespace HelenSkin.Controllers
 
         public IActionResult Index()
         {
-
+           
             return View();
         }
         public ActionResult SanPhamHome()
@@ -38,7 +38,6 @@ namespace HelenSkin.Controllers
 
         public IActionResult DangNhap()
         {
-            Response.Cookies.Delete("ID");
             ViewData["HideHeader"] = true;
             return View();
 
@@ -49,7 +48,7 @@ namespace HelenSkin.Controllers
             // Xóa cookie với key "ID"
             Response.Cookies.Delete("ID");
             Response.Cookies.Delete("PhanQuyen");
-
+            TempData["ThanhCong"] = "Đã đăng xuất thành công";
             // Chuyển hướng người dùng đến trang chủ
             return RedirectToAction("DangNhap", "Home");
         }
@@ -60,7 +59,7 @@ namespace HelenSkin.Controllers
             Console.WriteLine(tenTaiKhoan + " " + matKhau + " " + action); // nó bị mỗi tk có email với điachi == null thôi ( người dùng ms dk á) 
             if (action == "login")
             {
-                var nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.TenTaiKhoan.Equals(tenTaiKhoan)).First();
+                var nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.MatKhau == matKhau && x.TrangThai == true);
                 var CheckTK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.TrangThai == true);
                 var CheckMK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MatKhau == matKhau && x.TrangThai == true);
                 if (CheckTK == null)
@@ -76,17 +75,14 @@ namespace HelenSkin.Controllers
                 else
                 if (nguoiDung != null)
                 {
-
                     HttpContext.Response.Cookies.Append("ID", nguoiDung.MaND.ToString());
                     HttpContext.Response.Cookies.Append("PhanQuyen", nguoiDung.PhanQuyen.ToString());
-
+                    TempData["ThanhCong"] = "Đăng nhập thành công";
                     //TempData.Add("TenNguoiDung", nguoiDung.TenTaiKhoan);
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-
-                    TempData["ThongBaoDangNhap"] = "Tên tài khoản hoặc mật khẩu không đúng";
                     return View();
 
                 }
@@ -95,11 +91,6 @@ namespace HelenSkin.Controllers
             {
                 return RedirectToAction("DangKi");
             }
-
-
-
-            return View();
-
         }
 
 
@@ -112,6 +103,7 @@ namespace HelenSkin.Controllers
         [HttpPost]
         public IActionResult DangKi(NGUOI_DUNG nguoiDung)
         {
+
             Console.WriteLine("Submit");
             ModelState.Remove("Email");
             ModelState.Remove("DiaChi");
@@ -134,12 +126,14 @@ namespace HelenSkin.Controllers
 
                     _db.db_NGUOI_DUNG.Add(nguoiDung);
                     _db.SaveChanges();
-                    TempData["ThongBao"] = "Đăng kí thành công";
+                    TempData["ThanhCong"] = "Đăng kí thành công";
+                    Console.WriteLine(TempData["TaoTKThanhCong"]);
                     return RedirectToAction("DangNhap", "Home");
                 }
                 else
                 {
-                    return View(nguoiDung);
+                    TempData["ThatBai"] = "Đăng kí thất bại";
+                    return View();
                 }
             }
 
