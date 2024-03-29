@@ -30,7 +30,6 @@ namespace HelenSkin.Controllers
 			else
 			{
 				NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
-				TempData["tbGioHang"] = "Xin chào " + nguoiDung.TenND + "!";
 				IEnumerable<GIO_HANG> obj;
 				/*if(id == null || id == 0)
 				{
@@ -99,7 +98,7 @@ namespace HelenSkin.Controllers
         }
 
 
-
+	   
         // GET: GioHangController/Create
         public ActionResult Create()
 		{
