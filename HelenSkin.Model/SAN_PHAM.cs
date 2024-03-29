@@ -38,7 +38,7 @@ namespace HelenSkin.Model
         [ValidateNever]
         [ForeignKey("MaDanhMuc")]
         public DANH_MUC DANH_MUC { get; set; }
-		/*public virtual ICollection<DS_MEDIA_HINH_ANH> DS_MEDIA_HINH_ANH { get; set; }*/
-		
-	}
+        public virtual ICollection<DS_MEDIA_HINH_ANH> db_DS_MEDIA_HINH_ANH { get; set; }
+
+    }
 }

@@ -20,8 +20,10 @@ namespace HelenSkin.Controllers
 
         public IActionResult Index()
         {
-           
-            return View();
+            var sanPhams = _db.db_SAN_PHAM
+                                   .Include(sp => sp.db_DS_MEDIA_HINH_ANH)  // Lấy dữ liệu từ DS_MEDIA_HINH_ANH liên quan
+                                   .ToList();
+            return View(sanPhams);
         }
         public ActionResult SanPhamHome()
         {

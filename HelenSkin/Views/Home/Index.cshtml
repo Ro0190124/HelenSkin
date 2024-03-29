@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<SAN_PHAM>
 
 
 <div class="shopping_cart_area" >
@@ -56,7 +56,44 @@
                 </div>
             </div>
             <!--banner slider start-->
-                                
+            <!--new product area start-->
+            <div class="new_product_area">
+                <div class="block_title">
+                    <h3>New Products 123</h3>
+                </div>
+                <div class="row">
+                    <div class="product_active owl-carousel">
+                        				@foreach (var item in Model)
+                        {
+
+                            Console.WriteLine(item.db_DS_MEDIA_HINH_ANH);
+                            var firstImage = item.db_DS_MEDIA_HINH_ANH?.FirstOrDefault();
+                            string imageUrl = firstImage != null ? firstImage.MediaHinhAnh : "~/img/default-image.jpg";
+
+                            <div class="col-lg-3">
+                                <div class="single_product">
+                                    <div class="product_thumb">
+                                        <a href="">
+                                            <img src="@imageUrl" alt="@item.TenSP">
+                                        </a>
+                                        <div class="product_action">
+                                            <a href="#" class="add_to_cart">
+                                                <i class="fa fa-shopping-cart"></i> Thêm vào
+                                                giỏ
+                                            </a>
+                                            <a href="#" class="details">Chi tiết</a>
+                                        </div>
+                                    </div>
+                                    <div class="product_content">
+                                        <span class="product_price">@item.Gia</span>
+                                        <h3 class="product_title"><a href="single-product.html">@item.TenSP </a></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
                                
         </div>
     </div>
