@@ -17,7 +17,6 @@ namespace HelenSkin.Controllers
             _logger = logger;
             _db = db;
         }
-
         public IActionResult Index()
         {
             var sanPhams = _db.db_SAN_PHAM
@@ -25,6 +24,21 @@ namespace HelenSkin.Controllers
                                    .ToList();
             return View(sanPhams);
         }
+        [HttpGet]
+        public async Task<IActionResult> SPChiTiet(int id)
+        {
+            Console.WriteLine(id);
+            var sanPham = await _db.db_SAN_PHAM
+                                        .Include(s => s.db_DS_MEDIA_HINH_ANH)
+                                        .FirstOrDefaultAsync(s => s.MaSP == id);
+
+            if (sanPham == null)
+            {
+                return NotFound();
+            }
+            return View(sanPham);
+        }
+
         public ActionResult SanPhamHome()
         {
             var sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).ToList();

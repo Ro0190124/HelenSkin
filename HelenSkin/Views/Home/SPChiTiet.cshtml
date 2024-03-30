@@ -1,0 +1,175 @@
+﻿@model SAN_PHAM
+<!-- modal area start -->
+<div class="modal_body mt-4">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="modal_tab">
+                <div class="tab-content" id="pills-tabContent">
+                        <div class="modal_tab_button row">
+                            <ul class="product_navactive col-3" role="tablist">
+                                @foreach (var image in Model.db_DS_MEDIA_HINH_ANH)
+                                {
+                                    <li>
+                                        <a class="nav-link active" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="false"><img src="@image.MediaHinhAnh" alt="@Model.TenSP" class="img-thumbnail"></a>
+                                    </li>
+                                }
+                            </ul>
+                            <div class="tab-pane col-9 fade show active" id="tab1" role="tabpanel">
+                                <div class="modal_tab_img">
+                                    <a href="#"><img src="@Model.db_DS_MEDIA_HINH_ANH.ElementAtOrDefault(0)?.MediaHinhAnh" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                </div>
+            </div>
+        </div>
+        <div class="pl-4 col-lg-6 col-md-6 col-sm-12">
+            <div class="modal_right">
+                    <div class="modal_title mb-10 border-bt">
+                        <h2>@Model.TenSP</h2>
+                </div>
+                    <div class="modal_price mb-10 border-bt  pb-3">
+                        <span class="new_price">@Model.Gia.ToString() đ</span>
+                </div>
+                    <div class="modal_add_to_cart mb-15 row border-bt pt-1 d-flex align-items-center">
+                    <p class="col-ms-4 pr-5">Số lượng: </p>
+                        <div class="soluong_SPCT quantity col-ms-2 d-flex align-items-center pb-2">
+                            <button class=" minus-btn" type="button">-</button>
+                            <input class="" min="0" max="100" step="2" name="quantity" value="1" />
+                            <button class=" plus-btn" type="button">+</button>
+                    </div>
+                </div>
+                    <div class="bt-SPCT d-flex justify-content-between align-items-end">
+                    <button class="MuaNgay"> Mua ngay </button>
+                     <button class="tvgh"> Thêm vào giỏ hàng </button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div>
+            <h5 class="border-bt pb-1">Mô tả</h5>
+            <div class="modal_description mb-15 show-less">
+                <p>@Model.MoTa</p>
+            </div>
+            @if (@Model.MoTa.Length > 500)
+            {
+                <button class="btn-show-more px-4" onclick="showMore()">Xem thêm</button>
+            }
+        </div>
+
+</div>
+<style>
+        .soluong_SPCT input{
+                background-color: transparent;
+                border:none;
+                text-align:center;
+                width:28%;
+        }
+        .soluong_SPCT button{
+            height:50%;
+        }
+
+        .plus-btn, .minus-btn {
+            line-height: 0px; /* Đặt chiều cao của nút */
+            vertical-align: middle;
+            padding:10px;
+            border:none;
+            background-color: #93E893;
+        }
+
+        .plus-btn, .minus-btn:hover{
+                background-color: #7CD47C;
+        }
+
+        .modal_right{
+            height:100%;
+        }
+        .bt-SPCT{
+            height:55%;
+        }
+        .bt-SPCT button{
+            width:40%;
+            border:none;
+            height:35px;
+            color:white;
+            font-size:18px;
+        }
+
+            .bt-SPCT .tvgh{
+                background-color: #FF0302;
+            }
+
+            .bt-SPCT .MuaNgay{
+                background-color: #9EE89E;
+            }
+        .modal_tab_img{
+            height:400px;
+            overflow:hidden;
+        }
+
+            .modal_tab_img img {
+                object-fit: fill;
+                height:100%;
+            }
+
+        .show-less {
+            overflow: hidden;
+            max-height: 75px; 
+        }
+
+        .show-more {
+            max-height: none;
+        }
+
+        .btn-show-more {
+            display: block;
+            margin: 0 auto; 
+            border: 1px solid #7CD47C; 
+            background-color: transparent; 
+            color: #7CD47C; 
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+            .btn-show-more:hover {
+                background-color: #7CD47C; 
+                color: white; 
+            }
+
+</style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.plus-btn').click(function(){
+                console.log("12312312 +");
+                var currentVal = parseInt($(this).prev().val());
+                if (!isNaN(currentVal)) {
+                    $(this).prev().val(currentVal + 1);
+                }
+            });
+
+            $('.minus-btn').click(function(){
+                var currentVal = parseInt($(this).next().val());
+                if (!isNaN(currentVal) && currentVal > 1) {
+                    $(this).next().val(currentVal - 1);
+                }
+            });
+        });
+            function showMore() {
+                var showMoreText = document.querySelector('.btn-show-more');
+                var description = document.querySelector('.modal_description');
+
+                if (description.classList.contains('show-less')) {
+                    description.classList.remove('show-less');
+                    description.classList.add('show-more');
+                    showMoreText.innerText = 'Ẩn bớt';
+                } else {
+                    description.classList.remove('show-more');
+                    description.classList.add('show-less');
+                    showMoreText.innerText = 'Xem thêm';
+                }
+            }
+    </script>

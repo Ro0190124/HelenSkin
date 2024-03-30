@@ -63,7 +63,7 @@
                 </div>
                 <div class="row">
                     <div class="product_active owl-carousel">
-                        				@foreach (var item in Model)
+                        @foreach (var item in Model)
                         {
 
                             Console.WriteLine(item.db_DS_MEDIA_HINH_ANH);
@@ -81,11 +81,12 @@
                                                 <i class="fa fa-shopping-cart"></i> Thêm vào
                                                 giỏ
                                             </a>
-                                            <a href="#" class="details">Chi tiết</a>
+                                            <!--<a href="#" type="button" data-toggle="modal" data-target="#modal_box" title="Quick view" class="details" data-id="@item.MaSP">Chi tiết</a>-->
+                                            <a asp-controller="Home" asp-action="SPChiTiet" asp-route-id="@item.MaSP">Chi tiết</a>
                                         </div>
                                     </div>
                                     <div class="product_content">
-                                        <span class="product_price">@item.Gia</span>
+                                        <span class="product_price">@item.Gia</span>  
                                         <h3 class="product_title"><a href="single-product.html">@item.TenSP </a></h3>
                                     </div>
                                 </div>
@@ -99,3 +100,85 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- 
+<div class="modal fade" id="modal_box" tabindex="-1" role="dialog" aria-labelledby="modal_box_label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal_body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-12">
+                            <div class="modal_tab">
+                                <div class="tab-content" id="pills-tabContent">
+                                </div>
+                                <div class="modal_tab_button">
+                                    <ul class="nav product_navactive" role="tablist" id="modal_image_list">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-12">
+                            <div class="modal_right">
+                                <div class="modal_title mb-10">
+                                    <h2 id="modal_title"></h2>
+                                </div>
+                                <div class="modal_price mb-10">
+                                    <span class="new_price" id="modal_price"></span>
+                                </div>
+                                <div class="modal_add_to_cart mb-15">
+                                    <form action="#">
+                                        <input id="modal_quantity" min="0" max="100" step="2" value="1" type="number">
+                                        <button type="submit">add to cart</button>
+                                    </form>
+                                </div>
+                                <div class="modal_description mb-15">
+                                    <p id="modal_description"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.details').on('click', function (e) {
+            e.preventDefault();
+
+            var productId = $(this).data('id');
+            console.log(productId);
+            $.ajax({
+                url: '/SanPham/GetProductDetails', 
+                type: 'GET',
+                data: { id: productId },
+                success: function (data) {
+                    $('#modal_title').text(data.tenSP);
+                    $('#modal_price').text(data.gia);
+                    $('#modal_description').text(data.moTa);
+                    console.log(data);  
+                    console.log(data.tenSP); 
+                    var modalImageList = $('#modal_image_list');
+                    modalImageList.empty();
+                    data.hinhAnh.forEach(function (image, index) {
+                        var listItem = $('<li class="nav-item"><img src="' + image + '" alt="product"></li>');
+                        modalImageList.append(listItem);
+                    });
+
+                    $('#pills-tabContent').html('<div class="tab-pane fade show active"><img src="' + data.hinhAnhDaiDien + '" alt="product"></div>');
+                },
+                error: function () {
+                    alert('Đã có lỗi xảy ra khi lấy thông tin sản phẩm.');
+                }
+            });
+        });
+    });
+</script>
+-->

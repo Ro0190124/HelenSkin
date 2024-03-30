@@ -17,8 +17,31 @@ namespace HelenSkin.Controllers
 			_db = db;
 		}
 
-		// GET: ProductController
-		public ActionResult Index()
+        // GET: ProductController
+        [HttpGet]
+        public IActionResult GetProductDetails(int id)
+        {
+            var product = _db.db_SAN_PHAM
+                                  .Include(p => p.db_DS_MEDIA_HINH_ANH)
+                                  .FirstOrDefault(p => p.MaSP == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var images = product.db_DS_MEDIA_HINH_ANH.Select(m => m.MediaHinhAnh).ToList();
+
+            return Json(new
+            {
+                TenSP = product.TenSP,
+                Gia = product.Gia,
+                MoTa = product.MoTa,
+                HinhAnhDaiDien = images.FirstOrDefault(),
+                HinhAnh = images.Skip(1).ToList()
+            });
+        }
+        public ActionResult Index()
 		{
 			var sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).ToList();		
 
