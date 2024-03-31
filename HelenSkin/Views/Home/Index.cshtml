@@ -76,12 +76,8 @@
                                             <img src="@imageUrl" alt="@item.TenSP">
                                         </a>
                                         <div class="product_action">
-                                            <a>
-                                                <form method="post" asp-controller="GioHang" asp-action="ThemVaoGioHang">
-                                                    <input type="hidden" name="id" value="@item.MaSP" />
-                                                    <input type="hidden" name="quantity" value="1" min="1" />
-                                                    <button type="submit" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                                </form>
+                                            <a onclick="addToCart(@item.MaSP, 1)">
+                                                <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
                                             </a>
                                             <!--<a href="#" type="button" data-toggle="modal" data-target="#modal_box" title="Quick view" class="details" data-id="@item.MaSP">Chi tiết</a>-->
                                             <a asp-controller="Home" asp-action="SPChiTiet" asp-route-id="@item.MaSP">Chi tiết</a>
@@ -103,7 +99,21 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<form id="addToCartForm" method="post" asp-controller="GioHang" asp-action="ThemVaoGioHang" style="display: none;">
+    <input type="hidden" name="id" id="productId" />
+    <input type="hidden" name="quantity" id="quantity" value="1" min="1" />
+</form>
 
+<script>
+    function addToCart(productId, quantity) {
+        // Set the values of the hidden inputs in the form
+        document.getElementById('productId').value = productId;
+        document.getElementById('quantity').value = quantity;
+
+        // Submit the form
+        document.getElementById('addToCartForm').submit();
+    }
+</script>
 <!-- 
 <div class="modal fade" id="modal_box" tabindex="-1" role="dialog" aria-labelledby="modal_box_label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

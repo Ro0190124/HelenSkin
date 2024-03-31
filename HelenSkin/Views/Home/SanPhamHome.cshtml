@@ -95,3 +95,19 @@
     </div>
 </div>
 
+
+<form id="addToCartForm" method="post" asp-controller="GioHang" asp-action="ThemVaoGioHang" style="display: none;">
+    <input type="hidden" name="id" id="productId" />
+    <input type="hidden" name="quantity" id="quantity" value="1" min="1" />
+</form>
+
+<script>
+    function addToCart(productId, quantity) {
+        // Set the values of the hidden inputs in the form
+        document.getElementById('productId').value = productId;
+        document.getElementById('quantity').value = quantity;
+
+        // Submit the form
+        document.getElementById('addToCartForm').submit();
+    }
+</script>
