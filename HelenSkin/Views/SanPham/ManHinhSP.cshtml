@@ -94,11 +94,14 @@
                                             <div class="product_thumb">
                                                 <a href="single-product.html"><img  alt=""></a>
                                                 <div class="product_action">
-                                                    <form method="post" asp-controller="GioHang" asp-action="ThemVaoGioHang">
-                                                        <input type="hidden" name="id" value="@sanPhams.MaSP" />
-                                                        <input type="number" name="quantity" value="1" min="1" />
-                                                        <button type="submit" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                                    </form>
+                                                    <a>
+                                                        <form method="post" asp-controller="GioHang" asp-action="ThemVaoGioHang">
+                                                            <input type="hidden" name="id" value="@sanPhams.MaSP" />
+                                                            <input type="hidden" name="quantity" value="1" min="1" />
+                                                            <button type="submit" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+                                                        </form>
+                                                    </a>
+                                                  
                                                     <a href="single-product.html" class="details">Chi tiết</a>
                                                 </div>
                                             </div>

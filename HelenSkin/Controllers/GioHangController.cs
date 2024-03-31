@@ -60,20 +60,35 @@ namespace HelenSkin.Controllers
 			}
 			else
 			{
-				//tìm giỏ hàng không có trong h
-                IEnumerable<CHI_TIET_GIO_HANG> gioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
-                                                                          .Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie))
-                                                                          .Include(x => x.SAN_PHAM)
-                                                                          .ToList();
-              
+				// tìm giỏ hàng của người dùng không chứa trong hóa đơn
+				var gioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList();
+				var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang)); // Trả về giỏ hàng của người dùng chưa có trong hóa đơn
+				
+				IEnumerable<CHI_TIET_GIO_HANG> chiTietGioHang = new List<CHI_TIET_GIO_HANG>();
 
-                if (gioHang == null)
-                {
-                    return NotFound();
+                if (gioHangChuaCoTrongHoaDon != null)
+				{
+                    chiTietGioHang= _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
+                                                                         .Where(x => x.GIO_HANG.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang)
+                                                                         .Include(x => x.SAN_PHAM)
+                                                                         .ToList();
+                    Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
+                    Console.WriteLine(chiTietGioHang.Count());
+                    foreach (var item in chiTietGioHang)
+                    {
+                        Console.WriteLine("1");
+                        Console.WriteLine(item.MaGioHang);
+                        Console.WriteLine(item.SAN_PHAM.MaSP);
+                    }
+
+                }
+				else
+				{
+					
                 }
 
                 List<string> firstImages = new List<string>();
-                foreach (var item in gioHang)
+                foreach (var item in chiTietGioHang)
                 {
                     var firstImage = _db.db_DS_MEDIA_HINH_ANH.FirstOrDefault(x => x.MaSP == item.SAN_PHAM.MaSP);
                     if (firstImage != null)
@@ -88,12 +103,18 @@ namespace HelenSkin.Controllers
                 }
 
                 // Pass both gioHang and firstImages to the view
-                ViewBag.GioHang = gioHang;
+                ViewBag.GioHang = chiTietGioHang;
                 ViewBag.FirstImages = firstImages;
-				ViewBag.MaGioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).FirstOrDefault().MaGioHang;
-
+				if(gioHangChuaCoTrongHoaDon == null)
+				{
+					Console.WriteLine("Không có giỏ hàng");
+				}
+				else
+				{
+					Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
+				}
             }
-          
+         
            
             return View();
         }
@@ -127,7 +148,7 @@ namespace HelenSkin.Controllers
 
                 // Lấy ra giỏ hàng của người dùng không có trong hóa đơn
                 var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang));
-                if (gioHangChuaCoTrongHoaDon == null)
+                if (gioHangChuaCoTrongHoaDon == null) // nếu không có thì tạo mới
                 {
                     // Tạo giỏ hàng mới
                     GIO_HANG newGioHang = new GIO_HANG();
@@ -135,8 +156,10 @@ namespace HelenSkin.Controllers
                     _db.db_GIO_HANG.Add(newGioHang);
                     _db.SaveChanges();
                     // Lấy ra giỏ hàng mới tạo
-                    gioHangChuaCoTrongHoaDon = _db.db_GIO_HANG.FirstOrDefault(x => x.MaNguoiDung == int.Parse(cookie));
-                }
+					gioHangChuaCoTrongHoaDon = _db.db_GIO_HANG.FirstOrDefault(x => x.MaNguoiDung == int.Parse(cookie) && !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang));
+					Console.WriteLine("Mã Giỏ Hàng : ");
+					Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
+				}
 
                 // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
                 var chiTietGioHang = _db.db_CHI_TIET_GIO_HANG.FirstOrDefault(x => x.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang && x.MaSP == id);
@@ -159,18 +182,19 @@ namespace HelenSkin.Controllers
                     TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
                 }
             }
-            return RedirectToAction("ManHinhSP", "SanPham"); ;
+            return RedirectToAction("ManHinhSP", "SanPham"); 
         }
-
-
+		// hàm cập nhật số lượng ở giỏ hàng chi tiết
+		
         // GET: GioHangController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult CapNhat(int id)
 		{
+			
 			return View();
 		}
-
-		// POST: GioHangController/Edit/5
-		[HttpPost]
+       
+        // POST: GioHangController/Edit/5
+        [HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(int id, IFormCollection collection)
 		{
@@ -208,18 +232,24 @@ namespace HelenSkin.Controllers
 
 
 
-		public ActionResult DatHang(int? MaGioHang)
+		public ActionResult DatHang()
 		{
-			Console.WriteLine(MaGioHang);
-			if (MaGioHang == null)
+            var cookie = Request.Cookies["ID"];
+            // check cookie
+            Console.WriteLine(cookie);
+            var gioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList(); // Trả về giỏ hàng của người dùng
+            var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang)); // Trả về giỏ hàng của người dùng chưa có trong hóa đơn
+            Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
+			if (gioHangChuaCoTrongHoaDon.MaGioHang == null)
 			{
 				return NotFound();
 			}
 			else
 			{
+
 				//tạo hóa đơn
 				HOA_DON hoaDon = new HOA_DON();
-				hoaDon.MaGioHang = (int)MaGioHang;
+				hoaDon.MaGioHang = gioHangChuaCoTrongHoaDon.MaGioHang;
 				hoaDon.NgayTao = DateTime.Now;
 				hoaDon.TrangThai = 0 ;
 				hoaDon.MaDonViVanChuyen = 1;

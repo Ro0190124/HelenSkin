@@ -26,7 +26,8 @@
                                 <img class="col-lg-4" src="@imageUrl" alt="Product Image">
                                 <div class="col-lg-3">
                                     <p><strong>@item.SAN_PHAM.TenSP</strong></p>
-                                    <input asp-for="@item.SoLuong" min="0" max="100" value="@item.SoLuong" type="number">
+                                    <input asp-asp-for="@item.SoLuong" value="@item.SoLuong" name="quantity" type="number" min="0" max="100" onchange="CapNhat()" />
+
                                 </div>
                                 <div class="col-lg-3">
                                     <a><i class="fas fa-trash"></i></a>
@@ -67,3 +68,5 @@
         <!--coupon code area end-->
     </form>
 </div>
+
+
