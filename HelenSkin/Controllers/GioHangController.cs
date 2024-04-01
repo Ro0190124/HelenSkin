@@ -195,10 +195,20 @@ namespace HelenSkin.Controllers
 
 			var chiTietGioHang = _db.db_CHI_TIET_GIO_HANG.FirstOrDefault(x => x.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang && x.MaSP == itemId);
 			// Cập nhật số lượng
-			chiTietGioHang.SoLuong = newQuantity;
-			_db.SaveChanges();
-            // Sau khi cập nhật, bạn có thể trả về một phản hồi, ví dụ:
-            return Json(new { success = true, message = "Số lượng đã được cập nhật thành công." });
+			if(newQuantity < 1)
+			{
+				//thông báo temdata 
+				TempData["SoLuongSP"] = "Số lượng sản phẩm phải lớn hơn 0";
+                return Json(new { success = true, message = "" });
+            }
+			else
+			{
+                chiTietGioHang.SoLuong = newQuantity;
+                _db.SaveChanges();
+                // Sau khi cập nhật, bạn có thể trả về một phản hồi, ví dụ:
+                return Json(new { success = true, message = "Số lượng đã được cập nhật thành công." });
+            }
+			
         }
         [HttpPost]
         public ActionResult DeleteProduct(int itemId)

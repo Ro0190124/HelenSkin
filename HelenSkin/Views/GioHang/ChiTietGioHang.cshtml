@@ -57,8 +57,11 @@
                                 </p>
                             </div>
                             <div class="ThemNV">
-
-                                <a class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang" asp-route-MaGioHang="@ViewBag.MaGioHang">Đặt hàng</a>
+                                <div class="ghi-chu">
+                                    <label for="ghi-chu">Ghi chú:</label>
+                                    <textarea id="ghi-chu" name="ghiChu" rows="4" cols="50"></textarea>
+                                </div>
+                                <a class="btn btn-xanhLa" onclick="datHang()">Đặt hàng</a>
                             </div>
                        </div>
                     </div>
@@ -94,12 +97,31 @@
             success: function (response) {
                 console.log('Sản phẩm đã được xóa khỏi giỏ hàng.');
                 // Reload lại trang sau khi xóa sản phẩm thành công
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi xóa sản phẩm khỏi giỏ hàng: ' + error);
+            }
+        });
+    }
+
+    function datHang() {
+        var ghiChu = $('#ghi-chu').val(); // Lấy ghi chú từ input
+        $.ajax({
+            url: '/GioHang/DatHang',
+            type: 'POST',
+            data: { ghiChu: ghiChu },
+            success: function (response) {
+                console.log('Đặt hàng thành công.');
                 TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
                 location.reload();
             },
             error: function (xhr, status, error) {
                 TempData["tbDatHangLoi"] = "Không có sản phẩm trong giò hàng";
+                location.reload();
             }
         });
     }
+</script>
+
 </script>
