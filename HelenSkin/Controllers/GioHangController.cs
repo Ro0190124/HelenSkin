@@ -184,15 +184,23 @@ namespace HelenSkin.Controllers
             }
             return RedirectToAction("ManHinhSP", "SanPham"); 
         }
-		// hàm cập nhật số lượng ở giỏ hàng chi tiết
-		
-        // GET: GioHangController/Edit/5
-        public ActionResult CapNhat(int id)
-		{
-			
-			return View();
-		}
-       
+        [HttpPost]
+        public ActionResult UpdateQuantity(int itemId, int newQuantity)
+        {
+            //tìm giò hàng của người dùng đang sử dụng
+			var cookie = Request.Cookies["ID"];
+			var gioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList(); // Trả về giỏ hàng của người dùng
+			var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang)); // Trả về giỏ hàng của người dùng chưa có trong hóa đơn
+			Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
+			// Tìm chi tiết giỏ hàng
+
+			var chiTietGioHang = _db.db_CHI_TIET_GIO_HANG.FirstOrDefault(x => x.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang && x.MaSP == itemId);
+			// Cập nhật số lượng
+			chiTietGioHang.SoLuong = newQuantity;
+			_db.SaveChanges();
+            // Sau khi cập nhật, bạn có thể trả về một phản hồi, ví dụ:
+            return Json(new { success = true, message = "Số lượng đã được cập nhật thành công." });
+        }
         // POST: GioHangController/Edit/5
         [HttpPost]
 		[ValidateAntiForgeryToken]
