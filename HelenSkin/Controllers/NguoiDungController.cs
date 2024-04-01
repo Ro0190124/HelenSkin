@@ -45,7 +45,6 @@ namespace HelenSkin.Controllers
             else
             {
                 return RedirectToAction("Index", "Home");
-
             }
 
         }

@@ -25,7 +25,6 @@ namespace HelenSkin.Controllers
 			if (cookie == null)
 			{
 				TempData["tbGioHang"] = "Vui lòng đăng nhập để xem giỏ hàng";
-
 			}
 			else
 			{
@@ -285,7 +284,6 @@ namespace HelenSkin.Controllers
 				_db.SaveChanges();
 				TempData["tbDatHang"] = "Đặt hàng thành công!";
 			}
-			Console.WriteLine(ghiChu);
 			return RedirectToAction("Index", "Home");
 		}
 	}
