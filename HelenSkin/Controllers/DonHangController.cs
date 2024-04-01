@@ -56,6 +56,47 @@ namespace HelenSkin.Controllers
 
 			return View(obj);
 		}
+        public ActionResult ChoXacNhan()
+        {
+            var cookie = Request.Cookies["ID"];
+            NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+            IEnumerable<HOA_DON> obj;
+
+            obj = _db.db_HOA_DON.Where(x => x.TrangThai == 0).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
+
+
+            IEnumerable<CHI_TIET_GIO_HANG> gioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
+                                                                          .Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie))
+                                                                          .Include(x => x.SAN_PHAM)
+                                                                          .ToList();
+
+            List<double> total = new List<double>();
+
+            foreach (var item in obj)
+            {
+                double totalPrice = 0;
+
+
+                var prices = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
+                                                      .Where(x => x.GIO_HANG.MaGioHang == item.MaGioHang)
+                                                      .Select(x => x.SAN_PHAM.Gia)
+                                                      .ToList();
+
+                foreach (var price in prices)
+                {
+                    totalPrice += price;
+                }
+
+                total.Add(totalPrice);
+            }
+
+
+            ViewBag.TotalPrices = total;
+
+
+            return View(obj);
+        }
+
 
         // GET: DonHangController/Details/5
         public ActionResult Accept(int id)
