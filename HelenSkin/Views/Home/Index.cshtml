@@ -63,8 +63,11 @@
                 </div>
                 <div class="row">
                     <div class="product_active owl-carousel">
+                        @{
+                            int br = 1;
+                        }
                         @foreach (var item in Model)
-                        {
+                        {                           
                             Console.WriteLine(item.db_DS_MEDIA_HINH_ANH);
                             var firstImage = item.db_DS_MEDIA_HINH_ANH?.FirstOrDefault();
                             string imageUrl = firstImage != null ? firstImage.MediaHinhAnh : "~/img/default-image.jpg";
@@ -89,6 +92,11 @@
                                     </div>
                                 </div>
                             </div>
+                            br++;
+                            if(br == 7)
+                            {
+                                break;
+                            }
                         }
                     </div>
                 </div>
