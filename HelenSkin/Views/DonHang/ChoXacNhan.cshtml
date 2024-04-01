@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<HOA_DON>
 <div class="Tb-Container mt-3">
-
     <div class="Tb-Container mt-3">
-        <div class="Tb-Container mt-3">
-            <a class="pl-3" asp-controller="DonHang" asp-action="Index">Chờ xác nhận</a>
-            <a class="pl-3" asp-controller="DonHang" asp-action="ChoGiao">Chờ giao</a>
-            <a class="pl-3" asp-controller="DonHang" asp-action="DangGiao">Đang giao</a>
-            <a class="pl-3" asp-controller="DonHang" asp-action="DaGiao">Đã giao</a>
-            <a class="pl-3" asp-controller="DonHang" asp-action="DaHuy">Đã hủy</a>
-           <!-- Placeholder để hiển thị nội dung của ChoXacNhan.cshtml -->
-        </div>
+        <a id="choXacNhanLink" class="pl-3" asp-controller="DonHang" asp-action="ChoXacNhan">Chờ xác nhận</a>
+        <a id="indexLink" class="pl-3" asp-controller="DonHang" asp-action="Index">Đơn hàng 2</a>
+        <div id="choXacNhanContent"></div> <!-- Placeholder để hiển thị nội dung của ChoXacNhan.cshtml -->
     </div>
+</div>
+
+<h1>Chờ Xác Nhận</h1>
+
+<div class="Tb-Container mt-3">
     <table class="table_user responsive-table">
+        <!-- Table content here -->
         <thead>
             <tr>
                 <th> ID</th>
@@ -45,7 +45,7 @@
                     <td>@ViewBag.TotalPrices[index]</td> <!-- Hiển thị giá tương ứng -->
                     <td>@item.NgayTao.ToShortDateString()</td>
                     <td>@status</td>
-                    <td>@item.GhiChu</td>
+                    <td></td>
                     <td class="ND_Table_Icon d-flex justify-content-around">
                         <div class="bgr-x">
                             <a class="btn btn-cam" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">

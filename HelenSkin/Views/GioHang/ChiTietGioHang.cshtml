@@ -20,17 +20,16 @@
                         var imageUrl = firstImages.ElementAtOrDefault(i) ?? "/path/to/default/image.jpg"; // Get the corresponding image URL from ViewBag
                         <div class="col-lg-12 col-md-12">
                             <div class="coupon_code d-flex giohang-sp row py-3">
-                                <div class="col-lg-1">
-                                    <input type="checkbox">
-                                </div>
+                              
                                 <img class="col-lg-4" src="@imageUrl" alt="Product Image">
                                 <div class="col-lg-3">
                                     <p><strong>@item.SAN_PHAM.TenSP</strong></p>
-                                    <input asp-asp-for="@item.SoLuong" value="@item.SoLuong" name="quantity" type="number" min="0" max="100" onchange="CapNhat()" />
+
+                                    <input asp-asp-for="@item.SoLuong" value="@item.SoLuong" name="quantity" type="number" min="0" max="100" onchange="updateQuantity('@item.MaSP', this.value)" />
 
                                 </div>
                                 <div class="col-lg-3">
-                                    <a><i class="fas fa-trash"></i></a>
+                                    <a onclick="deleteProduct('@item.MaSP')" ><i class="fas fa-trash"></i> Xóa </a>
                                     <p> Đơn giá: @item.SAN_PHAM.Gia đ</p>
                                 </div>
                             </div>
@@ -57,8 +56,13 @@
                                     }
                                 </p>
                             </div>
+                            <div class="ghi-chu">
+                                <label for="ghi-chu">Ghi chú:</label>
+                                <textarea id="ghi-chu" name="ghiChu" rows="4" cols="50"></textarea>
+                            </div>
                             <div class="ThemNV">
-                                <a class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang" asp-route-MaGioHang="@ViewBag.MaGioHang">Đặt hàng</a>
+                                
+                                <a class="btn btn-xanhLa" onclick="datHang()">Đặt hàng</a>
                             </div>
                        </div>
                     </div>
@@ -70,3 +74,51 @@
 </div>
 
 
+<script>
+    function updateQuantity(itemId, newQuantity) {
+        $.ajax({
+            url: '/GioHang/UpdateQuantity',
+            type: 'POST',
+            data: { itemId: itemId, newQuantity: newQuantity },
+            success: function (response) {
+                console.log('Số lượng đã được cập nhật thành công.');
+                // Reload lại trang sau khi cập nhật thành công
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi cập nhật số lượng: ' + error);
+            }
+        });
+    }
+    function deleteProduct(itemId) {
+        $.ajax({
+            url: '/GioHang/DeleteProduct',
+            type: 'POST',
+            data: { itemId: itemId },
+            success: function (response) {
+                console.log('Sản phẩm đã được xóa khỏi giỏ hàng.');
+                // Reload lại trang sau khi xóa sản phẩm thành công
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi xóa sản phẩm khỏi giỏ hàng: ' + error);
+            }
+        });
+    }
+    function datHang() {
+        var ghiChu = $('#ghi-chu').val(); // Lấy ghi chú từ input
+        $.ajax({
+            url: '/GioHang/DatHang',
+            type: 'POST',
+            data: { ghiChu: ghiChu },
+            success: function (response) {
+                console.log('Đặt hàng thành công.');
+                // Reload lại trang sau khi đặt hàng thành công
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi đặt hàng: ' + error);
+            }
+        });
+    }
+</script>

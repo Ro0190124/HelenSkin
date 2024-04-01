@@ -184,15 +184,39 @@ namespace HelenSkin.Controllers
             }
             return RedirectToAction("ManHinhSP", "SanPham"); 
         }
-		// hàm cập nhật số lượng ở giỏ hàng chi tiết
-		
-        // GET: GioHangController/Edit/5
-        public ActionResult CapNhat(int id)
-		{
-			
-			return View();
-		}
-       
+        [HttpPost]
+        public ActionResult UpdateQuantity(int itemId, int newQuantity)
+        {
+            //tìm giò hàng của người dùng đang sử dụng
+			var cookie = Request.Cookies["ID"];
+			var gioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList(); // Trả về giỏ hàng của người dùng
+			var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang)); // Trả về giỏ hàng của người dùng chưa có trong hóa đơn
+			Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
+			// Tìm chi tiết giỏ hàng
+
+			var chiTietGioHang = _db.db_CHI_TIET_GIO_HANG.FirstOrDefault(x => x.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang && x.MaSP == itemId);
+			// Cập nhật số lượng
+			chiTietGioHang.SoLuong = newQuantity;
+			_db.SaveChanges();
+            // Sau khi cập nhật, bạn có thể trả về một phản hồi, ví dụ:
+            return Json(new { success = true, message = "Số lượng đã được cập nhật thành công." });
+        }
+        [HttpPost]
+        public ActionResult DeleteProduct(int itemId)
+        {
+            // tìm giò hàng của người dùng đang sử dụng
+			var cookie = Request.Cookies["ID"];
+			var gioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList(); // Trả về giỏ hàng của người dùng
+			var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang)); // Trả về giỏ hàng của người dùng chưa có trong hóa đơn
+			Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
+			// Tìm chi tiết giỏ hàng
+			var chiTietGioHang = _db.db_CHI_TIET_GIO_HANG.FirstOrDefault(x => x.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang && x.MaSP == itemId);
+			// Xóa sản phẩm khỏi giỏ hàng
+			_db.db_CHI_TIET_GIO_HANG.Remove(chiTietGioHang);
+			_db.SaveChanges();
+			TempData["XoaSPGH"] = "Xóa sản phẩm trong giỏ hàng thành công";
+            return Json(new { success = true, message = "Sản phẩm đã được xóa khỏi giỏ hàng." });
+        }
         // POST: GioHangController/Edit/5
         [HttpPost]
 		[ValidateAntiForgeryToken]
@@ -232,31 +256,36 @@ namespace HelenSkin.Controllers
 
 
 
-		public ActionResult DatHang()
+		public ActionResult DatHang(string ghiChu)
 		{
             var cookie = Request.Cookies["ID"];
+		
             // check cookie
             Console.WriteLine(cookie);
             var gioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList(); // Trả về giỏ hàng của người dùng
             var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang)); // Trả về giỏ hàng của người dùng chưa có trong hóa đơn
-            Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
-			if (gioHangChuaCoTrongHoaDon.MaGioHang == null)
+           // Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
+			if (gioHangChuaCoTrongHoaDon == null)
 			{
-				return NotFound();
-			}
+                TempData["tbDatHangLoi"] = "Không có sản phẩm trong giò hàng";
+                return RedirectToAction("ChiTietGioHang", "GioHang");
+            }
 			else
 			{
-
+				//kiểm tra gio
 				//tạo hóa đơn
 				HOA_DON hoaDon = new HOA_DON();
 				hoaDon.MaGioHang = gioHangChuaCoTrongHoaDon.MaGioHang;
 				hoaDon.NgayTao = DateTime.Now;
 				hoaDon.TrangThai = 0 ;
 				hoaDon.MaDonViVanChuyen = 1;
+                Console.WriteLine(ghiChu);
+                hoaDon.GhiChu = ghiChu;
 				_db.db_HOA_DON.Add(hoaDon);
 				_db.SaveChanges();
 				TempData["tbDatHang"] = "Đặt hàng thành công!";
 			}
+			Console.WriteLine(ghiChu);
 			return RedirectToAction("Index", "Home");
 		}
 	}
