@@ -25,7 +25,7 @@
                                 <div class="col-lg-3">
                                     <p><strong>@item.SAN_PHAM.TenSP</strong></p>
 
-                                    <input asp-asp-for="@item.SoLuong" value="@item.SoLuong" name="quantity" type="number" min="1" max="100" onchange="updateQuantity('@item.MaSP', this.value)" />
+                                    <input asp-asp-for="@item.SoLuong" value="@item.SoLuong" name="quantity" type="number" min="0" max="100" onchange="updateQuantity('@item.MaSP', this.value)" />
 
                                 </div>
                                 <div class="col-lg-3">
@@ -57,11 +57,8 @@
                                 </p>
                             </div>
                             <div class="ThemNV">
-                                <div class="ghi-chu">
-                                    <label for="ghi-chu">Ghi chú:</label>
-                                    <textarea id="ghi-chu" name="ghiChu" rows="4" cols="50"></textarea>
-                                </div>
-                                <a class="btn btn-xanhLa" onclick="datHang()">Đặt hàng</a>
+
+                                <a class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang" asp-route-MaGioHang="@ViewBag.MaGioHang">Đặt hàng</a>
                             </div>
                        </div>
                     </div>
@@ -104,24 +101,5 @@
             }
         });
     }
-
-    function datHang() {
-        var ghiChu = $('#ghi-chu').val(); // Lấy ghi chú từ input
-        $.ajax({
-            url: '/GioHang/DatHang',
-            type: 'POST',
-            data: { ghiChu: ghiChu },
-            success: function (response) {
-                console.log('Đặt hàng thành công.');
-                TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
-                location.reload();
-            },
-            error: function (xhr, status, error) {
-                TempData["tbDatHangLoi"] = "Không có sản phẩm trong giò hàng";
-                location.reload();
-            }
-        });
-    }
-</script>
 
 </script>
