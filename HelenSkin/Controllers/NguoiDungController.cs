@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using HelenSkin.Model;
 using HelenSkin.Data;
 using Newtonsoft.Json;
+using System.Net;
 
 
 namespace HelenSkin.Controllers
@@ -218,24 +219,16 @@ namespace HelenSkin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ThongTinTK(int id)
+        public ActionResult ThongTinTK()
         {
             var userIdCookieValue = HttpContext.Request.Cookies["ID"];
             int userId;
 
             if (!string.IsNullOrEmpty(userIdCookieValue) && int.TryParse(userIdCookieValue, out userId))
             {
-                // Kiểm tra nếu id không khớp với userId từ cookie thì chuyển hướng về trang chủ
-                if (id != userId)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+                NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == userId).First();
 
-                NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == id);
-                if (nguoiDung == null)
-                {
-                    return NotFound();
-                }
+
                 return View(nguoiDung); 
             }
             else
