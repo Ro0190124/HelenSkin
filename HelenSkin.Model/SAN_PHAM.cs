@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Http;
 
 namespace HelenSkin.Model
 {
@@ -38,7 +39,8 @@ namespace HelenSkin.Model
         [ValidateNever]
         [ForeignKey("MaDanhMuc")]
         public DANH_MUC DANH_MUC { get; set; }
-        public virtual ICollection<DS_MEDIA_HINH_ANH> db_DS_MEDIA_HINH_ANH { get; set; }
-
+        public virtual ICollection<DS_MEDIA_HINH_ANH>? db_DS_MEDIA_HINH_ANH { get; set; }
+		[NotMapped]
+		public IFormFile HinhAnhTaiLen { get; set; }
     }
 }
