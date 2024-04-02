@@ -94,11 +94,10 @@
                                             <div class="product_thumb">
                                                 <a href="single-product.html"><img  alt=""></a>
                                                 <div class="product_action">
-                                                    <form method="post" asp-controller="GioHang" asp-action="ThemVaoGioHang">
-                                                        <input type="hidden" name="id" value="@sanPhams.MaSP" />
-                                                        <input type="number" name="quantity" value="1" min="1" />
-                                                        <button type="submit" class="add_to_cart"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                                    </form>
+                                                    <a onclick="addToCart(@sanPhams.MaSP, 1)">
+                                                        <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
+                                                    </a>
+                                                  
                                                     <a href="single-product.html" class="details">Chi tiết</a>
                                                 </div>
                                             </div>
@@ -146,3 +145,19 @@
         </div>
     </div>
 </div>
+
+<form id="addToCartForm" method="post" asp-controller="GioHang" asp-action="ThemVaoGioHang" style="display: none;">
+    <input type="hidden" name="id" id="productId" />
+    <input type="hidden" name="quantity" id="quantity" value="1" min="1" />
+</form>
+
+<script>
+    function addToCart(productId, quantity) {
+        // Set the values of the hidden inputs in the form
+        document.getElementById('productId').value = productId;
+        document.getElementById('quantity').value = quantity;
+
+        // Submit the form
+        document.getElementById('addToCartForm').submit();
+    }
+</script>

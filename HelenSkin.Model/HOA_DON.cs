@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace HelenSkin.Model
 {
@@ -18,6 +19,7 @@ namespace HelenSkin.Model
         public string? GhiChu { get; set; }
         public int MaGioHang { get; set; }
         [ForeignKey("MaGioHang")]
+        [ValidateNever]
         public GIO_HANG? GIO_HANG { get; set; }
         public int MaDonViVanChuyen { get; set; }
         [ForeignKey("MaDonViVanChuyen")]

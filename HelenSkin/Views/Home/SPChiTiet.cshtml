@@ -8,16 +8,18 @@
                 <div class="tab-content" id="pills-tabContent">
                         <div class="modal_tab_button row">
                             <ul class="product_navactive col-3" role="tablist">
-                                @foreach (var image in Model.db_DS_MEDIA_HINH_ANH)
+                                @foreach (var image in Model.db_DS_MEDIA_HINH_ANH.Select((value, index) => new { Value = value, Index = index }))
                                 {
                                     <li>
-                                        <a class="nav-link active" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="false"><img src="@image.MediaHinhAnh" alt="@Model.TenSP" class="img-thumbnail"></a>
+                                        <a class="nav-link" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="false">
+                                            <img src="@image.Value.MediaHinhAnh" alt="@Model.TenSP" class="img-thumbnail" data-index="@image.Index">
+                                        </a>
                                     </li>
                                 }
                             </ul>
                             <div class="tab-pane col-9 fade show active" id="tab1" role="tabpanel">
                                 <div class="modal_tab_img">
-                                    <a href="#"><img src="@Model.db_DS_MEDIA_HINH_ANH.ElementAtOrDefault(0)?.MediaHinhAnh" alt=""></a>
+                                    <a href="#"><img id="selectedImage" src="@Model.db_DS_MEDIA_HINH_ANH.ElementAtOrDefault(0)?.MediaHinhAnh" alt=""></a>
                                 </div>
                             </div>
                         </div>
@@ -171,5 +173,23 @@
                     description.classList.add('show-less');
                     showMoreText.innerText = 'Xem thêm';
                 }
-            }
+        };
+        $(document).ready(function () {
+            $(".nav-link").click(function (e) {
+                e.preventDefault();
+
+                // Lấy chỉ số từ thuộc tính data-index
+                var index = $(this).find("img").data("index");
+                console.log(index);
+                // Lấy đường dẫn hình ảnh tương ứng từ Model
+                var imageUrl = $(this).find("img").attr("src"); // Đây là đường dẫn mới cần lấy từ hình ảnh được click
+                console.log(imageUrl);
+
+                // Cập nhật hình ảnh được chọn
+                $("#selectedImage").attr("src", imageUrl);
+
+                // (Tùy chọn) Cập nhật tiêu đề hoặc thông tin khác nếu cần
+                // $("#selectedImage").attr("alt", $(this).find("img").attr("alt"));
+            });
+        });
     </script>
