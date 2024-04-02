@@ -57,8 +57,13 @@
                                 </p>
                             </div>
                             <div class="ThemNV">
+                                <div class="form-group">
+                                    <label for="ghiChu">Ghi chú</label>
+                                    <textarea class="form-control" id="ghiChu" name="ghiChu" rows="3"></textarea>
+                                </div>
 
-                                <a class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang" asp-route-MaGioHang="@ViewBag.MaGioHang">Đặt hàng</a>
+                                <!-- Nút đặt hàng -->
+                                <button type="submit" class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang">Đặt hàng</button>
                             </div>
                        </div>
                     </div>

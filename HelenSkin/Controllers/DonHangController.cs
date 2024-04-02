@@ -36,7 +36,7 @@ namespace HelenSkin.Controllers
 			// kiểm tra xem người dùng có phải là admin hay không
 			if (nguoiDung.PhanQuyen == true)
 			{
-                return View(obj);
+			 
             }
             else
 			{

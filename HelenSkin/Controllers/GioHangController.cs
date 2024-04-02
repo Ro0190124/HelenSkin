@@ -29,6 +29,7 @@ namespace HelenSkin.Controllers
 			else
 			{
 				NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+
 				IEnumerable<GIO_HANG> obj;
 				/*if(id == null || id == 0)
 				{
@@ -277,18 +278,43 @@ namespace HelenSkin.Controllers
             }
 			else
 			{
-				//kiểm tra gio
+				//kiểm tra giỏ hàng có sản phẩm không
+				var chiTietGioHang = _db.db_CHI_TIET_GIO_HANG.FirstOrDefault(x => x.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang);
+				if(chiTietGioHang == null)
+				{
+					TempData["tbDatHangLoi"] = "Không có sản phẩm trong giò hàng";
+                    return RedirectToAction("ChiTietGioHang", "GioHang");
+                }
+				else
+				{
+					//kiểm tra địa chỉ người dùng
+					var nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == int.Parse(cookie));
+					if(nguoiDung.DiaChi == null)
+					{
+						TempData["tbDatHangLoi"] = "Vui lòng cập nhật địa chỉ trước khi đặt hàng";
+                        return RedirectToAction("ThongTinTK", "NguoiDung");
+                    }
+                    else
+					{
+                        //tạo hóa đơn
+                        HOA_DON hoaDon = new HOA_DON();
+                        hoaDon.MaGioHang = gioHangChuaCoTrongHoaDon.MaGioHang;
+                        hoaDon.NgayTao = DateTime.Now;
+                        hoaDon.TrangThai = 0;
+                        hoaDon.MaDonViVanChuyen = 1;
+                        Console.WriteLine(ghiChu);
+                        hoaDon.GhiChu = ghiChu;
+                        _db.db_HOA_DON.Add(hoaDon);
+                        _db.SaveChanges();
+                        TempData["tbDatHang"] = "Đặt hàng thành công!";
+                    }
+
+					
+                }
 				//tạo hóa đơn
-				HOA_DON hoaDon = new HOA_DON();
-				hoaDon.MaGioHang = gioHangChuaCoTrongHoaDon.MaGioHang;
-				hoaDon.NgayTao = DateTime.Now;
-				hoaDon.TrangThai = 0 ;
-				hoaDon.MaDonViVanChuyen = 1;
-                Console.WriteLine(ghiChu);
-                hoaDon.GhiChu = ghiChu;
-				_db.db_HOA_DON.Add(hoaDon);
-				_db.SaveChanges();
-				TempData["tbDatHang"] = "Đặt hàng thành công!";
+
+				
+				
 			}
 			return RedirectToAction("Index", "Home");
 		}
