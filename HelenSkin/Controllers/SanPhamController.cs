@@ -140,11 +140,11 @@ namespace HelenSkin.Controllers
 				}
 
 
-				TempData["ThanhCong"] = "Sửa sản phẩm thành công.";
+				TempData["ThanhCong"] = "Thêm sản phẩm thành công.";
 				return RedirectToAction("Index");
 			}
 
-			TempData["ThatBai"] = "Sửa sản phẩm thất bại.";
+			TempData["ThatBai"] = "Thêm sản phẩm thất bại.";
 			return View(sanpham);
 		}
 
