@@ -15,9 +15,13 @@ namespace HelenSkin.Controllers
 		}
 
 		// GET: DanhMucController
-		public ActionResult Index()
+		public ActionResult Index(string searchString)
 		{
 			var danhMuc = _db.db_DANH_MUC.ToList();
+			if (!string.IsNullOrEmpty(searchString))
+			{
+				danhMuc = danhMuc.Where(x => x.TenDanhMuc.Contains(searchString) || x.MaDanhMuc.ToString().Contains(searchString)).ToList();
+			}
 			return View(danhMuc);
 		}
 
@@ -49,7 +53,7 @@ namespace HelenSkin.Controllers
 			{
 				_db.db_DANH_MUC.Add(danhMuc);
 				_db.SaveChanges();
-				TempData["ThongBao"] = "Thêm danh mục thành công";
+				TempData["ThanhCong"] = "Thêm danh mục thành công";
 				return RedirectToAction("Index");
 			}
 			else
@@ -62,7 +66,19 @@ namespace HelenSkin.Controllers
 		// GET: DanhMucController1/Edit/5
 		public ActionResult Edit(int id)
 		{
-			return View();
+			if (id == null || id == 0)
+			{
+				return NotFound();
+			}
+
+			DANH_MUC danhMuc = _db.db_DANH_MUC.FirstOrDefault(x => x.MaDanhMuc == id);
+
+			if (danhMuc == null)
+			{
+				return NotFound();
+			}
+
+			return View(danhMuc);
 		}
 
 		// POST: DanhMucController1/Edit/5
@@ -72,6 +88,25 @@ namespace HelenSkin.Controllers
 		{
 			try
 			{
+				if (id == null || id == 0)
+				{
+					return NotFound();
+				}
+
+				DANH_MUC danhMuc = _db.db_DANH_MUC.FirstOrDefault(x => x.MaDanhMuc == id);
+
+				if (danhMuc == null)
+				{
+					return NotFound();
+				}
+
+				// Cập nhật thuộc tính của danh mục dựa trên dữ liệu được gửi từ form
+				danhMuc.TenDanhMuc = collection["TenDanhMuc"];
+
+				_db.SaveChanges();
+
+				TempData["ThanhCong"] = "Chỉnh sửa danh mục thành công";
+
 				return RedirectToAction(nameof(Index));
 			}
 			catch
@@ -83,8 +118,29 @@ namespace HelenSkin.Controllers
 		// GET: DanhMucController1/Delete/5
 		public ActionResult Delete(int id)
 		{
-			return View();
+			DANH_MUC danhMuc = _db.db_DANH_MUC.FirstOrDefault(x => x.MaDanhMuc == id);
+
+			if (danhMuc == null)
+			{
+				return NotFound();
+			}
+
+			// Kiểm tra xem danh mục có chứa sản phẩm hay không
+			bool containsProducts = _db.db_SAN_PHAM.Any(x => x.MaDanhMuc == id);
+
+			if (containsProducts)
+			{
+				TempData["ThatBai"] = "Không thể xóa danh mục này vì nó chứa sản phẩm.";
+				return RedirectToAction("Index");
+			}
+
+			_db.db_DANH_MUC.Remove(danhMuc);
+			TempData["ThanhCong"] = "Xóa danh mục thành công";
+			_db.SaveChanges();
+
+			return RedirectToAction("Index");
 		}
+
 
 		// POST: DanhMucController1/Delete/5
 		[HttpPost]

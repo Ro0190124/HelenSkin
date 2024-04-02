@@ -42,7 +42,7 @@
 		<table class="table_user responsive-table">
 			<thead>
 				<tr>
-					@* <th>Hình ảnh</th> *@
+					<th>Hình ảnh</th>
 					<th>Tên sản phẩm</th>
 					<th>Danh mục</th>
 					<th>Đơn giá</th>
@@ -56,20 +56,40 @@
 			<tbody>
 				@foreach (var item in Model)
 				{
+				
 					<tr>
-						@* <td>
-							@if (item.DS_MEDIA_HINH_ANH != null && item.DS_MEDIA_HINH_ANH.Count > 0)
+						<td>
+							@if (item.db_DS_MEDIA_HINH_ANH != null && item.db_DS_MEDIA_HINH_ANH.Any())
 							{
-								@foreach (var hinhAnh in item.DS_MEDIA_HINH_ANH.Take(4))
+								foreach (var hinhAnh in item.db_DS_MEDIA_HINH_ANH)
 								{
-									<img src="@Url.Content(hinhAnh.MediaHinhAnh)" alt="Hình ảnh sản phẩm" />
+									// Kiểm tra xem đường dẫn hình ảnh có tồn tại hay không
+									if (!string.IsNullOrEmpty(hinhAnh.MediaHinhAnh))
+									{
+										<img src="~/img/product/@hinhAnh.MediaHinhAnh" alt="Hình ảnh" style="max-width: 50px; max-height: 50px; margin-right: 5px;" />
+									}
+									else
+									{
+										<span>Đường dẫn hình ảnh không hợp lệ</span>
+									}
 								}
 							}
-							<input type="file" name="newImages" accept="image/*" multiple />
-						</td> *@
-
+							else
+							{
+								<span>Không có hình ảnh</span>
+							}
+						</td>
 						<td>@item.TenSP</td>
-						<td>@item.DANH_MUC.TenDanhMuc</td>
+						<td>
+							@if (item.DANH_MUC != null)
+							{
+								@item.DANH_MUC.TenDanhMuc
+							}
+							else
+							{
+								<span>Không có danh mục</span>
+							}
+						</td>
 						<td>@item.Gia.ToString("N0")</td>
 						<td>@item.SoLuong</td>
 						<td>@item.NgayTao.ToString("dd/MM/yyyy")</td>
@@ -128,7 +148,7 @@
 				}
 			})
 			.catch(error => {
-				console.error('Lỗi khi xóa người dùng:', error);
+				console.error('Lỗi khi xóa sản phẩm:', error);
 			});
 	}
 </script>

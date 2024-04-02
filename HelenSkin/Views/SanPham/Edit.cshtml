@@ -17,17 +17,17 @@
             </div>
         </div>
     </div>
-        <div class="ThenTK-form register mt-3">
-            <h2>Sửa sản phẩm</h2>
-            <form method="post" enctype="multipart/form-data">
+    <div class="ThenTK-form register mt-3">
+        <h2>Sửa sản phẩm</h2>
+        <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="HinhAnhTaiLen">Hình ảnh</label>
-                <input type="file" class="form-control-file" multiple id="HinhAnhTaiLen" name="HinhAnhTaiLen">
-                <span class="text-danger"></span>
+                <label>Hình ảnh</label>
+                <input asp-for="HinhAnhTaiLen" class="form-control" multiple id="HinhAnhTaiLen" name="hinhAnhTaiLen">
+                <span asp-validation-for="HinhAnhTaiLen" class="text-danger"></span>
                 <img id="imgpreview" class="pt-2" />
             </div>
-          
-            <div class="row">                
+
+            <div class="row">
                 <div class="col">
                     <p>
                         <label for="TenSP">Tên sản phẩm:</label><br />
@@ -38,7 +38,7 @@
                 <div class="col">
                     <p> Tên danh mục </p>
                     <select asp-for="MaDanhMuc" asp-items="ViewBag.DanhMuc" class="textbox" placeholder="Tên danh mục" id="danhmuc">
-                        </select>
+                    </select>
                 </div>
             </div>
 
@@ -67,7 +67,7 @@
                         <span asp-validation-for="MoTa" class="text-danger"></span>
                     </p>
                 </div>
-               
+
             </div>
 
 
