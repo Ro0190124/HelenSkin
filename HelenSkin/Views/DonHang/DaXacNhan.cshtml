@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<HOA_DON>
 <div class="Tb-Container mt-3">
-    <div class="Tb-Container mt-3">
-        <a id="choXacNhanLink" class="pl-3" asp-controller="DonHang" asp-action="ChoXacNhan">Chờ xác nhận</a>
-        <a id="indexLink" class="pl-3" asp-controller="DonHang" asp-action="Index">Đơn hàng 2</a>
-        <div id="choXacNhanContent"></div> <!-- Placeholder để hiển thị nội dung của ChoXacNhan.cshtml -->
+    <div class="portfolio_button">
+        <div class="row">
+            <div class="col-12">
+                <a asp-controller="DonHang" asp-action="Index"><button>Chờ xác nhận </button></a>
+                <a asp-controller="DonHang" asp-action="DaXacNhan"><button class="active">Chờ giao</button></a>
+                <a asp-controller="DonHang" asp-action="DangGiao"><button>Đang giao</button></a>
+                <a asp-controller="DonHang" asp-action="DaGiao"><button>Đã giao</button></a>
+                <a asp-controller="DonHang" asp-action="DaHuy"><button>Đã hủy</button></a>
+            </div>
+        </div>
     </div>
-</div>
-
-<h1>Chờ Xác Nhận</h1>
-
-<div class="Tb-Container mt-3">
     <table class="table_user responsive-table">
-        <!-- Table content here -->
         <thead>
             <tr>
                 <th> ID</th>
@@ -27,13 +27,13 @@
             @foreach (var item in Model)
             {
                 string status;
-                if (item.TrangThai == 0)
+                if (item.TrangThai == 1)
                 {
-                    status = "Chờ xác nhận";
+                    status = "Chờ Giao";
                 }
                 else
                 {
-                    status = "Đã xác nhận";
+                    status = "";
                 }
 
                 // Lấy index của đơn hàng trong danh sách để truy xuất giá tương ứng
@@ -45,21 +45,28 @@
                     <td>@ViewBag.TotalPrices[index]</td> <!-- Hiển thị giá tương ứng -->
                     <td>@item.NgayTao.ToShortDateString()</td>
                     <td>@status</td>
-                    <td></td>
+                    <td>@item.GhiChu</td>
                     <td class="ND_Table_Icon d-flex justify-content-around">
                         <div class="bgr-x">
-                            <a class="btn btn-cam" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">
+                            <a class="btn btn-success" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">
                                 Xác Nhận
                             </a>
                         </div>
                         <div class="bgr-x">
-                            <a class="btn btn-danger delete-btn" data-id="">
+                            <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">
                                 Hủy
+                            </a>
+                        </div>
+                        <div>
+                            <a class="btn btn-info" asp-controller="DonHang" asp-action="ChiTietDonHang" asp-route-id="@item.MaHD">
+                                Chi tiết
                             </a>
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
+        </tbody>
     </table>
 </div>
+
