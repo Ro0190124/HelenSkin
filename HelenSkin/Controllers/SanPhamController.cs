@@ -73,7 +73,7 @@ namespace HelenSkin.Controllers
 
 		public ActionResult ManHinhSP()
 		{
-            var sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).ToList();
+            var sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).Include(sp => sp.db_DS_MEDIA_HINH_ANH).ToList();
 
             return View(sanPhams);
         }
