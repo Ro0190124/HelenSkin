@@ -19,10 +19,26 @@ namespace HelenSkin.Controllers
         }
         public IActionResult Index()
         {
-            var sanPhams = _db.db_SAN_PHAM
-                                   .Include(sp => sp.db_DS_MEDIA_HINH_ANH)  // Lấy dữ liệu từ DS_MEDIA_HINH_ANH liên quan
+            var sanPhamMoi = _db.db_SAN_PHAM
+                                    .Include(sp => sp.db_DS_MEDIA_HINH_ANH)
+                                    .OrderByDescending(sp => sp.NgayTao)
+                                    .Take(7)
+                                    .ToList();
+
+            // Lấy 7 sản phẩm nổi bật (có số lượng nhiều nhất)
+            var sanPhamNoiBat = _db.db_SAN_PHAM
+                                   .Include(sp => sp.db_DS_MEDIA_HINH_ANH)
+                                   .OrderByDescending(sp => sp.SoLuong)
+                                   .Take(7)
                                    .ToList();
-            return View(sanPhams);
+
+            var viewModel = new viewSanPham
+            {
+                SanPhamMoi = sanPhamMoi,
+                SanPhamNoiBat = sanPhamNoiBat
+            };
+
+            return View(viewModel);
         }
         [HttpGet]
         public async Task<IActionResult> SPChiTiet(int id)

@@ -2556,8 +2556,8 @@
 }
 
     .portfolio_button button {
-        color: #666;
-        background: #fff;
+        color: #fff;
+        background: #7de27f;
         border-right: 2px solid #f5f5f5;
         line-height: 45px;
         padding: 0 30px;
@@ -2573,7 +2573,7 @@
 
         .portfolio_button button:hover,
         .portfolio_button button.active {
-            background: #7CD47C;
+            background: #4bcc34;
             color: #fff;
         }
 

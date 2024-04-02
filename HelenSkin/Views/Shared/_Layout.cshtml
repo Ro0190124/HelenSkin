@@ -67,10 +67,12 @@
                                 <div class="col-lg-6 col-md-6 mt-2">
                                     <div class="header_links">
                                         <ul>
-                                            <li><a href="ThongTinGiaoHang.html" title="Contact">TikTok</a></li>
-                                            <li><a href="cart.html" title="My cart">Facebook</a></li>
+                                            <li><a href="https://www.facebook.com/Ro1901" title="Contact">TikTok</a></li>
+                                            <li><a href="#" title="My cart">Facebook</a></li>
                                             <li>
-                                                @ViewBag.TenNguoiDung
+                                                <a asp-area="" asp-controller="NguoiDung" asp-action="ThongTinTK" asp-route-id="@userId">
+                                                    @ViewBag.TenNguoiDung
+                                            </a>
                                             </li>
                                         </ul>
                                     </div>

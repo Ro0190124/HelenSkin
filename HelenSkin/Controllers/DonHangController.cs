@@ -175,5 +175,9 @@ namespace HelenSkin.Controllers
 
 			return View();
 		}
+		public ActionResult ChiTietDonHangND()
+		{
+			return View();
+		}
 	}
 }

@@ -1,5 +1,4 @@
-﻿@model IEnumerable<SAN_PHAM>
-
+﻿@model viewSanPham
 
 <div class="shopping_cart_area" >
     <div class="row pos_home">
@@ -63,10 +62,7 @@
                 </div>
                 <div class="row">
                     <div class="product_active owl-carousel">
-                        @{
-                            int br = 1;
-                        }
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.SanPhamMoi)
                         {                           
                             Console.WriteLine(item.db_DS_MEDIA_HINH_ANH);
                             var firstImage = item.db_DS_MEDIA_HINH_ANH?.FirstOrDefault();
@@ -92,11 +88,42 @@
                                     </div>
                                 </div>
                             </div>
-                            br++;
-                            if(br == 7)
-                            {
-                                break;
-                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="new_product_area mt-4">
+                <div class="block_title">
+                    <h3>Sản phẩm nổi bật</h3>
+                </div>
+                <div class="row">
+                    <div class="product_active owl-carousel">
+                        @foreach (var item in Model.SanPhamNoiBat)
+                        {
+                            Console.WriteLine(item.db_DS_MEDIA_HINH_ANH);
+                            var firstImage = item.db_DS_MEDIA_HINH_ANH?.FirstOrDefault();
+                            string imageUrl = firstImage != null ? firstImage.MediaHinhAnh : "~/img/default-image.jpg";
+
+                            <div class="col-lg-3">
+                                <div class="single_product">
+                                    <div class="product_thumb">
+                                        <a href="">
+                                            <img src="@imageUrl" alt="@item.TenSP">
+                                        </a>
+                                        <div class="product_action">
+                                            <a onclick="addToCart(@item.MaSP, 1)">
+                                                <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
+                                            </a>
+                                            <!--<a href="#" type="button" data-toggle="modal" data-target="#modal_box" title="Quick view" class="details" data-id="@item.MaSP">Chi tiết</a>-->
+                                            <a asp-controller="Home" asp-action="SPChiTiet" asp-route-id="@item.MaSP">Chi tiết</a>
+                                        </div>
+                                    </div>
+                                    <div class="product_content">
+                                        <span class="product_price">@item.Gia</span>
+                                        <h3 class="product_title"><a href="single-product.html">@item.TenSP </a></h3>
+                                    </div>
+                                </div>
+                            </div>
                         }
                     </div>
                 </div>
