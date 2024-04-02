@@ -262,10 +262,6 @@ namespace HelenSkin.Controllers
 				return View();
 			}
 		}
-
-
-
-
 		public ActionResult DatHang(string ghiChu)
 		{
             var cookie = Request.Cookies["ID"];

@@ -56,13 +56,13 @@ namespace HelenSkin.Controllers
 
 			return View(obj);
 		}
-        public ActionResult ChoXacNhan()
+        public ActionResult DaXacNhan()
         {
             var cookie = Request.Cookies["ID"];
             NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
             IEnumerable<HOA_DON> obj;
 
-            obj = _db.db_HOA_DON.Where(x => x.TrangThai == 0).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
+            obj = _db.db_HOA_DON.Where(x => x.TrangThai == 1).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
 
 
             IEnumerable<CHI_TIET_GIO_HANG> gioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
@@ -104,11 +104,59 @@ namespace HelenSkin.Controllers
 			HOA_DON hoaDon = _db.db_HOA_DON.Where(x => x.MaHD == id).First();
 			hoaDon.TrangThai = 1;
 			_db.SaveChanges();
+			TempData["tbDatHang"] = "Đã xác nhận đơn hàng";
 			return RedirectToAction("Index", "DonHang");
 		}
 
-		// GET: DonHangController/Create
-		public ActionResult Create()
+        public ActionResult Cancel(int id)
+        {
+            HOA_DON hoaDon = _db.db_HOA_DON.Where(x => x.MaHD == id).First();
+            hoaDon.TrangThai = 4;
+            _db.SaveChanges();
+            TempData["tbDonHang"] = "Đã hủy đơn hàng";
+            return RedirectToAction("Index", "DonHang");
+        }
+		public ActionResult ChiTietDonHang(int id)
+		{
+			var cookie = Request.Cookies["ID"];
+            NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+            // tìm hóa đơn theo id
+			HOA_DON hoaDon = _db.db_HOA_DON.Where(x => x.MaHD == id).First();
+			// lấy ra chi tiết giỏ hàng theo mã giỏ hàng
+			IEnumerable<CHI_TIET_GIO_HANG> chiTietGioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
+                                                                          .Where(x => x.GIO_HANG.MaGioHang == hoaDon.MaGioHang)
+                                                                          .Include(x => x.SAN_PHAM)
+                                                                          .ToList();
+			//  xuất ra danh sách các sản phẩm có trong giỏ hàng
+			foreach(var item in chiTietGioHang)
+			{
+                Console.WriteLine(item.SAN_PHAM.TenSP);
+            }
+			Console.WriteLine();
+            List<string> firstImages = new List<string>();
+            foreach (var item in chiTietGioHang)
+            {
+                var firstImage = _db.db_DS_MEDIA_HINH_ANH.FirstOrDefault(x => x.MaSP == item.SAN_PHAM.MaSP);
+                if (firstImage != null)
+                {
+                    firstImages.Add(firstImage.MediaHinhAnh);
+                }
+                else
+                {
+                    // If no image is found, you can add a default image URL
+                    firstImages.Add("/path/to/default/image.jpg");
+                }
+            }
+
+            // Pass both gioHang and firstImages to the view
+            ViewBag.GioHang = chiTietGioHang;
+            ViewBag.FirstImages = firstImages;
+            return View(chiTietGioHang);
+        }
+     
+			
+        // GET: DonHangController/Create
+        public ActionResult Create()
 		{
 			return View();
 		}

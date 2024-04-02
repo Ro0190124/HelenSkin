@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<HOA_DON>
 <div class="Tb-Container mt-3">
+    <div class="portfolio_button">
+        <div class="row">
+            <div class="col-12">
 
-    <div class="Tb-Container mt-3">
-        <div class="Tb-Container mt-3">
-            <a class="pl-3" asp-controller="DonHang" asp-action="Index">Chờ xác nhận</a>
-            <a class="pl-3" asp-controller="DonHang" asp-action="ChoGiao">Chờ giao</a>
-            <a class="pl-3" asp-controller="DonHang" asp-action="DangGiao">Đang giao</a>
-            <a class="pl-3" asp-controller="DonHang" asp-action="DaGiao">Đã giao</a>
-            <a class="pl-3" asp-controller="DonHang" asp-action="DaHuy">Đã hủy</a>
-           <!-- Placeholder để hiển thị nội dung của ChoXacNhan.cshtml -->
+                <a data-filter=".company" asp-controller="DonHang" asp-action="Index"><button>Chờ xác nhận </button></a>
+                <a data-filter=".computers" class="active" asp-controller="DonHang" asp-action="DaXacNhan"><button>Đang giao</button></a>
+                <button data-filter=".general">Đã giao</button>
+                <button data-filter=".hipster">Đã hủy</button>
+            </div>
         </div>
     </div>
     <table class="table_user responsive-table">
@@ -48,18 +48,25 @@
                     <td>@item.GhiChu</td>
                     <td class="ND_Table_Icon d-flex justify-content-around">
                         <div class="bgr-x">
-                            <a class="btn btn-cam" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">
+                            <a class="btn btn-success" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">
                                 Xác Nhận
                             </a>
                         </div>
                         <div class="bgr-x">
-                            <a class="btn btn-danger delete-btn" data-id="">
+                            <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">
                                 Hủy
+                            </a>
+                        </div>
+                        <div>
+                            <a class="btn btn-info" asp-controller="DonHang" asp-action="ChiTietDonHang" asp-route-id="@item.MaHD">
+                                Chi tiết
                             </a>
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
+        </tbody>
     </table>
 </div>
+
