@@ -3,51 +3,68 @@
 <div class=" pos_home_section">
     <div class="row pos_home">
         <div class="col-lg-3 col-md-12">
-            <!--layere categorie"-->
+            <!--layere categorie-->
             <div class="sidebar_widget shop_c">
                 <div class="categorie__titile">
                     <h4>Danh mục</h4>
                 </div>
                 <div class="layere_categorie">
                     <ul>
-                        <li>
-                            <input id="kcm" type="checkbox">
-                            <label for="kcm">Kem chống nắng</label>
-                        </li>
-                        <li>
-                            <input id="kd" type="checkbox">
-                            <label for="kd">Kem dưỡng</label>
-                        </li>
-                        <li>
-                            <input id="toner" type="checkbox">
-                            <label for="toner">toner</label>
-                        </li>
-                        <li>
-                            <input id="serum" type="checkbox">
-                            <label for="serum">serum</label>
-                        </li>
-                        <li>
-                            <input id="tdm" type="checkbox">
-                            <label for="tdm">Trang điểm mắt</label>
-                        </li>
-                        <li>
-                            <input id="tdmoi" type="checkbox">
-                            <label for="tdmoi">trang điểm môi</label>
-                        </li>
+                        @if (Model != null && Model.Any())
+                        {
+                            var danhMucSet = new HashSet<string>();
+                            @foreach (var sanPham in Model)
+                            {
+                                // Kiểm tra xem tên danh mục đã được hiển thị chưa
+                                if (!danhMucSet.Contains(sanPham.DANH_MUC.TenDanhMuc))
+                                {
+                                    <li>
+                                        <input id="@sanPham.DANH_MUC.MaDanhMuc" type="checkbox">
+                                        <label for="@sanPham.DANH_MUC.MaDanhMuc">@sanPham.DANH_MUC.TenDanhMuc</label>
+                                    </li>
+                                    danhMucSet.Add(sanPham.DANH_MUC.TenDanhMuc);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <li>Không có danh mục để hiển thị.</li>
+                        }
                     </ul>
                 </div>
             </div>
             <!--layere categorie end-->
-            <!--price slider start-->
-            <div class="sidebar_widget price">
-                <h2>Giá</h2>
-                <div class="ca_search_filters">
-
-                    <input type="text" name="text" id="amount">
-                    <div id="slider-range"></div>
+            <!-- Price Range -->
+            <div class="sidebar_widget shop_c">
+                <div class="categorie__titile">
+                    <h4>Giá</h4>
+                </div>
+                <div class="layere_categorie">
+                    <ul>
+                        <li>
+                            <input id="price_under_100000" type="checkbox" value="0-300000">
+                            <label for="price_under_100000">Dưới 300,000 VNĐ</label>
+                        </li>
+                        <li>
+                            <input id="price_300000_to_500000" type="checkbox" value="300000-500000">
+                            <label for="price_300000_to_500000">Từ 300,000 VNĐ đến 500,000 VNĐ</label>
+                        </li>
+                        <li>
+                            <input id="price_500000_to_1000000" type="checkbox" value="500000-1000000">
+                            <label for="price_500000_to_1000000">Từ 500,000 VNĐ đến 1,000,000 VNĐ</label>
+                        </li>
+                        <li>
+                            <input id="price_1000000_to_2000000" type="checkbox" value="1000000-2000000">
+                            <label for="price_1000000_to_2000000">Từ 1,000,000 VNĐ đến 2,000,000 VNĐ</label>
+                        </li>
+                        <li>
+                            <input id="price_over_2000000" type="checkbox" value="2000000+">
+                            <label for="price_over_2000000">Trên 2,000,000 VNĐ</label>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <!--price slider end-->
+            <!-- Price Range end -->
 
         </div>
         <div class="col-lg-9 col-md-12">
@@ -59,11 +76,7 @@
             <!--shop toolbar start-->
             <div class="shop_toolbar mb-35">
 
-                <div class="list_button">
-                </div>
-                <div class="page_amount">
-                    <p>Showing 1–9 of 21 results</p>
-                </div>
+                <div class="list_button">  </div>
 
                 <div class="select_option">
                     <form action="#">
@@ -87,23 +100,40 @@
                         <div class="row">
                             @if (Model != null && Model.Any())
                             {
-                                @foreach (var sanPhams in Model)
+                                @foreach (var sanPham in Model)
                                 {
                                     <div class="col-lg-4 col-md-6">
                                         <div class="single_product">
                                             <div class="product_thumb">
-                                                <a href="single-product.html"><img  alt=""></a>
+                                                <a href="single-product.html">
+                                                    @if (sanPham.db_DS_MEDIA_HINH_ANH != null && sanPham.db_DS_MEDIA_HINH_ANH.Any())
+                                                    {
+                                                        var firstImage = sanPham.db_DS_MEDIA_HINH_ANH.FirstOrDefault();
+                                                        if (firstImage != null && !string.IsNullOrEmpty(firstImage.MediaHinhAnh))
+                                                        {
+                                                            <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:300px; height:300px"/>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Đường dẫn hình ảnh không hợp lệ</span>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Không có hình ảnh</span>
+                                                    }
+                                                </a>
                                                 <div class="product_action">
-                                                    <a onclick="addToCart(@sanPhams.MaSP, 1)">
+                                                    <a onclick="addToCart(@sanPham.MaSP, 1)">
                                                         <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
                                                     </a>
-                                                  
+
                                                     <a href="single-product.html" class="details">Chi tiết</a>
                                                 </div>
                                             </div>
                                             <div class="product_content">
-                                                <h3 class="product_title"><a href="single-product.html">@sanPhams.TenSP</a></h3>
-                                                <p class="product_price">@sanPhams.Gia.ToString("N0")</p>
+                                                <h3 class="product_title"><a href="single-product.html">@sanPham.TenSP</a></h3>
+                                                <p class="product_price">@sanPham.Gia.ToString("N0")</p>
                                             </div>
                                         </div>
                                     </div>
@@ -121,15 +151,7 @@
             <!--pagination style start-->
             <div class="pagination_style">
                 <div class="item_page">
-                    <form action="#">
-                        <label for="page_select">show</label>
-                        <select id="page_select">
-                            <option value="1">9</option>
-                            <option value="2">10</option>
-                            <option value="3">11</option>
-                        </select>
-                        <span>Products by page</span>
-                    </form>
+                  
                 </div>
                 <div class="page_number">
                     <span>Pages: </span>
