@@ -28,9 +28,18 @@ namespace HelenSkin.Controllers
 
             return quyen;
         }
+		private int CalculateAge(DateTime birthDate)
+		{
+			DateTime today = DateTime.Today;
+			int age = today.Year - birthDate.Year;
+			if (birthDate > today.AddYears(-age))
+			{
+				age--;
+			}
+			return age;
+		}
 
-
-        public ActionResult Index(string searchString)
+		public ActionResult Index(string searchString)
         {
             var phanquyen = CheckPhanQuyen();
             if (phanquyen)
@@ -45,7 +54,6 @@ namespace HelenSkin.Controllers
             else
             {
                 return RedirectToAction("Index", "Home");
-
             }
 
         }
@@ -148,9 +156,10 @@ namespace HelenSkin.Controllers
         {
             var existingPhone = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.SoDienThoai == nguoidung.SoDienThoai && x.MaND != nguoidung.MaND && x.TrangThai == true);
 			var existingUsername = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == nguoidung.TenTaiKhoan && x.MaND != nguoidung.MaND && x.TrangThai == true);
+			int age = CalculateAge(nguoidung.NgaySinh);
 
 
-            if (existingPhone != null)
+			if (existingPhone != null)
 			{
 				ModelState.AddModelError("SoDienThoai", "Số điện thoại đã tồn tại cho người dùng khác");
 			}
@@ -158,6 +167,11 @@ namespace HelenSkin.Controllers
 			if (existingUsername != null)
 			{
 				ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản đã tồn tại cho người dùng khác");
+			}
+			if (age < 18)
+			{
+				ModelState.AddModelError("NgaySinh", "Tuổi phải lớn hơn 18");
+				return View(nguoidung);
 			}
 			if (!ModelState.IsValid)
 			{
@@ -236,8 +250,9 @@ namespace HelenSkin.Controllers
         {
             var existingPhone = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.SoDienThoai == nguoidung.SoDienThoai && x.MaND != nguoidung.MaND && x.TrangThai == true);
             var existingUsername = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == nguoidung.TenTaiKhoan && x.MaND != nguoidung.MaND && x.TrangThai == true);
+			int age = CalculateAge(nguoidung.NgaySinh);
 
-            if (existingPhone != null)
+			if (existingPhone != null)
             {
                 ModelState.AddModelError("SoDienThoai", "Số điện thoại đã tồn tại");
             }
@@ -245,8 +260,13 @@ namespace HelenSkin.Controllers
             if (existingUsername != null)
             {
                 ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản đã tồn tại");
-            }
-            if (!ModelState.IsValid)
+			}
+			if (age < 18)
+			{
+				ModelState.AddModelError("NgaySinh", "Bạn phải đủ 18 tuổi");
+				return View(nguoidung);
+			}
+			if (!ModelState.IsValid)
             {
                 return View(nguoidung);
             }

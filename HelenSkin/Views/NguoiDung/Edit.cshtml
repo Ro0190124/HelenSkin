@@ -1,7 +1,23 @@
 ﻿@model NGUOI_DUNG
 
-<div class="create-nd mt-3">
-    <div class="ThenTK-form register">
+<div class="create-nd ">
+    <div class="breadcrumbs_area">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb_content">
+                    <ul>
+                        <li><a asp-area="" asp-controller="NguoiDung" asp-action="Index">Quản lý</a></li>
+                        <li><i class="fa fa-angle-right"></i></li>
+                        <li>Tài khoản</li>
+                        <li><i class="fa fa-angle-right"></i></li>
+                        <li>Sửa Tài khoản</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ThenTK-form register mt-3">
         <h2>Sửa tài khoản</h2>
         <form method="post" asp-action="Edit">
             <input type="hidden" asp-for="MaND" />
