@@ -20,6 +20,8 @@ namespace HelenSkin.Controllers
 		{
 			var cookie = Request.Cookies["ID"];
 			NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+			
+			// lấy ra tất cả hóa đơn có trạng thái 0 (chưa xác nhận)
 			IEnumerable<HOA_DON> obj;
 
 			obj = _db.db_HOA_DON.Where(x => x.TrangThai == 0).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
@@ -30,31 +32,43 @@ namespace HelenSkin.Controllers
 																		  .Include(x => x.SAN_PHAM)
 																		  .ToList();
 
-			List<double> total = new List<double>();
-
-			foreach (var item in obj)
+			
+			// kiểm tra xem người dùng có phải là admin hay không
+			if (nguoiDung.PhanQuyen == true)
 			{
-				double totalPrice = 0;
+                return View(obj);
+            }
+            else
+			{
+				//tìm hóa đơn của nguoi dung
+				obj = _db.db_HOA_DON.Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie) && x.TrangThai == 0).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
+               
+            }
+            List<double> total = new List<double>();
+
+            foreach (var item in obj)
+            {
+                double totalPrice = 0;
 
 
-				var prices = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
-													  .Where(x => x.GIO_HANG.MaGioHang == item.MaGioHang)
-													  .Select(x => x.SAN_PHAM.Gia)
-													  .ToList();
+                var prices = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
+                                                      .Where(x => x.GIO_HANG.MaGioHang == item.MaGioHang)
+                                                      .Select(x => x.SAN_PHAM.Gia)
+                                                      .ToList();
 
-				foreach (var price in prices)
-				{
-					totalPrice += price;
-				}
+                foreach (var price in prices)
+                {
+                    totalPrice += price;
+                }
 
-				total.Add(totalPrice);
-			}
-
-
-			ViewBag.TotalPrices = total;
+                total.Add(totalPrice);
+            }
 
 
-			return View(obj);
+            ViewBag.TotalPrices = total;
+
+
+            return View(obj);
 		}
         public ActionResult DaXacNhan()
         {

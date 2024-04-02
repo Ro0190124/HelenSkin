@@ -4,10 +4,11 @@
         <div class="row">
             <div class="col-12">
 
-                <a data-filter=".company" asp-controller="DonHang" asp-action="Index"><button>Chờ xác nhận </button></a>
-                <a data-filter=".computers" class="active" asp-controller="DonHang" asp-action="DaXacNhan"><button>Đang giao</button></a>
-                <button data-filter=".general">Đã giao</button>
-                <button data-filter=".hipster">Đã hủy</button>
+                <a asp-controller="DonHang" asp-action="Index"><button class="active" >Chờ xác nhận </button></a>
+                <a class="active" asp-controller="DonHang" asp-action="DaXacNhan"><button>Chờ giao</button></a>
+                <a asp-controller="DonHang" asp-action="DangGiao"><button>Đang giao</button></a>
+                <a asp-controller="DonHang" asp-action="DaGiao"><button>Đã giao</button></a>
+                <a asp-controller="DonHang" asp-action="DaHuy"><button>Đã hủy</button></a>
             </div>
         </div>
     </div>
@@ -17,7 +18,7 @@
                 <th> ID</th>
                 <th> Họ Tên</th>
                 <th> Đơn Giá</th>
-                <th> Ngày tạo</th>
+                <th> Ngày Đặt</th>
                 <th> Trạng Thái</th>
                 <th> Ghi Chú</th>
                 <th> Chỉnh sửa</th>
