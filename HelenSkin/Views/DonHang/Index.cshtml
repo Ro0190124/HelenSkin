@@ -28,6 +28,7 @@
                 {
                 <th> Chỉnh sửa</th>
                 }
+                <th>Chi Tiết</th>
             </tr>
         </thead>
         <tbody>
@@ -68,14 +69,16 @@
                                     Hủy
                                 </a>
                             </div>
-                            <div>
-                                <a class="btn btn-info" asp-controller="DonHang" asp-action="ChiTietDonHang" asp-route-id="@item.MaHD">
-                                    Chi tiết
-                                </a>
-                            </div>
+                          
                         </td>
                     }
+                    <td>
+                        <a asp-controller="DonHang" asp-action="ChiTietDonHangND" asp-route-id="@item.MaHD">
+                            <i class="fas fa-list"></i>
+                        </a>
+                    </td>
                 </tr>
+
             }
         </tbody>
         </tbody>

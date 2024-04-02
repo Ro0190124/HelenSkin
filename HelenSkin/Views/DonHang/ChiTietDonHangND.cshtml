@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HOA_DON>
+﻿@model IEnumerable<CHI_TIET_GIO_HANG>
 
 <div class="shopping_cart_area">
     <form action="#">
@@ -8,48 +8,35 @@
                 <div class="col-lg-8 col-md-8">
                     <div class="col-lg-12 col-md-12">
                         <div class="coupon_code d-flex donhang-sp row py-3">
-                            <div class=" col-lg-4">
-                                <img src="~/img/product/product13.jpg">
-                            </div>
-                            <div class="col-lg-4">
-                                <p><strong>Kem chống lão hóa già nhanh :())</strong></p>
-                                <input name="quantity" type="number" min="0" max="100" value="5" />
-                            </div>
-                            <div class="col-lg-4">
-                                <p> Đơn giá: 100,000,000,0 đ</p>
-                            </div>
+                            @{
+                                int j = 0;
+                            }
+                            @{
+                                var gioHang = ViewBag.GioHang as IEnumerable<CHI_TIET_GIO_HANG>;
+                                var firstImages = ViewBag.FirstImages as List<string>;
+                            }
+
+                            @for (int i = 0; i < gioHang.Count(); i++)
+                            {
+                                var item = gioHang.ElementAt(i);
+                                var imageUrl = firstImages.ElementAtOrDefault(i) ?? "/path/to/default/image.jpg"; // Get the corresponding image URL from ViewBag
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="coupon_code d-flex giohang-sp row py-3">
+
+                                        <img class="col-lg-4" src="@imageUrl" alt="Product Image">
+                                        <div class="col-lg-3">
+                                            <p><strong>@item.SAN_PHAM.TenSP</strong></p>
+
+                                            <input readonly asp-asp-for="@item.SoLuong" value="@item.SoLuong" name="quantity" type="number" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
 
-                    <div class="col-lg-12 col-md-12">
-                        <div class="coupon_code d-flex donhang-sp row py-3">
-                            <div class=" col-lg-4">
-                                <img src="~/img/product/product13.jpg">
-                            </div>
-                            <div class="col-lg-4">
-                                <p><strong>Kem chống lão hóa già nhanh :())</strong></p>
-                                <input name="quantity" type="number" min="0" max="100" value="5" />
-                            </div>
-                            <div class="col-lg-4">
-                                <p> Đơn giá: 100,000,000,0 đ</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12 col-md-12">
-                        <div class="coupon_code d-flex donhang-sp row py-3">
-                            <div class=" col-lg-4">
-                                <img src="~/img/product/product13.jpg">
-                            </div>                            
-                            <div class="col-lg-4">
-                                <p><strong>Kem chống lão hóa già nhanh :())</strong></p>
-                                <input name="quantity" type="number" min="0" max="100" value="5" />
-                            </div>
-                            <div class="col-lg-4">
-                                <p> Đơn giá: 100,000,000,0 đ</p>
-                            </div>
-                        </div>
-                    </div>
+                  
 
 
                 </div>
@@ -63,27 +50,27 @@
                             <div class="cart_subtotal border-bt mt-3">
                                 <p>Ngày đặt </p>
                                 <p class="cart_amount">
-                                    dd-MM-yyyy
+                                    @ViewBag.HoaDon.NgayTao
                                 </p>
                             </div>
                             <div class="cart_subtotal border-bt mt-3">
                                 <p>Địa chỉ </p>
                                 <p class="cart_amount">
-                                    abc xyz j đó
+                                   @gioHang.FirstOrDefault().GIO_HANG.NGUOI_DUNG.DiaChi
                                 </p>
                             </div>
 
                             <div class="cart_subtotal border-bt mt-3">
                                 <p>Ghi chú</p>
                                 <p class="cart_amount">
-                                    Che đầu
+                                   @ViewBag.HoaDon.GhiChu
                                 </p>
                             </div>
 
                             <div class="cart_subtotal border-bt mt-3">
                                 <p>Đơn vị vận chuyển</p>
                                 <p class="cart_amount">
-                                    con ship bơ
+                                    @ViewBag.HoaDon.DON_VI_VAN_CHUYEN.TenDonViVanChuyen
                                 </p>
                             </div>
 

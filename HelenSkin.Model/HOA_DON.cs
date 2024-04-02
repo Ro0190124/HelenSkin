@@ -21,8 +21,9 @@ namespace HelenSkin.Model
         [ForeignKey("MaGioHang")]
         [ValidateNever]
         public GIO_HANG? GIO_HANG { get; set; }
-        public int MaDonViVanChuyen { get; set; }
+        public int? MaDonViVanChuyen { get; set; }
         [ForeignKey("MaDonViVanChuyen")]
+        [ValidateNever]
         public DON_VI_VAN_CHUYEN? DON_VI_VAN_CHUYEN { get; set; }
     }
 }
