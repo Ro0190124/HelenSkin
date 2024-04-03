@@ -56,7 +56,11 @@
 			<tbody>
 				@foreach (var item in Model)
 				{
-				
+					bool trangThai = item.TrangThai;
+					if (item.SoLuong == 0)
+					{
+						trangThai = false;
+					}
 					<tr>
 						<td>
 							@if (item.db_DS_MEDIA_HINH_ANH != null && item.db_DS_MEDIA_HINH_ANH.Any())
@@ -94,7 +98,7 @@
 						<td>@item.SoLuong</td>
 						<td>@item.NgayTao.ToString("dd/MM/yyyy")</td>
 						<td>@item.MoTa</td>
-						<td>@item.TrangThai </td>
+						<td style="color: @(item.TrangThai ? "green" : "red")">@((item.TrangThai ? "Còn hàng" : "Hết hàng"))</td>
 						<td class="ND_Table_Icon d-flex justify-content-around">
 							<div class="bgr-x">
 								<a class="btn btn-cam" asp-controller="SanPham" asp-action="Edit" asp-route-id="@item.MaSP">

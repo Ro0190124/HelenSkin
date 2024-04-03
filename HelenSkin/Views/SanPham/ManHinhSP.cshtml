@@ -102,7 +102,7 @@
                             {
                                 @foreach (var sanPham in Model)
                                 {
-                                    <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-4 col-md-6 product-item @sanPham.DANH_MUC.MaDanhMuc">
                                         <div class="single_product">
                                             <div class="product_thumb">
                                                 <a href="single-product.html">
@@ -182,4 +182,83 @@
         // Submit the form
         document.getElementById('addToCartForm').submit();
     }
+
+    // xử lí danhmuc
+    $(document).ready(function () {
+        $('input[type="checkbox"]').change(function () {
+            // Khởi tạo một biến để kiểm tra xem có checkbox nào được chọn không
+            var anyCheckboxChecked = false;
+
+            // Lặp qua tất cả các checkbox để kiểm tra xem có checkbox nào được chọn không
+            $('input[type="checkbox"]').each(function () {
+                if ($(this).is(':checked')) {
+                    anyCheckboxChecked = true;
+                    return false; // Thoát khỏi vòng lặp khi tìm thấy checkbox được chọn
+                }
+            });
+
+            // Nếu không có checkbox nào được chọn, hiển thị lại tất cả sản phẩm
+            if (!anyCheckboxChecked) {
+                $('.product-item').show();
+                return; // Kết thúc xử lý nếu không có checkbox nào được chọn
+            }
+
+            // Lấy giá trị của checkbox được chọn
+            var danhMucId = $(this).attr('id');
+
+            // Hiển thị hoặc ẩn sản phẩm dựa trên checkbox được chọn
+            $('.product-item').each(function () {
+                if ($(this).hasClass(danhMucId)) {
+                    $(this).show(); 
+                } else {
+                    $(this).hide(); 
+                }
+            });
+        });
+    });
+
+    //xử lí giá 
+    $(document).ready(function () {
+        // Xử lý sự kiện khi checkbox giá được chọn hoặc bỏ chọn
+        $('input[type="checkbox"][id^="price_"]').change(function () {
+            // Khởi tạo một biến để kiểm tra xem có checkbox giá nào được chọn không
+            var anyPriceCheckboxChecked = false;
+
+            // Lặp qua tất cả các checkbox giá để kiểm tra xem có checkbox nào được chọn không
+            $('input[type="checkbox"][id^="price_"]').each(function () {
+                if ($(this).is(':checked')) {
+                    anyPriceCheckboxChecked = true;
+                    return false; // Thoát khỏi vòng lặp khi tìm thấy checkbox được chọn
+                }
+            });
+
+            // Nếu không có checkbox giá nào được chọn, hiển thị lại tất cả sản phẩm
+            if (!anyPriceCheckboxChecked) {
+                $('.product-item').show();
+                return; // Kết thúc xử lý nếu không có checkbox nào được chọn
+            }
+
+            // Hiển thị hoặc ẩn sản phẩm dựa trên giá được chọn
+            $('.product-item').each(function () {
+                // Lấy giá sản phẩm
+                var productPrice = parseFloat($(this).find('.product_price').text().replace(/\D/g, ''));
+
+                // Lấy giá trị của checkbox giá được chọn
+                var priceRange = $('input[type="checkbox"][id^="price_"]:checked').val().split('-');
+
+                // Kiểm tra xem giá sản phẩm có nằm trong khoảng giá được chọn không
+                if (priceRange[1] === '+' && productPrice >= parseFloat(priceRange[0])) {
+                    $(this).show(); // Hiển thị sản phẩm nếu nằm trong khoảng giá được chọn
+                }
+                else if (priceRange[1] !== '+' && productPrice >= parseFloat(priceRange[0]) && productPrice <= parseFloat(priceRange[1])) {
+                    $(this).show(); // Hiển thị sản phẩm nếu nằm trong khoảng giá được chọn
+                } else {
+                    $(this).hide(); // Ẩn sản phẩm nếu không nằm trong khoảng giá được chọn
+                }
+
+            });
+        });
+    });
+
+
 </script>
