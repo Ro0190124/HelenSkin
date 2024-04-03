@@ -37,7 +37,12 @@
 		</div>
 
 	</div>
-
+	<div id="popup" class="popup" style="display:none;">
+		<div class="popup-content">
+			<span class="close" onclick="closePopup()">&times;</span>
+			<div id="description-detail"></div>
+		</div>
+	</div>
 	<div class="Tb-Container mt-3">
 		<table class="table_user responsive-table">
 			<thead>
@@ -56,7 +61,11 @@
 			<tbody>
 				@foreach (var item in Model)
 				{
-				
+					bool trangThai = item.TrangThai;
+					if (item.SoLuong == 0)
+					{
+						trangThai = false;
+					}
 					<tr>
 						<td>
 							@if (item.db_DS_MEDIA_HINH_ANH != null && item.db_DS_MEDIA_HINH_ANH.Any())
@@ -93,8 +102,14 @@
 						<td>@item.Gia.ToString("N0")</td>
 						<td>@item.SoLuong</td>
 						<td>@item.NgayTao.ToString("dd/MM/yyyy")</td>
-						<td>@item.MoTa</td>
-						<td>@item.TrangThai </td>
+						<td>
+							<div class="description-container">
+								<span class="short-description">@item.MoTa.Substring(0, Math.Min(item.MoTa.Length, 10))</span>
+								<span class="full-description" style="display:none;">@item.MoTa</span>
+								<button class="btn-detail" onclick="showPopup(this)">Chi tiết</button>
+							</div>
+						</td>
+						<td style="color: @(item.TrangThai ? "green" : "red")">@((item.TrangThai ? "Còn hàng" : "Hết hàng"))</td>
 						<td class="ND_Table_Icon d-flex justify-content-around">
 							<div class="bgr-x">
 								<a class="btn btn-cam" asp-controller="SanPham" asp-action="Edit" asp-route-id="@item.MaSP">
@@ -154,4 +169,21 @@
 				// Xử lý lỗi nếu có
 			});
 	}
+	// mô tả 
+	function showPopup(button) {
+		var container = button.parentNode;
+		var fullDesc = container.querySelector('.full-description').innerText;
+		var descriptionDetail = document.getElementById('description-detail');
+		descriptionDetail.textContent = fullDesc;
+
+		var popup = document.getElementById('popup');
+		popup.style.display = 'block';
+	}
+
+	function closePopup() {
+		var popup = document.getElementById('popup');
+		popup.style.display = 'none';
+	}
+
+
 </script>

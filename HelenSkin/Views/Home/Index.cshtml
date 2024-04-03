@@ -63,16 +63,27 @@
                 <div class="row">
                     <div class="product_active owl-carousel">
                         @foreach (var item in Model.SanPhamMoi)
-                        {                           
-                            Console.WriteLine(item.db_DS_MEDIA_HINH_ANH);
-                            var firstImage = item.db_DS_MEDIA_HINH_ANH?.FirstOrDefault();
-                            string imageUrl = firstImage != null ? firstImage.MediaHinhAnh : "~/img/default-image.jpg";
-
+                        {  
                             <div class="col-lg-3">
                                 <div class="single_product">
                                     <div class="product_thumb">
-                                        <a href="">
-                                            <img src="@imageUrl" alt="@item.TenSP">
+                                        <a href="single-product.html">
+                                            @if (item.db_DS_MEDIA_HINH_ANH != null && item.db_DS_MEDIA_HINH_ANH.Any())
+                                            {
+                                                var firstImage = item.db_DS_MEDIA_HINH_ANH.FirstOrDefault();
+                                                if (firstImage != null && !string.IsNullOrEmpty(firstImage.MediaHinhAnh))
+                                                {
+                                                    <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:300px; height:300px" />
+                                                }
+                                                else
+                                                {
+                                                    <span>Đường dẫn hình ảnh không hợp lệ</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span>Không có hình ảnh</span>
+                                            }
                                         </a>
                                         <div class="product_action">
                                             <a onclick="addToCart(@item.MaSP, 1)">
@@ -100,15 +111,26 @@
                     <div class="product_active owl-carousel">
                         @foreach (var item in Model.SanPhamNoiBat)
                         {
-                            Console.WriteLine(item.db_DS_MEDIA_HINH_ANH);
-                            var firstImage = item.db_DS_MEDIA_HINH_ANH?.FirstOrDefault();
-                            string imageUrl = firstImage != null ? firstImage.MediaHinhAnh : "~/img/default-image.jpg";
-
                             <div class="col-lg-3">
                                 <div class="single_product">
                                     <div class="product_thumb">
-                                        <a href="">
-                                            <img src="@imageUrl" alt="@item.TenSP">
+                                        <a href="single-product.html">
+                                            @if (item.db_DS_MEDIA_HINH_ANH != null && item.db_DS_MEDIA_HINH_ANH.Any())
+                                            {
+                                                var firstImage = item.db_DS_MEDIA_HINH_ANH.FirstOrDefault();
+                                                if (firstImage != null && !string.IsNullOrEmpty(firstImage.MediaHinhAnh))
+                                                {
+                                                    <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:300px; height:300px" />
+                                                }
+                                                else
+                                                {
+                                                    <span>Đường dẫn hình ảnh không hợp lệ</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span>Không có hình ảnh</span>
+                                            }
                                         </a>
                                         <div class="product_action">
                                             <a onclick="addToCart(@item.MaSP, 1)">
