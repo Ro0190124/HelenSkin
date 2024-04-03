@@ -1,36 +1,56 @@
 ﻿@model IEnumerable<CHI_TIET_GIO_HANG>
+
 <div class="shopping_cart_area">
     <form action="#">
         <!--coupon code area start-->
         <div class="coupon_area">
             <div class="row">
                 <div class="col-lg-9 col-md-9">
-                    @{
-                        int j = 0;
-                    }
-                    @{
-                        var gioHang = ViewBag.GioHang as IEnumerable<CHI_TIET_GIO_HANG>;
-                        var firstImages = ViewBag.FirstImages as List<string>;
-                    }
-
-                    @for (int i = 0; i < gioHang.Count(); i++)
+                    @foreach (var item in Model)
                     {
-                        var item = gioHang.ElementAt(i);
-                        var imageUrl = firstImages.ElementAtOrDefault(i) ?? "/path/to/default/image.jpg"; // Get the corresponding image URL from ViewBag
+
+
+
+
                         <div class="col-lg-12 col-md-12">
                             <div class="coupon_code d-flex giohang-sp row py-3">
+                                @if (item.SAN_PHAM.db_DS_MEDIA_HINH_ANH != null && item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.Any())
+                                {
+                                    foreach (var hinhAnh in item.SAN_PHAM.db_DS_MEDIA_HINH_ANH)
+                                    {
+                                        // Kiểm tra xem đường dẫn hình ảnh có tồn tại hay không
+                                        if (!string.IsNullOrEmpty(hinhAnh.MediaHinhAnh))
+                                        {
+                                            <img src="~/img/product/@hinhAnh.MediaHinhAnh" alt="Hình ảnh" style="max-width: 150px; max-height: 150px; margin-right: 5px;" />
+                                        }
+                                        else
+                                        {
+                                            <span>Đường dẫn hình ảnh không hợp lệ</span>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <span>Không có hình ảnh</span>
+                                }
 
-                                <img class="col-lg-4" src="@imageUrl" alt="Product Image">
                                 <div class="col-lg-3">
                                     <p><strong>@item.SAN_PHAM.TenSP</strong></p>
 
-                                    <input readonly asp-asp-for="@item.SoLuong" value="@item.SoLuong" name="quantity" type="number"/>
+                                    <input asp-asp-for="@item.SoLuong" value="@item.SoLuong"/>
 
+                                </div>
+                                <div class="col-lg-3">
+                                    
+                                    <p> Đơn giá: @item.SAN_PHAM.Gia đ</p>
                                 </div>
                             </div>
                         </div>
                     }
+
+
                 </div>
+
 
                 <div class="col-lg-3 col-md-3">
                     <div class="coupon_code">
@@ -39,31 +59,42 @@
                             <div class="cart_subtotal">
                                 <p>Tổng tiền</p>
                                 <p class="cart_amount">
+
+
+
+
                                     @{
                                         double total = 0;
-                                        for (int i = 0; i < gioHang.Count(); i++)
+                                        for (int i = 0; i < Model.Count(); i++)
                                         {
-                                            var item = gioHang.ElementAt(i);
+                                            var item = Model.ElementAt(i);
                                             total += item.SAN_PHAM.Gia * item.SoLuong;
                                         }
                                         @total
                                     }
                                 </p>
                             </div>
-                            <div>
-                                <p></p>
-                                <p> ghi chú : </p>
-                            </div>
                             <div class="ThemNV">
-                                <a class="btn btn-xanhLa" asp-controller="" asp-action="" asp-route-id="">Xác nhận</a>
-                                <a class="btn-danger delete-btn" asp-controller="" asp-action="" asp-route-id="">Hủy</a>
+                                <div class="form-group">
+                                    <label for="ghiChu">Ghi chú</label>
+                                    <textarea class="form-control" id="ghiChu" name="ghiChu" rows="3"></textarea>
+                                </div>
+
+                                <div>
+                                    <p></p>
+                                    <p> ghi chú : </p>
+                                </div>
+                                <div class="ThemNV">
+                                    <a class="btn btn-xanhLa" asp-controller="" asp-action="" asp-route-id="">Xác nhận</a>
+                                    <a class="btn-danger delete-btn" asp-controller="" asp-action="" asp-route-id="">Hủy</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            
             </div>
         </div>
         <!--coupon code area end-->
     </form>
 </div>
+

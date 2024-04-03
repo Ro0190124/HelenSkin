@@ -53,25 +53,26 @@ namespace HelenSkin.Controllers
             var cookie = Request.Cookies["ID"];
             // check cookie
             Console.WriteLine(cookie);
-			if (cookie == null)
-			{
+            if (cookie == null)
+            {
                 TempData["tbGioHang"] = "Vui lòng đăng nhập để xem giỏ hàng";
                 return RedirectToAction("Index", "Home");
-			}
-			else
-			{
-				// tìm giỏ hàng của người dùng không chứa trong hóa đơn
-				var gioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList();
-				var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang)); // Trả về giỏ hàng của người dùng chưa có trong hóa đơn
-				
-				IEnumerable<CHI_TIET_GIO_HANG> chiTietGioHang = new List<CHI_TIET_GIO_HANG>();
+            }
+            else
+            {
+                var gioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList();
+                var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang));
+
+                IEnumerable<CHI_TIET_GIO_HANG> chiTietGioHang = new List<CHI_TIET_GIO_HANG>();
 
                 if (gioHangChuaCoTrongHoaDon != null)
-				{
-                    chiTietGioHang= _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
-                                                                         .Where(x => x.GIO_HANG.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang)
-                                                                         .Include(x => x.SAN_PHAM)
-                                                                         .ToList();
+                {
+                    chiTietGioHang = _db.db_CHI_TIET_GIO_HANG
+                        .Include(x => x.GIO_HANG)
+                        .Where(x => x.GIO_HANG.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang)
+                        .Include(x => x.SAN_PHAM)
+                        .ThenInclude(x => x.db_DS_MEDIA_HINH_ANH)
+                        .ToList();
                     Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
                     Console.WriteLine(chiTietGioHang.Count());
                     foreach (var item in chiTietGioHang)
@@ -80,47 +81,17 @@ namespace HelenSkin.Controllers
                         Console.WriteLine(item.MaGioHang);
                         Console.WriteLine(item.SAN_PHAM.MaSP);
                     }
-
                 }
-				else
-				{
-					
-                }
-
-                List<string> firstImages = new List<string>();
-                foreach (var item in chiTietGioHang)
+                else
                 {
-                    var firstImage = _db.db_DS_MEDIA_HINH_ANH.FirstOrDefault(x => x.MaSP == item.SAN_PHAM.MaSP);
-                    if (firstImage != null)
-                    {
-                        firstImages.Add(firstImage.MediaHinhAnh);
-                    }
-                    else
-                    {
-                        // If no image is found, you can add a default image URL
-                        firstImages.Add("/path/to/default/image.jpg");
-                    }
+                    // Handle the case where gioHangChuaCoTrongHoaDon is null
                 }
 
-                // Pass both gioHang and firstImages to the view
-                ViewBag.GioHang = chiTietGioHang;
-                ViewBag.FirstImages = firstImages;
-				if(gioHangChuaCoTrongHoaDon == null)
-				{
-					Console.WriteLine("Không có giỏ hàng");
-				}
-				else
-				{
-					Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
-				}
+                return View(chiTietGioHang); // Pass chiTietGioHang to the view
             }
-         
-           
-            return View();
         }
 
 
-	   
         // GET: GioHangController/Create
         public ActionResult Create()
 		{

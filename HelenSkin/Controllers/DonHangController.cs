@@ -241,37 +241,17 @@ namespace HelenSkin.Controllers
 		{
 			Console.WriteLine(" mã đơn hàng : " +id);
 			// tìm hóa đơn theo id
-			HOA_DON hoaDon = _db.db_HOA_DON.Include(x=> x.DON_VI_VAN_CHUYEN).Where(x => x.MaHD == id).First();
+			HOA_DON hoaDon = _db.db_HOA_DON.Include(x=> x.DON_VI_VAN_CHUYEN).Where(x => x.MaHD == id).FirstOrDefault();
 			// lấy ra chi tiết giỏ hàng theo mã giỏ hàng
 			IEnumerable<CHI_TIET_GIO_HANG> chiTietGioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
                                                                           .Where(x => x.GIO_HANG.MaGioHang == hoaDon.MaGioHang)
-                                                                          .Include(x => x.SAN_PHAM)
+                                                                          .Include(x => x.SAN_PHAM).ThenInclude(x=> x.db_DS_MEDIA_HINH_ANH)
 																		  .Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG)
                                                                           .ToList();
 			//  xuất ra danh sách các sản phẩm có trong giỏ hàng
-			foreach (var item in chiTietGioHang)
-			{
-                Console.WriteLine(item.SAN_PHAM.TenSP);
-            }
-			Console.WriteLine();
-			List<string> firstImages = new List<string>();
-            foreach (var item in chiTietGioHang)
-			{
-                var firstImage = _db.db_DS_MEDIA_HINH_ANH.FirstOrDefault(x => x.MaSP == item.SAN_PHAM.MaSP);
-                if (firstImage != null)
-				{
-                    firstImages.Add(firstImage.MediaHinhAnh);
-                }
-                else
-				{
-                    // If no image is found, you can add a default image URL
-                    firstImages.Add("/path/to/default/image.jpg");
-                }
-            }
-
+			
             // Pass both gioHang and firstImages to the view
             ViewBag.GioHang = chiTietGioHang;
-            ViewBag.FirstImages = firstImages;
 			ViewBag.HoaDon = hoaDon;
             return View(chiTietGioHang);
 
