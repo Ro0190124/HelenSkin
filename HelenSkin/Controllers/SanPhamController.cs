@@ -210,25 +210,27 @@ namespace HelenSkin.Controllers
 			return View(sanpham);
 		}
 
-		// GET: SanPhamController/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
+        public ActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            SAN_PHAM sanpham = _db.db_SAN_PHAM.FirstOrDefault(x => x.MaSP == id);
+            if (sanpham == null)
+            {
+                TempData["ThatBai"] = "Xóa sản phẩm thất bại";
+                return NotFound();
+            }
+            else
+            {
+                sanpham.TrangThai = false;
+                _db.db_SAN_PHAM.Update(sanpham);
+                TempData["ThanhCong"] = "Xóa sản phẩm thành công";
+                _db.SaveChanges();
 
-		// POST: SanPhamController/Delete/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
+            }
+            return RedirectToAction("Index");
+        }
 	}
 }

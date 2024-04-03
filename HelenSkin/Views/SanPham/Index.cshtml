@@ -108,7 +108,7 @@
 							</div>
 							<div id="deletePopup-@item.MaSP" class="popup" style="display:none;">
 								<p>Bạn có muốn xóa sản phẩm này không?</p>
-								<button onclick="deleteSP(@item.MaSP)">Có</button>
+								<button onclick="deleteND(@item.MaSP)">Có</button>
 								<button onclick="closePopup(@item.MaSP)">Không</button>
 							</div>
 						</td>
@@ -134,11 +134,13 @@
 		popup.style.display = 'none';
 	}
 
-	// Hàm xóa sản phẩm
+	// Hàm xóa 
 	function deleteND(id) {
-
+		console.log("123");
+		// Gửi request đến server để xóa nhà cung cấp
+		// Sử dụng fetch hoặc AJAX để gửi request đến action XoaNhaCungCap trong controller của bạn
 		fetch(`/SanPham/Delete?id=${id}`, {
-			method: 'GET'
+			method: 'GET' // hoặc 'POST' tùy thuộc vào cách bạn cấu hình route
 		})
 			.then(response => {
 				if (response.ok) {
@@ -148,7 +150,8 @@
 				}
 			})
 			.catch(error => {
-				console.error('Lỗi khi xóa sản phẩm:', error);
+				console.error('Lỗi khi xóa người dùng:', error);
+				// Xử lý lỗi nếu có
 			});
 	}
 </script>
