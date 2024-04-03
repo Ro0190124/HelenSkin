@@ -5,6 +5,7 @@ using HelenSkin.Model;
 using HelenSkin.Data;
 using Newtonsoft.Json;
 using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace HelenSkin.Controllers
@@ -280,5 +281,38 @@ namespace HelenSkin.Controllers
             }
         }
 
-    }
+/*        public ActionResult QuenMK()
+        {
+			return View();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+        public ActionResult QuenMK(NGUOI_DUNG nguoidung)
+        {
+			if (ModelState.IsValid)
+			{
+				var user = _db.db_NGUOI_DUNG.FirstOrDefault(u =>
+					u.TenTaiKhoan == nguoidung.TenTaiKhoan &&
+					u.SoDienThoai == nguoidung.SoDienThoai);
+
+				if (user != null)
+				{
+					// Update mật khẩu cho user tại đây
+					user.MatKhau = nguoidung.MatKhau;
+
+					_db.SaveChanges();
+
+					TempData["ThanhCong"] = "Đặt lại mật khẩu thành công";
+					return RedirectToAction("DangNhap", "Home");
+
+				}
+				else
+				{
+					TempData["ThatBai"] = "Tên tài khoản hoặc số điện thoại không đúng";
+					return View();
+				}
+			}
+
+		}*/
+	}
 }

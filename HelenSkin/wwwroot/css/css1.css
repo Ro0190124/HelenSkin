@@ -61,7 +61,7 @@
     .search-box button {
         width: 25%;
         height: 30px;
-        background-color: #9EE89E;
+        background-color: #6BCA6B;
         color: white;
         border: none;
     }
@@ -80,7 +80,7 @@
     }
 
         .user-icon ul li:hover {
-            background-color: #9EE89E;
+            background-color: #6BCA6B;
         }
 
 ul .none {
@@ -259,9 +259,9 @@ ul .none {
     color: black;
 }
 
-.ngdung-tieude p{
-    color:#9EE89E;
-    font-size:30px;
+.ngdung-tieude p {
+    color: #6BCA6B;
+    font-size: 30px;
 }
 .btn-cam {
     background-color: #FF8A00;
@@ -319,7 +319,7 @@ ul .none {
     }
 
         .ThemNV a:hover {
-            background-color: #9EE89E; /* Màu nền hover */
+            background-color: #6BCA6B; /* Màu nền hover */
         }
 
 
@@ -607,3 +607,8 @@ border-radius: 10px;
         height: 50px; /* Đặt chiều cao của hình ảnh */
         object-fit: cover; /* Đảm bảo hình ảnh được điều chỉnh kích thước mà không bị méo */
     }
+
+.quenmk form {
+    width: 75%;
+    margin: 0 auto;
+}

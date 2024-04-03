@@ -352,7 +352,7 @@ body {
 /* 2.3 header bottom css here*/
 
 .header_bottom {
-    background: #9EE89E;
+    background: #6BCA6B;
     height: 50px;
     position: relative;
 }
@@ -1181,7 +1181,7 @@ body {
 
 .footer_area {
     color: #fff;
-    background-color: #9EE89E;
+    background-color: #6BCA6B;
     padding: 38px 70px 0;
     position: relative;
 }

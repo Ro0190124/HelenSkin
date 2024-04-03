@@ -1,0 +1,48 @@
+﻿@model NGUOI_DUNG
+<div class="breadcrumbs_area">
+    <div class="row">
+        <div class="col-12">
+            <div class="breadcrumb_content">
+                <ul>
+                    <li><a asp-area="" asp-controller="Home" asp-action="DangNhap">Đăng nhập</a></li>
+                    <li><i class="fa fa-angle-right"></i></li>
+                    <li>Quên mật khẩu</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="create-nd mt-3">
+    <div class="ThenTK-form quenmk">
+        <h2>Quên mật khẩu</h2>
+        <form method="post" asp-action="ThongTinTK">
+            <div class="cangiua">
+                <div class="">
+                    <p>
+                        <label>Số điện thoại<span>:</span></label></br>
+                        <input type="text" name="SoDienThoai" required asp-for="SoDienThoai"></br>
+                        <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                    </p>
+                </div>
+                <div class="">
+                    <p>
+                        <label>Tên tài khoản<span>:</span></label></br>
+                        <input type="text" name="TenTaiKhoan" required asp-for="TenTaiKhoan"></br>
+                        <span asp-validation-for="TenTaiKhoan" class="text-danger"></span>
+                    </p>
+                </div>
+                <div class="">
+                    <p>
+                        <label>Mật khẩu mới<span>:</span></label></br>
+                        <input type="password" asp-for="MatKhau" required>
+                        <span class="text-danger" asp-validation-for="MatKhau"></span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="ThemTK-btn mt-3">
+                <button type="submit"> Xác nhận</button>
+            </div>
+        </form>
+    </div>
+</div>

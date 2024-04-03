@@ -20,6 +20,7 @@ namespace HelenSkin.Controllers
         public IActionResult Index()
         {
             var sanPhamMoi = _db.db_SAN_PHAM
+                                    .Where(sp => sp.TrangThai == true)
                                     .Include(sp => sp.db_DS_MEDIA_HINH_ANH)
                                     .OrderByDescending(sp => sp.NgayTao)
                                     .Take(7)
@@ -27,7 +28,8 @@ namespace HelenSkin.Controllers
 
             // Lấy 7 sản phẩm nổi bật (có số lượng nhiều nhất)
             var sanPhamNoiBat = _db.db_SAN_PHAM
-                                   .Include(sp => sp.db_DS_MEDIA_HINH_ANH)
+				                   .Where(sp => sp.TrangThai == true)
+								   .Include(sp => sp.db_DS_MEDIA_HINH_ANH)
                                    .OrderByDescending(sp => sp.SoLuong)
                                    .Take(7)
                                    .ToList();
@@ -44,7 +46,7 @@ namespace HelenSkin.Controllers
         public async Task<IActionResult> SPChiTiet(int id)
         {
             Console.WriteLine(id);
-            var sanPham = await _db.db_SAN_PHAM
+            var sanPham = await _db.db_SAN_PHAM.Where(sp => sp.TrangThai == true)
                                         .Include(s => s.db_DS_MEDIA_HINH_ANH)
                                         .FirstOrDefaultAsync(s => s.MaSP == id);
 
@@ -170,7 +172,6 @@ namespace HelenSkin.Controllers
             }
 
         }
-
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
