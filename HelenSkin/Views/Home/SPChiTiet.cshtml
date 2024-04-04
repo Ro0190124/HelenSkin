@@ -12,14 +12,14 @@
                                 {
                                     <li>
                                         <a class="nav-link" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="false">
-                                            <img src="@image.Value.MediaHinhAnh" alt="@Model.TenSP" class="img-thumbnail" data-index="@image.Index">
+                                            <img src="~/img/product/@image.Value.MediaHinhAnh" alt="@Model.TenSP" class="img-thumbnail" data-index="@image.Index">
                                         </a>
                                     </li>
                                 }
                             </ul>
                             <div class="tab-pane col-9 fade show active" id="tab1" role="tabpanel">
                                 <div class="modal_tab_img">
-                                    <a href="#"><img id="selectedImage" src="@Model.db_DS_MEDIA_HINH_ANH.ElementAtOrDefault(0)?.MediaHinhAnh" alt=""></a>
+                                    <a href="#"><img id="selectedImage" src="~/img/product/@Model.db_DS_MEDIA_HINH_ANH.ElementAtOrDefault(0)?.MediaHinhAnh" alt=""></a>
                                 </div>
                             </div>
                         </div>
