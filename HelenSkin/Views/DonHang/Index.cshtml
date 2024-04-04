@@ -2,31 +2,45 @@
 @{
     bool phanquyenCookie = bool.Parse(Context.Request.Cookies["PhanQuyen"]);
 }
+
 <div class="Tb-Container mt-3">
     <div class="portfolio_button">
         <div class="row">
             <div class="col-12">
-
-                <a asp-controller="DonHang" asp-action="Index"><button class="active" >Chờ xác nhận </button></a>
-                <a class="active" asp-controller="DonHang" asp-action="DaXacNhan"><button>Chờ giao</button></a>
-                <a asp-controller="DonHang" asp-action="DangGiao"><button>Đang giao</button></a>
-                <a asp-controller="DonHang" asp-action="DaGiao"><button>Đã giao</button></a>
-                <a asp-controller="DonHang" asp-action="DaHuy"><button>Đã hủy</button></a>
+                   <a asp-controller="DonHang" asp-action="Index" asp-route-value="0">
+                    <button class="@(ViewContext.HttpContext.Request.Query["value"] == "0" ? "active" : "")">Chờ xác nhận</button>
+                    </a>
+                    <a asp-controller="DonHang" asp-action="Index" asp-route-value="1">
+                        <button class="@(ViewContext.HttpContext.Request.Query["value"] == "1" ? "active" : "")">Chờ giao</button>
+                    </a>
+                <a asp-controller="DonHang" asp-action="Index" asp-route-value="2">
+                        <button class="@(ViewContext.HttpContext.Request.Query["value"] == "2" ? "active" : "")">Đang giao</button>
+                    </a>
+                <a asp-controller="DonHang" asp-action="Index" asp-route-value="3">
+                        <button class="@(ViewContext.HttpContext.Request.Query["value"] == "3" ? "active" : "")">Đã giao</button>
+                    </a>
+                <a asp-controller="DonHang" asp-action="Index" asp-route-value="4">
+                        <button class="@(ViewContext.HttpContext.Request.Query["value"] == "4" ? "active" : "")">Đã hủy</button>
+                    </a>
             </div>
         </div>
     </div>
     <table class="table_user responsive-table">
         <thead>
             <tr>
-                <th> ID</th>
-                <th> Họ Tên</th>
-                <th> Đơn Giá</th>
-                <th> Ngày Đặt</th>
-                <th> Trạng Thái</th>
-                <th> Ghi Chú</th>
+                <th>ID</th>
+                <th>Họ Tên</th>
+                <th>Đơn Giá</th>
+                <th>Ngày Đặt</th>
+                <th>Trạng Thái</th>
+                <th>Ghi Chú</th>
                 @if (phanquyenCookie)
                 {
-                <th> Chỉnh sửa</th>
+                    @if (ViewContext.HttpContext.Request.Query["value"] == "0" || ViewContext.HttpContext.Request.Query["value"] == "1" || ViewContext.HttpContext.Request.Query["value"] == "2")
+                    {
+                        <th>Chỉnh sửa</th>
+                    }
+                    
                 }
                 <th>Chi Tiết</th>
             </tr>
@@ -34,54 +48,83 @@
         <tbody>
             @foreach (var item in Model)
             {
-                string status;
-                if (item.TrangThai == 0)
-                {
-                    status = "Chờ xác nhận";
-                }
-                else
-                {
-                    status = "Đã xác nhận";
-                }
-
-                // Lấy index của đơn hàng trong danh sách để truy xuất giá tương ứng
+                string status = (item.TrangThai == 0) ? "Chờ xác nhận" : "Đã xác nhận";
                 int index = Model.ToList().FindIndex(x => x.MaHD == item.MaHD);
 
                 <tr>
                     <td>@item.MaHD</td>
                     <td>@item.GIO_HANG.NGUOI_DUNG.TenND</td>
-                    <td>@ViewBag.TotalPrices[index]</td> <!-- Hiển thị giá tương ứng -->
+                    <td>@ViewBag.TotalPrices[index]</td>
                     <td>@item.NgayTao.ToShortDateString()</td>
                     <td>@status</td>
                     <td>@item.GhiChu</td>
 
-                    @if (phanquyenCookie)
+                    @if (phanquyenCookie && item.TrangThai == 0)
                     {
-                        
                         <td class="ND_Table_Icon d-flex justify-content-around">
                             <div class="bgr-x">
-                                <a class="btn btn-success" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">
-                                    Xác Nhận
-                                </a>
+                                <a class="btn btn-success" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">Xác Nhận</a>
                             </div>
                             <div class="bgr-x">
-                                <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">
-                                    Hủy
-                                </a>
+                                <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
                             </div>
-                          
                         </td>
                     }
+                   @*  chờ giao *@
+                    @if (phanquyenCookie && item.TrangThai == 1)
+                    {
+                        <td class="ND_Table_Icon d-flex justify-content-around">
+                            <div class="bgr-x">
+                                <a class="btn btn-success" asp-controller="DonHang" asp-action="Index" asp-route-id="@item.MaHD">Giao hàng</a>
+                            </div>
+                            <div class="bgr-x">
+                                <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
+                            </div>
+                        </td>
+                    }
+                    @*  đang giao *@
+                    @if (phanquyenCookie && item.TrangThai == 2)
+                    {
+                        <td class="ND_Table_Icon d-flex justify-content-around">
+                            <div class="bgr-x">
+                                <a class="btn btn-success" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">Đã nhậ</a>
+                            </div>
+                            <div class="bgr-x">
+                                <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
+                            </div>
+                        </td>
+                    }
+                    @*  đã giao
+                    @if (phanquyenCookie && item.TrangThai == 3)
+                    {
+                        <td class="ND_Table_Icon d-flex justify-content-around">
+                            <div class="bgr-x">
+                                <a class="btn btn-success" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">Xác Nhận</a>
+                            </div>
+                            <div class="bgr-x">
+                                <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
+                            </div>
+                        </td>
+                    }
+                     đã hủy
+                    @if (phanquyenCookie && item.TrangThai == 4)
+                    {
+                        <td class="ND_Table_Icon d-flex justify-content-around">
+                            <div class="bgr-x">
+                                <a class="btn btn-success" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">Xác Nhận</a>
+                            </div>
+                            <div class="bgr-x">
+                                <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
+                            </div>
+                        </td>
+                    } *@
                     <td>
                         <a asp-controller="DonHang" asp-action="ChiTietDonHangND" asp-route-id="@item.MaHD">
                             <i class="fas fa-list"></i>
                         </a>
                     </td>
                 </tr>
-
             }
-        </tbody>
         </tbody>
     </table>
 </div>
-

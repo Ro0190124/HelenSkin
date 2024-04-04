@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<HOA_DON>
 @{
-    var phanquyenCookie = Context.Request.Cookies["PhanQuyen"];
-    bool phanquyen = false;
+    bool phanquyenCookie = bool.Parse(Context.Request.Cookies["PhanQuyen"]);
+ 
 }
 <div class="Tb-Container mt-3">
     <div class="portfolio_button">
         <div class="row">
             <div class="col-12">
-                <a asp-controller="DonHang" asp-action="Index"><button>Chờ xác nhận </button></a>
+                <a asp-controller="DonHang" asp-action="Index" ><button>Chờ xác nhận </button></a>
                 <a asp-controller="DonHang" asp-action="DaXacNhan"><button class="active">Chờ giao</button></a>
                 <a asp-controller="DonHang" asp-action="DangGiao"><button>Đang giao</button></a>
                 <a asp-controller="DonHang" asp-action="DaGiao"><button>Đã giao</button></a>
@@ -24,7 +24,7 @@
                 <th> Ngày đặt</th>
                 <th> Trạng Thái</th>
                 <th> Ghi Chú</th>
-                @if (phanquyen)
+                @if (phanquyenCookie )
                 {
                     <th> Chỉnh sửa</th>
                 }
@@ -54,7 +54,7 @@
                     <td>@item.NgayTao.ToShortDateString()</td>
                     <td>@status</td>
                     <td>@item.GhiChu</td>
-                    @if (phanquyen)
+                    @if (phanquyenCookie)
                     {
                          <td class="ND_Table_Icon d-flex justify-content-around">
                         <div class="bgr-x">
