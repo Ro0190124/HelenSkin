@@ -950,15 +950,6 @@ body {
             background: #009483;
         }
 
-        .product_action a.details {
-            background: #555;
-            /* Different background for 'Details' button */
-        }
-
-            .product_action a.details:hover {
-                background: #666;
-                /* Different hover effect for 'Details' button */
-            }
 
 .single_product:hover .product_action {
     bottom: 0;

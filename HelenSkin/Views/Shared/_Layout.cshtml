@@ -32,7 +32,6 @@
         var userId = Context.Request.Cookies["ID"];
         var phanquyenCookie = Context.Request.Cookies["PhanQuyen"];
         bool phanquyen = false;
-
         if (!string.IsNullOrEmpty(phanquyenCookie))
         {
             bool.TryParse(phanquyenCookie, out phanquyen);
@@ -87,26 +86,33 @@
                                         <div class="main_menu d-none d-lg-block">
                                             <nav class="flex-between">
                                                 <ul>
-                                                    <li class="active">
+                                                    @{
+                                                        var currentController = ViewContext.RouteData.Values["controller"].ToString();
+                                                        var currentAction = ViewContext.RouteData.Values["action"].ToString();
+                                                    }
+
+                                                    @{
+                                                        var isAdminMenuActive = (currentController == "NguoiDung" || currentController == "DanhMuc" || currentController == "DonHang") && !(currentController == "SanPham" && currentAction == "ManHinhSP");
+                                                    }
+
+                                                    <li class="@(currentController == "Home" && currentAction == "Index" ? "active" : "")">
                                                         <a asp-area="" asp-controller="Home" asp-action="Index"> <i class="fas fa-light fa-store"></i> TRANG CHỦ</a>
-
                                                     </li>
-                                                    <li>
+                                                    <li class="@(currentController == "SanPham" && currentAction == "ManHinhSP" ? "active" : "")">
                                                         <a asp-area="" asp-controller="SanPham" asp-action="ManHinhSP">SẢN PHẨM</a>
-
                                                     </li>
                                                     <li>
                                                         <a href="portfolio.html">GIỚI THIỆU</a>
                                                     </li>
                                                     @if (phanquyen)
                                                     {
-                                                        <li class="user-icon">
+                                                        <li class="user-icon user-icon dropdown @(isAdminMenuActive ? "active" : "")">
                                                             <a href="#" data-toggle="dropdown">Quản lý</a>
                                                             <ul class="dropdown-menu">
-                                                                <li><a class="pl-3" asp-area="" asp-controller="NguoiDung" asp-action="Index">Tài khoản</a></li>
-                                                                <li><a class="pl-3" asp-area="" asp-controller="DanhMuc" asp-action="Index">Danh mục</a></li>
-                                                                <li><a class="pl-3" asp-area="" asp-controller="SanPham" asp-action="Index">Sản phẩm</a></li>
-                                                                <li><a class="pl-3" asp-controller="DonHang" asp-action="Index">Đơn hàng</a></li>
+                                                                <li><a class="pl-3 @(currentController == "NguoiDung" ? "active" : "")" asp-area="" asp-controller="NguoiDung" asp-action="Index">Tài khoản</a></li>
+                                                                <li><a class="pl-3 @(currentController == "DanhMuc" ? "active" : "")" asp-area="" asp-controller="DanhMuc" asp-action="Index">Danh mục</a></li>
+                                                                <li><a class="pl-3 @(currentController == "SanPham" && currentAction != "ManHinhSP" ? "active" : "")" asp-area="" asp-controller="SanPham" asp-action="Index">Sản phẩm</a></li>
+                                                                <li><a class="pl-3 @(currentController == "DonHang" ? "active" : "")" asp-controller="DonHang" asp-action="Index">Đơn hàng</a></li>
                                                             </ul>
                                                         </li>
                                                     }
