@@ -240,6 +240,8 @@ namespace HelenSkin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ThongTinTK(NGUOI_DUNG nguoidung)
         {
+            bool pq = bool.Parse(HttpContext.Request.Cookies["PhanQuyen"]);
+            Console.WriteLine(nguoidung.PhanQuyen);
             var existingPhone = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.SoDienThoai == nguoidung.SoDienThoai && x.MaND != nguoidung.MaND && x.TrangThai == true);
             var existingUsername = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == nguoidung.TenTaiKhoan && x.MaND != nguoidung.MaND && x.TrangThai == true);
 			int age = CalculateAge(nguoidung.NgaySinh);
@@ -266,6 +268,7 @@ namespace HelenSkin.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    nguoidung.PhanQuyen = pq;
                     _db.db_NGUOI_DUNG.Update(nguoidung);
                     _db.SaveChanges();
                     TempData["ThanhCong"] = "Sửa tài khoản thành công";

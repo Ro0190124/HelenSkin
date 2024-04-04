@@ -96,6 +96,18 @@ namespace HelenSkin.Controllers
                 var nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.MatKhau == matKhau && x.TrangThai == true);
                 var CheckTK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.TrangThai == true);
                 var CheckMK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MatKhau == matKhau && x.TrangThai == true);
+                if(tenTaiKhoan == null)
+                {
+                    ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản không được để trống");// ổn kh bạn hay là để mai fix tiếp :<
+                    return View();
+
+                }
+                if (matKhau == null)
+                {
+                    ModelState.AddModelError("MatKhau", "Mật khẩu không được để trống");// ổn kh bạn hay là để mai fix tiếp :<
+                    return View();
+
+                }
                 if (CheckTK == null)
                 {
                     ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản không tồn tại");// ổn kh bạn hay là để mai fix tiếp :<
@@ -117,6 +129,7 @@ namespace HelenSkin.Controllers
                 }
                 else
                 {
+                    TempData["ThatBai"] = "Đăng nhập thất bại";
                     return View();
 
                 }

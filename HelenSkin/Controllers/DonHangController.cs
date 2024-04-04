@@ -256,5 +256,20 @@ namespace HelenSkin.Controllers
             return View(chiTietGioHang);
 
 		}
-	}
+
+        public ActionResult DangGiao()
+        {
+            return View();
+        }
+
+        public ActionResult BiHuy()
+        {
+            return View();
+        }
+
+        public ActionResult DaGiao()
+        {
+            return View();
+        }
+    }
 }
