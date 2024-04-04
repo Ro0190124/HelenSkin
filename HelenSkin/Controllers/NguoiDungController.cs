@@ -228,8 +228,6 @@ namespace HelenSkin.Controllers
             if (!string.IsNullOrEmpty(userIdCookieValue) && int.TryParse(userIdCookieValue, out userId))
             {
                 NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == userId).First();
-
-
                 return View(nguoiDung); 
             }
             else
@@ -281,38 +279,45 @@ namespace HelenSkin.Controllers
             }
         }
 
-/*        public ActionResult QuenMK()
+        public ActionResult QuenMK()
         {
-			return View();
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult QuenMK(NGUOI_DUNG nguoidung)
         {
-			if (ModelState.IsValid)
+			NGUOI_DUNG user = _db.db_NGUOI_DUNG.FirstOrDefault(u =>	u.TenTaiKhoan == nguoidung.TenTaiKhoan && u.SoDienThoai == nguoidung.SoDienThoai && u.TrangThai == true);
+			var CheckTK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == nguoidung.TenTaiKhoan && x.TrangThai == true);
+			var CheckSDT = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.SoDienThoai == nguoidung.SoDienThoai && x.TrangThai == true);
+			if (CheckTK == null)
 			{
-				var user = _db.db_NGUOI_DUNG.FirstOrDefault(u =>
-					u.TenTaiKhoan == nguoidung.TenTaiKhoan &&
-					u.SoDienThoai == nguoidung.SoDienThoai);
-
-				if (user != null)
-				{
-					// Update mật khẩu cho user tại đây
-					user.MatKhau = nguoidung.MatKhau;
-
-					_db.SaveChanges();
-
-					TempData["ThanhCong"] = "Đặt lại mật khẩu thành công";
-					return RedirectToAction("DangNhap", "Home");
-
-				}
-				else
-				{
-					TempData["ThatBai"] = "Tên tài khoản hoặc số điện thoại không đúng";
-					return View();
-				}
+				ModelState.AddModelError("TenTaiKhoan", "Tên tài khoản không tồn tại");// ổn kh bạn hay là để mai fix tiếp :<
+				return View();
 			}
+            if(CheckSDT == null)
+            {
+				ModelState.AddModelError("SoDienThoai", "Số điện thoại không chính xác");// ổn kh bạn hay là để mai fix tiếp :<
+				return View();
+			}
+			ModelState.Remove("TenND");
+			if (ModelState.IsValid)
+            {
 
-		}*/
+                    // Update mật khẩu cho user tại đây
+                    user.MatKhau = nguoidung.MatKhau;
+                    _db.SaveChanges();
+                    TempData["ThanhCong"] = "Đặt lại mật khẩu thành công";
+                    return RedirectToAction("DangNhap", "Home");
+
+            }
+            else
+            {
+                TempData["ThatBai"] = "Sửa tài khoản thất bại";
+                return View(nguoidung);
+            }
+        }
+
 	}
 }
+

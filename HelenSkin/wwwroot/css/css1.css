@@ -61,13 +61,13 @@
     .search-box button {
         width: 25%;
         height: 30px;
-        background-color: #6BCA6B;
+        background-color: #308b30;
         color: white;
         border: none;
     }
 
         .search-box button:hover {
-            background-color: #7CD47C;
+            background-color: #49ad49;
         }
 
 .user-icon ul {
@@ -80,7 +80,8 @@
     }
 
         .user-icon ul li:hover {
-            background-color: #6BCA6B;
+            background-color: #49ad49;
+            color:white;            
         }
 
 ul .none {
@@ -131,7 +132,7 @@ ul .none {
         .giohang-sp .col-lg-2 a i {
             font-size: 20px;
             margin-top: 10px;
-            color: #7CD47C;
+            color: #49ad49;
         }
 
         .giohang-sp .col-lg-2 p {
@@ -153,7 +154,7 @@ ul .none {
     }
 
 .TTGH_button button {
-    background-color: #7CD47C;
+    background-color: #49ad49;
     height: 50px;
     border: none;
     color: white;
@@ -169,7 +170,7 @@ ul .none {
 }
 
 .logo-helenskin {
-    color: #7CD47C;
+    color: #49ad49;
 }
 
 .TTGiaoHang_ThanhToan .col-lg-3 {
@@ -260,7 +261,7 @@ ul .none {
 }
 
 .ngdung-tieude p {
-    color: #6BCA6B;
+    color: #308b30;
     font-size: 30px;
 }
 .btn-cam {
@@ -268,7 +269,7 @@ ul .none {
     color:white;
 }
 .btn-xanhLa {
-    background-color: #7CD47C;
+    background-color: #49ad49;
     color:white;
 }
 
@@ -319,7 +320,7 @@ ul .none {
     }
 
         .ThemNV a:hover {
-            background-color: #6BCA6B; /* Màu nền hover */
+            background-color: #308b30; /* Màu nền hover */
         }
 
 
@@ -334,7 +335,7 @@ ul .none {
     border: 1px solid #ccc;
     border-radius: 10px;
     text-align: center;
-    background-color: #7CD47C;
+    background-color: #49ad49;
     line-height: 40px; /* Đặt line-height bằng chiều cao của phần tử để căn giữa theo chiều dọc */
     color: #fff; /* Màu chữ */
     text-decoration: none; /* Loại bỏ gạch chân của liên kết */
@@ -496,7 +497,7 @@ ul .none {
         margin: 10px;
         padding: 5px 15px;
         float: left; /* Đặt nút về phía trái */
-        background-color: #7CD47C;
+        background-color: #49ad49;
         color: white;
         cursor: pointer;
         border: 1px solid #ccc;
@@ -517,7 +518,7 @@ ul .none {
 margin: 10px;
 padding: 5px 15px;
 float: left; /* Đặt nút về phía trái */
-background-color: #7CD47C;
+background-color: #49ad49;
 color: white;
 cursor: pointer;
 border: 1px solid #ccc;
@@ -534,7 +535,7 @@ border-radius: 10px;
 }
 
 .forn-xanh {
-    color: #7CD47C;
+    color: #49ad49;
 }
 .owl-carousel .owl-item img {
     display: block;
@@ -587,7 +588,7 @@ border-radius: 10px;
         .donhang-sp .col-lg-2 a i {
             font-size: 20px;
             margin-top: 10px;
-            color: #7CD47C;
+            color: #49ad49;
         }
 
         .donhang-sp .col-lg-2 p {

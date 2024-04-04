@@ -352,7 +352,7 @@ body {
 /* 2.3 header bottom css here*/
 
 .header_bottom {
-    background: #6BCA6B;
+    background: #308b30;
     height: 50px;
     position: relative;
 }
@@ -386,7 +386,7 @@ body {
 
 .main_menu nav > ul > li.active > a,
 .main_menu nav > ul > li:hover > a {
-    background: #7CD47C;
+    background: #49ad49;
 }
 
 .mega_menu {
@@ -1181,7 +1181,7 @@ body {
 
 .footer_area {
     color: #fff;
-    background-color: #6BCA6B;
+    background-color: #308b30;
     padding: 38px 70px 0;
     position: relative;
 }
@@ -1507,7 +1507,7 @@ body {
     padding-right: 15px;
     font-size: 14px;
     font-weight: bold;
-    color: #7CD47C;
+    color: #49ad49;
     text-transform: capitalize;
     line-height: 15px;
 }
