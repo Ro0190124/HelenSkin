@@ -1,0 +1,68 @@
+﻿@model IEnumerable<CHI_TIET_GIO_HANG>
+
+<div class="shopping_cart_area">
+    <form method="get" style="    margin-bottom: 1rem !important;
+    margin-left: 1.5rem !important;
+    padding-left: 9px;">
+        <div class="">
+            <div class="ND_TimKiem">
+                <input type="text" placeholder="Tìm kiếm người dùng (Tên TK, Tên người dùng, SDT)..." name="searchString">
+            </div>
+        </div>
+    </form>
+    <form action="#">
+        <!--coupon code area start-->
+        <div class="coupon_area">
+
+            <div class="row">
+
+                <div class="col-lg-9 col-md-9">
+
+                    @for (int i =0; i < 5;i++)
+                    {
+                        <div class="col-lg-12 col-md-12">
+                            <div class="coupon_code d-flex giohang-sp row py-3">
+                                        <img src="~/img/product/e962ee55-bb19-432e-b2a9-e3d3e974a419_pro_1_2.png" alt="Hình ảnh" style="width:300px; height:300px" />
+                                <div class="col-lg-3">
+                                    <p><strong>Tên sp @i</strong></p>
+
+                                    <input name="quantity" type="number" min="0" max="100" />
+
+                                </div>
+                                <div class="col-lg-3">
+                                    <a ><i class="fas fa-trash"></i> Xóa </a>s
+                                    <p> Đơn giá: 999,999,999 đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="coupon_code">
+                        <h3>Thông tin đơn hàng</h3>
+                        <div class="coupon_inner">
+                            <div class="cart_subtotal">
+                                <p>Tổng tiền</p>
+                                <p class="cart_amount">
+                                    99,999,999 đ
+                                </p>
+                            </div>
+                            <div class="ThemNV">
+                                <div class="form-group">
+                                    <label for="ghiChu">Ghi chú</label>
+                                    <textarea class="form-control" id="ghiChu" name="ghiChu" rows="3"></textarea>
+                                </div>
+
+                                <!-- Nút đặt hàng -->
+                                <button type="submit" class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang">Đặt hàng</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--coupon code area end-->
+    </form>
+</div>
