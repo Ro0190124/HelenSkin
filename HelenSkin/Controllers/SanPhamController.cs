@@ -130,7 +130,7 @@ namespace HelenSkin.Controllers
 							await file.CopyToAsync(stream);
 						}
 
-						// Tạo một đối tượng HinhAnh mới và gán MaSP của sản phẩm vừa được Sửa vào
+						// Tạo một đối tượng HinhAnh mới và gán MaSP của sản phẩm vừa được thêm vào
 						DS_MEDIA_HINH_ANH anh = new DS_MEDIA_HINH_ANH();
 						anh.MediaHinhAnh = imageName;
 						anh.MaSP = sanpham.MaSP;
@@ -140,11 +140,11 @@ namespace HelenSkin.Controllers
 				}
 
 
-				TempData["ThanhCong"] = "Sửa sản phẩm thành công.";
+				TempData["ThanhCong"] = "Thêm sản phẩm thành công.";
 				return RedirectToAction("Index");
 			}
 
-			TempData["ThatBai"] = "Sửa sản phẩm thất bại.";
+			TempData["ThatBai"] = "Thêm sản phẩm thất bại.";
 			return View(sanpham);
 		}
 
@@ -162,7 +162,7 @@ namespace HelenSkin.Controllers
 
 		// GET: SanPhamController/Edit/5
 		[HttpPost]
-		public async Task<IActionResult> Edit(int id, SAN_PHAM sanpham, List<IFormFile> hinhAnhTaiLen, List<int> selectedImages)
+		public async Task<IActionResult> Edit(int id, SAN_PHAM sanpham, List<IFormFile> hinhAnhTaiLen)
 		{
 			HamGoiDanhM(); 
 
@@ -171,17 +171,14 @@ namespace HelenSkin.Controllers
 				// Lấy sản phẩm cần chỉnh sửa từ cơ sở dữ liệu
 				var existingProduct = _db.db_SAN_PHAM.Include(sp => sp.db_DS_MEDIA_HINH_ANH).FirstOrDefault(sp => sp.MaSP == id);
 
-                // Cập nhật thông tin của sản phẩm
-                if (existingProduct != null)
-                {
-                    existingProduct.TenSP = sanpham.TenSP;
-                    existingProduct.Gia = sanpham.Gia;
-                    existingProduct.MoTa = sanpham.MoTa;
-                    existingProduct.MaDanhMuc = sanpham.MaDanhMuc;
-                }
+				// Cập nhật thông tin của sản phẩm
+				existingProduct.TenSP= sanpham.TenSP;
+				existingProduct.Gia = sanpham.Gia;
+				existingProduct.MoTa = sanpham.MoTa;
+				existingProduct.MaDanhMuc = sanpham.MaDanhMuc;
 
-                // Xử lý ảnh sản phẩm nếu có
-                foreach (var file in hinhAnhTaiLen)
+				// Xử lý ảnh sản phẩm nếu có
+				foreach (var file in hinhAnhTaiLen)
 				{
 					if (file != null && file.Length > 0)
 					{
@@ -201,21 +198,9 @@ namespace HelenSkin.Controllers
 						existingProduct.db_DS_MEDIA_HINH_ANH.Add(anh);
 					}
 				}
-                // Xử lý xóa ảnh đã chọn
-                if (existingProduct != null)
-                {
-                    foreach (var imageId in selectedImages)
-                    {
-                        var imageToRemove = existingProduct.db_DS_MEDIA_HINH_ANH.FirstOrDefault(i => i.MaDSHinhAnh == imageId);
-                        if (imageToRemove != null)
-                        {
-                            _db.db_DS_MEDIA_HINH_ANH.Remove(imageToRemove);
-                        }
-                    }
-                }
 
-                // Lưu thay đổi vào cơ sở dữ liệu
-                _db.SaveChanges();
+				// Lưu thay đổi vào cơ sở dữ liệu
+				_db.SaveChanges();
 
 				TempData["ThanhCong"] = "Sửa sản phẩm thành công.";
 				return RedirectToAction("Index");

@@ -41,6 +41,6 @@ namespace HelenSkin.Model
         public DANH_MUC DANH_MUC { get; set; }
         public virtual ICollection<DS_MEDIA_HINH_ANH>? db_DS_MEDIA_HINH_ANH { get; set; }
 		[NotMapped]
-		public IFormFile? HinhAnhTaiLen { get; set; }
+		public IFormFile HinhAnhTaiLen { get; set; }
     }
 }

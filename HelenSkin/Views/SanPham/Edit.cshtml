@@ -1,18 +1,5 @@
 ﻿@model SAN_PHAM
-<style>
-    .image-container {
-        display: inline-block;
-        margin-right: 10px; /* Thay đổi khoảng cách giữa các hình ảnh */
-    }
 
-        .image-container img {
-            max-width: 100px;
-            max-height: 100px;
-            display: block;
-            margin-bottom: 5px; /* Khoảng cách giữa hình ảnh và checkbox */
-        }
-
-</style>
 <div class="create-nd">
     <div class="breadcrumbs_area">
         <div class="row">
@@ -23,7 +10,7 @@
                         <li><i class="fa fa-angle-right"></i></li>
                         <li>Sản phẩm</li>
                         <li><i class="fa fa-angle-right"></i></li>
-                        <li>Sửa sản phẩm</li>
+                        <li>Thêm sản phẩm</li>
                     </ul>
 
                 </div>
@@ -31,25 +18,13 @@
         </div>
     </div>
     <div class="ThenTK-form register mt-3">
-        <h2>Sửa sản phẩm</h2>
-        <form method="post" action="/SanPham/Edit" enctype="multipart/form-data">
+        <h2>Thêm sản phẩm</h2>
+        <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label>Hình ảnh hiện tại (tích vào hình ảnh muốn xóa)</label>
-                @if (Model.db_DS_MEDIA_HINH_ANH != null)
-                {
-                    foreach (var image in Model.db_DS_MEDIA_HINH_ANH)
-                    {
-                        <div class="image-container">
-                            <img src="~/img/product/@image.MediaHinhAnh" class="image" />
-                            <input type="checkbox" name="selectedImages" value="@image.MaDSHinhAnh" id="image-@image.MaDSHinhAnh" />
-                        </div>
-                    }
-                }
-
-            <div class="form-group">
-                <label>Chọn hình ảnh mới (nếu có)</label>
+                <label>Hình ảnh</label>
                 <input asp-for="HinhAnhTaiLen" class="form-control" multiple id="HinhAnhTaiLen" name="hinhAnhTaiLen">
                 <span asp-validation-for="HinhAnhTaiLen" class="text-danger"></span>
+                <img id="imgpreview" class="pt-2" />
             </div>
 
             <div class="row">
@@ -97,7 +72,7 @@
 
 
             <div class="ThemTK-btn mt-3">
-                <button type="submit">Sửa sản phẩm</button>
+                <button type="submit">Thêm sản phẩm</button>
             </div>
         </form>
     </div>
@@ -120,16 +95,4 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-    //image
-    function selectCheckedImages() {
-        var selectedImageIds = [];
-        var checkboxes = document.getElementsByName('selectedImages');
-        checkboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-                selectedImageIds.push(parseInt(checkbox.value));
-            }
-        });
-        document.getElementById('SelectedImageIds').value = JSON.stringify(selectedImageIds);
-    }
- 
 </script>
