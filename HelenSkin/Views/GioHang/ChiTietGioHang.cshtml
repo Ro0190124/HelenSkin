@@ -8,26 +8,20 @@
                 <div class="col-lg-9 col-md-9">
                     @foreach (var item in Model)
                     {
-
-
-
-
                         <div class="col-lg-12 col-md-12">
                             <div class="coupon_code d-flex giohang-sp row py-3">
                                 @if (item.SAN_PHAM.db_DS_MEDIA_HINH_ANH != null && item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.Any())
                                 {
-                                    foreach (var hinhAnh in item.SAN_PHAM.db_DS_MEDIA_HINH_ANH)
-                                    {
                                         // Kiểm tra xem đường dẫn hình ảnh có tồn tại hay không
-                                        if (!string.IsNullOrEmpty(hinhAnh.MediaHinhAnh))
+                                        var firstImage = item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.FirstOrDefault();
+                                        if (firstImage != null && !string.IsNullOrEmpty(firstImage.MediaHinhAnh))
                                         {
-                                            <img src="~/img/product/@hinhAnh.MediaHinhAnh" alt="Hình ảnh" style="max-width: 150px; max-height: 150px; margin-right: 5px;" />
+                                            <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:300px; height:300px" />
                                         }
                                         else
                                         {
                                             <span>Đường dẫn hình ảnh không hợp lệ</span>
                                         }
-                                    }
                                 }
                                 else
                                 {
