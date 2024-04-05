@@ -47,7 +47,7 @@ namespace HelenSkin.Controllers
             else
 			{
 				//tìm hóa đơn của nguoi dung
-				obj = _db.db_HOA_DON.Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie) && x.TrangThai == 0).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
+				obj = _db.db_HOA_DON.Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie) && x.TrangThai == int.Parse(value)).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
                
             }
             List<double> total = new List<double>();
@@ -160,7 +160,7 @@ namespace HelenSkin.Controllers
 
         public ActionResult ChiTietDonHang(int id)
 		{
-			var cookie = Request.Cookies["ID"];
+			/*var cookie = Request.Cookies["ID"];
             NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
             // tìm hóa đơn theo id
 			HOA_DON hoaDon = _db.db_HOA_DON.Where(x => x.MaHD == id).First();
@@ -192,8 +192,8 @@ namespace HelenSkin.Controllers
 
             // Pass both gioHang and firstImages to the view
             ViewBag.GioHang = chiTietGioHang;
-            ViewBag.FirstImages = firstImages;
-            return View(chiTietGioHang);
+            ViewBag.FirstImages = firstImages;*/
+            return View();
         }
      
 			

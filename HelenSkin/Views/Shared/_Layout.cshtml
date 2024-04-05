@@ -138,7 +138,7 @@
                                                             @if (!string.IsNullOrEmpty(userId))
                                                             {                                                           
                                                                 <li><a class="" asp-area="" asp-controller="NguoiDung" asp-action="ThongTinTK">Thông tin tài khoản</a></li>
-                                                                <li><a class="" asp-area="" asp-controller="DonHang" asp-action="Index">Đơn hàng</a> </li>
+                                                                <li><a class="" asp-area="" asp-controller="DonHang" asp-action="Index" asp-route-value="0">Đơn hàng</a> </li>
                                                                 <li><a class="" asp-area="" asp-controller="Home" asp-action="DangXuat">Đăng xuất</a> </li>
                                                             }
                                                             else
