@@ -16,15 +16,21 @@ namespace HelenSkin.Controllers
 			_db = db;
 		}
 		// GET: DonHangController
-		public ActionResult Index()
+		
+		public ActionResult Index(string value)
 		{
+			Console.WriteLine("value : " + value);
+			if (value == null)
+			{
+                value = "0";
+            }
 			var cookie = Request.Cookies["ID"];
 			NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
 			
 			// lấy ra tất cả hóa đơn có trạng thái 0 (chưa xác nhận)
 			IEnumerable<HOA_DON> obj;
 
-			obj = _db.db_HOA_DON.Where(x => x.TrangThai == 0).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
+			obj = _db.db_HOA_DON.Where(x => x.TrangThai == int.Parse(value)).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
 
 
 			IEnumerable<CHI_TIET_GIO_HANG> gioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
@@ -70,7 +76,7 @@ namespace HelenSkin.Controllers
 
             return View(obj);
 		}
-        public ActionResult DaXacNhan()
+      /*  public ActionResult DaXacNhan()
         {
             var cookie = Request.Cookies["ID"];
             NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
@@ -109,7 +115,7 @@ namespace HelenSkin.Controllers
 
 
             return View(obj);
-        }
+        }*/
 
 
 		// GET: DonHangController/Details/5
@@ -119,7 +125,10 @@ namespace HelenSkin.Controllers
 			hoaDon.TrangThai = 1;
 			_db.SaveChanges();
 			TempData["tbDatHang"] = "Đã xác nhận đơn hàng";
-			return RedirectToAction("Index", "DonHang");
+            ViewBag.CurrentValue = "0";
+
+            return RedirectToAction("Index", "DonHang");
+
 		}
 
         public ActionResult Cancel(int id)
@@ -128,9 +137,28 @@ namespace HelenSkin.Controllers
             hoaDon.TrangThai = 4;
             _db.SaveChanges();
             TempData["tbDonHang"] = "Đã hủy đơn hàng";
+            ViewBag.CurrentValue = "4";
             return RedirectToAction("Index", "DonHang");
         }
-		public ActionResult ChiTietDonHang(int id)
+        public ActionResult GiaoHang(int id)
+        {
+            HOA_DON hoaDon = _db.db_HOA_DON.Where(x => x.MaHD == id).First();
+            hoaDon.TrangThai = 2;
+            _db.SaveChanges();
+            TempData["tbDatHang"] = "Đơn hàng đang được giao";
+            ViewBag.CurrentValue = "2";
+            return RedirectToAction("Index", "DonHang");
+        }
+        public ActionResult NhanHang(int id)
+        {
+            HOA_DON hoaDon = _db.db_HOA_DON.Where(x => x.MaHD == id).First();
+            hoaDon.TrangThai = 3;
+            _db.SaveChanges();
+            TempData["tbDatHang"] = "Hàng đã được giao thành công";
+            return RedirectToAction("Index", "DonHang");
+        }
+
+        public ActionResult ChiTietDonHang(int id)
 		{
 			var cookie = Request.Cookies["ID"];
             NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();

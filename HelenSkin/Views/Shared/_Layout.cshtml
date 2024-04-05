@@ -112,7 +112,7 @@
                                                                 <li><a class="pl-3 @(currentController == "NguoiDung" ? "active" : "")" asp-area="" asp-controller="NguoiDung" asp-action="Index">Tài khoản</a></li>
                                                                 <li><a class="pl-3 @(currentController == "DanhMuc" ? "active" : "")" asp-area="" asp-controller="DanhMuc" asp-action="Index">Danh mục</a></li>
                                                                 <li><a class="pl-3 @(currentController == "SanPham" && currentAction != "ManHinhSP" ? "active" : "")" asp-area="" asp-controller="SanPham" asp-action="Index">Sản phẩm</a></li>
-                                                                <li><a class="pl-3 @(currentController == "DonHang" ? "active" : "")" asp-controller="DonHang" asp-action="Index">Đơn hàng</a></li>
+                                                                <li><a class="pl-3 @(currentController == "DonHang" ? "active" : "")" asp-controller="DonHang" asp-action="Index" asp-route-value="0" >Đơn hàng</a></li>
                                                             </ul>
                                                         </li>
                                                     }
