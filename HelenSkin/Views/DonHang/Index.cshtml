@@ -48,7 +48,24 @@
         <tbody>
             @foreach (var item in Model)
             {
-                string status = (item.TrangThai == 0) ? "Chờ xác nhận" : "Đã xác nhận";
+                string status = "";
+                if(item.TrangThai == 0)
+                {
+                    status = "Chờ xác nhận";
+                }
+                else if( item.TrangThai == 1)
+                {
+                    status = "Chờ giao";
+                }
+                else if( item.TrangThai == 2)
+                {
+                    status = "Đang giao";
+                }
+                else if( item.TrangThai == 3)
+                {
+                    status = "Giao thành công";
+                }
+                else { status = " Đã bị hùy"; }
                 int index = Model.ToList().FindIndex(x => x.MaHD == item.MaHD);
 
                 <tr>
@@ -58,18 +75,31 @@
                     <td>@item.NgayTao.ToShortDateString()</td>
                     <td>@status</td>
                     <td>@item.GhiChu</td>
-
-                    @if (phanquyenCookie && item.TrangThai == 0)
+                    @if ( item.TrangThai == 0)
                     {
-                        <td class="ND_Table_Icon d-flex justify-content-around">
-                            <div class="bgr-x">
-                                <a class="btn btn-success" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">Xác Nhận</a>
-                            </div>
-                            <div class="bgr-x">
-                                <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
-                            </div>
-                        </td>
-                    }
+                        @if (phanquyenCookie)
+                        {
+                            <td class="ND_Table_Icon d-flex justify-content-around">
+                                <div class="bgr-x">
+                                    <a class="btn btn-success" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">Xác Nhận</a>
+                                </div>
+                                <div class="bgr-x">
+                                    <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
+                                </div>
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="ND_Table_Icon d-flex justify-content-around">
+                                <div class="bgr-x">
+                                    <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
+                                </div>
+                            </td>
+                            
+                        }
+
+                }
+                   
                    @*  chờ giao *@
                     @if (phanquyenCookie && item.TrangThai == 1)
                     {
