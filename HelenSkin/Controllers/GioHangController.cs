@@ -289,5 +289,10 @@ namespace HelenSkin.Controllers
 			}
 			return RedirectToAction("Index", "Home");
 		}
+
+        public ActionResult ThanhToanOff()
+        {
+            return View();
+        }
 	}
 }
