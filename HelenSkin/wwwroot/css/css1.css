@@ -618,3 +618,28 @@ border-radius: 10px;
 .color-white {
     color: #fff;
 }
+
+.gioithieu-home .Cgiua {
+    text-align: center;
+}
+
+.gioithieu-home .gt-row9 img {
+    width: 75%;
+    object-fit: cover;
+    height: 400px;
+}
+.gioithieu-home p {
+    text-indent: 15px;
+}
+.sidebox_content ul li{
+    color:black;
+}
+.border-gach {
+    border-bottom: 1px dashed #e5e5e5; /* Đổi #000 thành mã màu bạn muốn sử dụng */
+}
+.sidebox_content .menuList-links li a span{
+    font-size:17px;
+}
+.sidebox_content .menuList-links li a:hover {
+    color: #49ad49;
+}
