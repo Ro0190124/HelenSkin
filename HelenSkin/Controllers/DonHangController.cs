@@ -25,7 +25,7 @@ namespace HelenSkin.Controllers
                 value = "0";
             }
 			var cookie = Request.Cookies["ID"];
-			NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+			NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).FirstOrDefault ();
 			
 			// lấy ra tất cả hóa đơn có trạng thái 0 (chưa xác nhận)
 			IEnumerable<HOA_DON> obj;
@@ -260,11 +260,6 @@ namespace HelenSkin.Controllers
 			}
 		}
 
-		public ActionResult DonHangND()
-		{
-
-			return View();
-		}
 		public ActionResult ChiTietDonHangND(int? id)
 		{
 			Console.WriteLine(" mã đơn hàng : " +id);
@@ -285,19 +280,6 @@ namespace HelenSkin.Controllers
 
 		}
 
-        public ActionResult DangGiao()
-        {
-            return View();
-        }
-
-        public ActionResult BiHuy()
-        {
-            return View();
-        }
-
-        public ActionResult DaGiao()
-        {
-            return View();
-        }
+		
     }
 }
