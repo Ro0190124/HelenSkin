@@ -643,3 +643,6 @@ border-radius: 10px;
 .sidebox_content .menuList-links li a:hover {
     color: #49ad49;
 }
+.product_thumb .product_action a:hover {
+    background-color: #25a395;
+}

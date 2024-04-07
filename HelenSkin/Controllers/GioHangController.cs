@@ -294,5 +294,20 @@ namespace HelenSkin.Controllers
         {
             return View();
         }
-	}
+
+        public async Task<JsonResult> GetProducts(string searchString)
+        {
+            var sanPhams = await _db.db_SAN_PHAM
+                                    .Where(sp => sp.TrangThai == true && sp.TenSP.Contains(searchString))
+                                    .Include(s => s.db_DS_MEDIA_HINH_ANH)
+                                    .Select(s => new {
+                                        s.TenSP,
+                                        s.Gia,
+                                        s.db_DS_MEDIA_HINH_ANH.FirstOrDefault(x => x.MaSP == s.MaSP).MediaHinhAnh
+                                    })
+                                    .ToListAsync();
+
+            return Json(new { products = sanPhams });
+        }
+    }
 }

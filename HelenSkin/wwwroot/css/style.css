@@ -946,8 +946,8 @@ body {
         /* Center text in buttons */
     }
 
-        .product_action a.add_to_cart:hover {
-            background: #009483;
+        .product_action a:hover {
+            background-color: #25a395;
         }
 
 
