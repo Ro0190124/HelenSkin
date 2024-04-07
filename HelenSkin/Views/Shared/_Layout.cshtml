@@ -148,7 +148,15 @@
                                                         </ul>
                                                     </li>
                                                     <li class="px-1">
-                                                        <a asp-area="" asp-controller="GioHang" asp-action="ChiTietGioHang"><i class="fa fa-shopping-cart"></i></a>
+                                                        @if (phanquyen)
+                                                        {
+                                                            <a asp-area="" asp-controller="GioHang" asp-action="ThanhToanOFf"><i class="fa fa-shopping-cart"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a asp-area="" asp-controller="GioHang" asp-action="ChiTietGioHang"><i class="fa fa-shopping-cart"></i></a>
+                                                        }
+                                                        
                                                     </li>
                                                 </ul>
                                             </nav>

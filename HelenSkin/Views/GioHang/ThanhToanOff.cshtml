@@ -1,16 +1,15 @@
 ﻿@model IEnumerable<CHI_TIET_GIO_HANG>
 
 <div class="shopping_cart_area">
-    <form method="get" style="    margin-bottom: 1rem !important;
-    margin-left: 1.5rem !important;
-    padding-left: 9px;">
-        <div class="">
+    <form method="get" style="margin-bottom: 1rem !important; margin-left: 1.5rem !important; padding-left: 9px;">
+        <div>
             <div class="ND_TimKiem">
                 <input type="text" placeholder="Tìm kiếm sản phẩm (Tên sản phẩm)..." name="searchString" id="searchString">
             </div>
         </div>
     </form>
-    <div id="productInfo"></div>
+
+    <div id="productInfo" class="search-results"></div>
     <form action="#">
         <!--coupon code area start-->
         <div class="coupon_area">

@@ -24,8 +24,14 @@ namespace HelenSkin.Controllers
 			{
                 value = "0";
             }
+
 			var cookie = Request.Cookies["ID"];
-			NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).FirstOrDefault ();
+		
+			if (cookie == null)
+			{
+				return NotFound();
+			}
+			NGUOI_DUNG? nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
 			
 			// lấy ra tất cả hóa đơn có trạng thái 0 (chưa xác nhận)
 			IEnumerable<HOA_DON> obj;
@@ -39,7 +45,6 @@ namespace HelenSkin.Controllers
 																		  .ToList();
 
 			
-			// kiểm tra xem người dùng có phải là admin hay không
 			if (nguoiDung.PhanQuyen == true)
 			{
 			 
