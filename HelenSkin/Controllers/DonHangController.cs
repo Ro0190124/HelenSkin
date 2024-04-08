@@ -15,92 +15,43 @@ namespace HelenSkin.Controllers
 
 			_db = db;
 		}
-		// GET: DonHangController
-		
-		public ActionResult Index(string value)
-		{
-			Console.WriteLine("value : " + value);
-			if (value == null)
-			{
+        // GET: DonHangController
+
+        public ActionResult Index(string value)
+        {
+            Console.WriteLine("value : " + value);
+            if (value == null)
+            {
                 value = "0";
             }
 
-			var cookie = Request.Cookies["ID"];
-		
-			if (cookie == null)
-			{
-				return NotFound();
-			}
-			NGUOI_DUNG? nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
-			
-			// lấy ra tất cả hóa đơn có trạng thái 0 (chưa xác nhận)
-			IEnumerable<HOA_DON> obj;
+            TempData["currentValue"] = value;
 
-			obj = _db.db_HOA_DON.Where(x => x.TrangThai == int.Parse(value)).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
-
-
-			IEnumerable<CHI_TIET_GIO_HANG> gioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
-																		  .Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie))
-																		  .Include(x => x.SAN_PHAM)
-																		  .ToList();
-
-			
-			if (nguoiDung.PhanQuyen == true)
-			{
-			 
-            }
-            else
-			{
-				//tìm hóa đơn của nguoi dung
-				obj = _db.db_HOA_DON.Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie) && x.TrangThai == int.Parse(value)).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
-               
-            }
-            List<double> total = new List<double>();
-
-            foreach (var item in obj)
-            {
-                double totalPrice = 0;
-
-
-                var prices = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
-                                                      .Where(x => x.GIO_HANG.MaGioHang == item.MaGioHang)
-                                                      .Select(x => x.SAN_PHAM.Gia)
-                                                      .ToList();
-
-                foreach (var price in prices)
-                {
-                    totalPrice += price;
-                }
-
-                total.Add(totalPrice);
-            }
-
-
-            ViewBag.TotalPrices = total;
-
-
-            return View(obj);
-		}
-      /*  public ActionResult DaXacNhan()
-        {
             var cookie = Request.Cookies["ID"];
-            NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+
+            if (cookie == null)
+            {
+                return NotFound();
+            }
+
+            NGUOI_DUNG? nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+
             IEnumerable<HOA_DON> obj;
 
-            obj = _db.db_HOA_DON.Where(x => x.TrangThai == 1).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
-
-
-            IEnumerable<CHI_TIET_GIO_HANG> gioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
-                                                                          .Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie))
-                                                                          .Include(x => x.SAN_PHAM)
-                                                                          .ToList();
+            if (nguoiDung.PhanQuyen == true)
+            {
+                obj = _db.db_HOA_DON.Where(x => x.TrangThai == int.Parse(value)).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
+            }
+            else
+            {
+                obj = _db.db_HOA_DON.Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie) && x.TrangThai == int.Parse(value)).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
+            }
 
             List<double> total = new List<double>();
 
             foreach (var item in obj)
             {
                 double totalPrice = 0;
-
 
                 var prices = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
                                                       .Where(x => x.GIO_HANG.MaGioHang == item.MaGioHang)
@@ -115,23 +66,61 @@ namespace HelenSkin.Controllers
                 total.Add(totalPrice);
             }
 
-
             ViewBag.TotalPrices = total;
 
-
             return View(obj);
-        }*/
+        }
+        /*  public ActionResult DaXacNhan()
+          {
+              var cookie = Request.Cookies["ID"];
+              NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.Where(x => x.MaND == int.Parse(cookie)).First();
+              IEnumerable<HOA_DON> obj;
+
+              obj = _db.db_HOA_DON.Where(x => x.TrangThai == 1).Include(x => x.GIO_HANG).ThenInclude(x => x.NGUOI_DUNG).ToList();
 
 
-		// GET: DonHangController/Details/5
-		public ActionResult Accept(int id)
+              IEnumerable<CHI_TIET_GIO_HANG> gioHang = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
+                                                                            .Where(x => x.GIO_HANG.MaNguoiDung == int.Parse(cookie))
+                                                                            .Include(x => x.SAN_PHAM)
+                                                                            .ToList();
+
+              List<double> total = new List<double>();
+
+              foreach (var item in obj)
+              {
+                  double totalPrice = 0;
+
+
+                  var prices = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
+                                                        .Where(x => x.GIO_HANG.MaGioHang == item.MaGioHang)
+                                                        .Select(x => x.SAN_PHAM.Gia)
+                                                        .ToList();
+
+                  foreach (var price in prices)
+                  {
+                      totalPrice += price;
+                  }
+
+                  total.Add(totalPrice);
+              }
+
+
+              ViewBag.TotalPrices = total;
+
+
+              return View(obj);
+          }*/
+
+
+        // GET: DonHangController/Details/5
+        public ActionResult Accept(int id)
 		{
 			HOA_DON hoaDon = _db.db_HOA_DON.Where(x => x.MaHD == id).First();
 			hoaDon.TrangThai = 1;
 			_db.SaveChanges();
 			TempData["tbDatHang"] = "Đã xác nhận đơn hàng";
             ViewBag.CurrentValue = "0";
-
+			TempData["currentValue"] = 0;
             return RedirectToAction("Index", "DonHang");
 
 		}
@@ -143,6 +132,7 @@ namespace HelenSkin.Controllers
             _db.SaveChanges();
             TempData["tbDonHang"] = "Đã hủy đơn hàng";
             ViewBag.CurrentValue = "4";
+			TempData["currentValue"] = 4;
             return RedirectToAction("Index", "DonHang");
         }
         public ActionResult GiaoHang(int id)
@@ -152,12 +142,14 @@ namespace HelenSkin.Controllers
             _db.SaveChanges();
             TempData["tbDatHang"] = "Đơn hàng đang được giao";
             ViewBag.CurrentValue = "2";
+			TempData["currentValue"] = 2;
             return RedirectToAction("Index", "DonHang");
         }
         public ActionResult NhanHang(int id)
         {
             HOA_DON hoaDon = _db.db_HOA_DON.Where(x => x.MaHD == id).First();
             hoaDon.TrangThai = 3;
+			TempData["currentValue"] = 3;
             _db.SaveChanges();
             TempData["tbDatHang"] = "Hàng đã được giao thành công";
             return RedirectToAction("Index", "DonHang");

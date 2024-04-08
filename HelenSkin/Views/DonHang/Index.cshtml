@@ -7,21 +7,21 @@
     <div class="portfolio_button">
         <div class="row">
             <div class="col-12">
-                   <a asp-controller="DonHang" asp-action="Index" asp-route-value="0">
-                    <button class="@(ViewContext.HttpContext.Request.Query["value"] == "0" ? "active" : "")">Chờ xác nhận</button>
-                    </a>
-                    <a asp-controller="DonHang" asp-action="Index" asp-route-value="1">
-                        <button class="@(ViewContext.HttpContext.Request.Query["value"] == "1" ? "active" : "")">Chờ giao</button>
-                    </a>
+                <a asp-controller="DonHang" asp-action="Index" asp-route-value="0">
+                    <button class="@(TempData["currentValue"]?.ToString() == "0" ? "active" : "")">Chờ xác nhận</button>
+                </a>
+                <a asp-controller="DonHang" asp-action="Index" asp-route-value="1">
+                    <button class="@(TempData["currentValue"]?.ToString() == "1" ? "active" : "")">Chờ giao</button>
+                </a>
                 <a asp-controller="DonHang" asp-action="Index" asp-route-value="2">
-                        <button class="@(ViewContext.HttpContext.Request.Query["value"] == "2" ? "active" : "")">Đang giao</button>
-                    </a>
+                    <button class="@(TempData["currentValue"]?.ToString() == "2" ? "active" : "")">Đang giao</button>
+                </a>
                 <a asp-controller="DonHang" asp-action="Index" asp-route-value="3">
-                        <button class="@(ViewContext.HttpContext.Request.Query["value"] == "3" ? "active" : "")">Đã giao</button>
-                    </a>
+                    <button class="@(TempData["currentValue"]?.ToString() == "3" ? "active" : "")">Đã giao</button>
+                </a>
                 <a asp-controller="DonHang" asp-action="Index" asp-route-value="4">
-                        <button class="@(ViewContext.HttpContext.Request.Query["value"] == "4" ? "active" : "")">Đã hủy</button>
-                    </a>
+                    <button class="@(TempData["currentValue"]?.ToString() == "4" ? "active" : "")">Đã hủy</button>
+                </a>
             </div>
         </div>
     </div>
@@ -105,7 +105,7 @@
                     {
                         <td class="ND_Table_Icon d-flex justify-content-around">
                             <div class="bgr-x">
-                                <a class="btn btn-success" asp-controller="DonHang" asp-action="Index" asp-route-id="@item.MaHD">Giao hàng</a>
+                                <a class="btn btn-success" asp-controller="DonHang" asp-action="GiaoHang" asp-route-id="@item.MaHD">Giao hàng</a>
                             </div>
                             <div class="bgr-x">
                                 <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
@@ -113,11 +113,11 @@
                         </td>
                     }
                     @*  đang giao *@
-                    @if (phanquyenCookie && item.TrangThai == 2)
+                    @if (phanquyenCookie== false && item.TrangThai == 2)
                     {
                         <td class="ND_Table_Icon d-flex justify-content-around">
                             <div class="bgr-x">
-                                <a class="btn btn-success" asp-controller="DonHang" asp-action="Accept" asp-route-id="@item.MaHD">Đã nhậ</a>
+                                <a class="btn btn-success" asp-controller="DonHang" asp-action="NhanHang" asp-route-id="@item.MaHD">Đã nhận</a>
                             </div>
                             <div class="bgr-x">
                                 <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
