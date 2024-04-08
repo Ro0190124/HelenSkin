@@ -219,27 +219,14 @@
                                 <li>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="footer_social text-right">
-                                            <ul>
-                                                <li><a><i class="fas fa-facebook"></i></a></li>
-                                                <li><a href="#"><i class="fas fa-twitter"></i></a></li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fas fa-google-plus"
-                                                           aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="pinterest" href="#">
-                                                        <i class="fas fa-pinterest-p"
-                                                           aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><i class="fas fa-wifi" aria-hidden="true"></i></a>
-                                                </li>
+                                            <ul class="social-links">
+                                                <li><i class="fab fa-facebook"></i></li>
+                                                <li><i class="fab fa-youtube"></i></li>
+                                                <li><i class="fab fa-tiktok"></i></li>
                                             </ul>
                                         </div>
                                     </div>
+
                                 </li>
                             </ul>
                         </div>
@@ -317,3 +304,36 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+<style>
+    ul.social-links {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        ul.social-links li {
+            display: inline-block;
+        }
+
+            ul.social-links li i {
+                width: 30px;
+                height: 30px;
+                transition: transform 0.3s; /* Chỉ cần chuyển đổi kích thước */
+                display: inline-block; /* Cố gắng đặt các biểu tượng trong một khối hộp */
+            }
+
+                ul.social-links li i:hover {
+                    cursor: pointer;
+                }
+
+                ul.social-links li i.fa-facebook:hover {
+                    color: #1877f2; 
+                }
+
+                ul.social-links li i.fa-youtube:hover {
+                    color: #ff0000; 
+                }
+
+                ul.social-links li i.fa-tiktok:hover {
+                    color: #000000; 
+                }
+</style>
