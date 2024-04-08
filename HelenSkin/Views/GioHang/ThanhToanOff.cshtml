@@ -4,34 +4,50 @@
     <form method="get" style="margin-bottom: 1rem !important; margin-left: 1.5rem !important; padding-left: 9px;">
         <div>
             <div class="ND_TimKiem">
-                <input type="text" placeholder="Tìm kiếm sản phẩm (Tên sản phẩm)..." name="searchString" id="searchString">
+                <input type="text" placeholder="Tìm kiếm sản phẩm (Tên sản phẩm)..." name="timkiem" id="timkiem">
             </div>
         </div>
     </form>
 
-    <div id="productInfo" class="search-results" style="position: absolute; z-index:50;"></div>
+    <div id="hiensp" class="search-results" style="position: absolute; z-index:50;"></div>
     <form action="#">
         <!--coupon code area start-->
         <div class="coupon_area">
 
             <div class="row">
 
-                <div class="col-lg-9 col-md-9">
-
-                    @for (int i =0; i < 5;i++)
+                <div class="col-lg-9 col-md-9 ">
+                    @foreach (var item in Model)
                     {
                         <div class="col-lg-12 col-md-12">
                             <div class="coupon_code d-flex giohang-sp row py-3">
-                                        <img src="~/img/product/e962ee55-bb19-432e-b2a9-e3d3e974a419_pro_1_2.png" alt="Hình ảnh" style="width:300px; height:300px" />
-                                <div class="col-lg-3">
-                                    <p><strong>Tên sp @i</strong></p>
+                                <div class="col-lg-2">
 
-                                    <input name="quantity" type="number" min="0" max="100" />
+                                @if (item.SAN_PHAM.db_DS_MEDIA_HINH_ANH != null && item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.Any())
+                                {
 
+                                    var firstImage = item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.FirstOrDefault();
+                                    if (firstImage != null && !string.IsNullOrEmpty(firstImage.MediaHinhAnh))
+                                    {
+                                        <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:100px; height=auto;" />
+                                    }
+                                    else
+                                    {
+                                        <span>Đường dẫn hình ảnh không hợp lệ</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>Không có hình ảnh</span>
+                                }
                                 </div>
-                                <div class="col-lg-3">
-                                    <a style="color:black;"><i class="fas fa-trash"></i> Xóa </a>
-                                    <p> Đơn giá: 999,999,999 đ</p>
+                                <div class="col-lg-7 d-flex flex-column justify-content-between align-items-start">
+                                    <p><strong>@item.SAN_PHAM.TenSP</strong></p>
+                                    <input value="@item.SoLuong" name="quantity" type="number" min="1" max="100" onchange="updateQuantity('@item.MaSP', this.value)" style="width:50%;" />
+                                </div>
+                                <div class="col-lg-3 d-flex flex-column justify-content-between align-items-end">
+                                    <a onclick="deleteProduct('@item.MaSP')" style="color:black; margin-bottom: auto;"><i class="fas fa-trash"></i> Xóa </a>
+                                    <span class="product_price"> Đơn giá: @item.SAN_PHAM.Gia.ToString("N0")đ</span>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +62,16 @@
                             <div class="cart_subtotal">
                                 <p>Tổng tiền</p>
                                 <p class="cart_amount">
-                                    99,999,999 đ
+
+                                    @{
+                                        double total = 0;
+                                        for (int i = 0; i < Model.Count(); i++)
+                                        {
+                                            var item = Model.ElementAt(i);
+                                            total += item.SAN_PHAM.Gia * item.SoLuong;
+                                        }
+                                        @total.ToString("N0")
+                                    } đ
                                 </p>
                             </div>
                             <div class="ThemNV">
@@ -56,7 +81,8 @@
                                 </div>
 
                                 <!-- Nút đặt hàng -->
-                                <button  type="submit" class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang">Đặt hàng</button>
+                                <button type="submit" class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang" name="pageType" value="ThanhToanOff">Thanh toán</button>
+
                             </div>
                         </div>
                     </div>
@@ -66,27 +92,32 @@
         <!--coupon code area end-->
     </form>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<form id="addToCartForm" method="post" asp-controller="GioHang" asp-action="ThemVaoGioHang" style="display: none;">
+    <input type="hidden" name="id" id="productId" />
+    <input type="hidden" name="quantity" id="quantity" value="1" min="1" />
+</form>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const searchStringInput = document.getElementById("searchString");
-        const productInfo = document.getElementById("productInfo");
+        const timkiemInput = document.getElementById("timkiem");
+        const hiensp = document.getElementById("hiensp");
 
-        searchStringInput.addEventListener("input", function () {
-            const searchTerm = searchStringInput.value;
-
+        timkiemInput.addEventListener("input", function () {
+            const searchTerm = timkiemInput.value;
+            console.log(searchTerm);
             // Gửi yêu cầu AJAX đến server để tìm kiếm
             fetch(`/GioHang/GetProducts?searchString=${encodeURIComponent(searchTerm)}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Trong contro");
                     console.log(data.products);
-                    productInfo.innerHTML = "";
+                    hiensp.innerHTML = "";
                     if (data.products && data.products.length > 0) {
                         data.products.forEach(product => {
                             const imageUrl = `http://localhost:5066/img/product/${product.mediaHinhAnh}`;
-                            productInfo.innerHTML += `
+                            hiensp.innerHTML += `
                                <button style="background-color:none; border:none; width:80%; display: block; ">
+                                   <a onclick="addToCart(${product.maSP}, 1)">
                                     <div class="col-lg-12 col-md-12">
                                     <div class="coupon_code d-flex giohang-sp row">
                                         <img class="p-3" src="${imageUrl}" alt="Hình ảnh" style="width:100px; height:100px" />
@@ -98,11 +129,12 @@
                                         </div>
                                     </div>
                                 </div>
+                                </a>
                                 </button>
                             `;
                         });
                     } else {
-                        productInfo.innerHTML = "";
+                        hiensp.innerHTML = "";
                     }
                 })
                 .catch(error => {
@@ -110,4 +142,42 @@
                 });
         });
     });
+    function addToCart(productId, quantity) {
+        // Set the values of the hidden inputs in the form
+        document.getElementById('productId').value = productId;
+        document.getElementById('quantity').value = quantity;
+
+        // Submit the form
+        document.getElementById('addToCartForm').submit();
+    }
+    function deleteProduct(itemId) {
+        $.ajax({
+            url: '/GioHang/DeleteProduct',
+            type: 'POST',
+            data: { itemId: itemId },
+            success: function (response) {
+                console.log('Sản phẩm đã được xóa khỏi giỏ hàng.');
+                // Reload lại trang sau khi xóa sản phẩm thành công
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi xóa sản phẩm khỏi giỏ hàng: ' + error);
+            }
+        });
+    }
+    function updateQuantity(itemId, newQuantity) {
+        $.ajax({
+            url: '/GioHang/UpdateQuantity',
+            type: 'POST',
+            data: { itemId: itemId, newQuantity: newQuantity },
+            success: function (response) {
+                console.log('Số lượng đã được cập nhật thành công.');
+                // Reload lại trang sau khi cập nhật thành công
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error('Lỗi khi cập nhật số lượng: ' + error);
+            }
+        });
+    }
 </script>                                    

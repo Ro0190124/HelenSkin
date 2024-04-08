@@ -267,7 +267,7 @@ namespace HelenSkin.Controllers
 				return View();
 			}
 		}
-		public ActionResult DatHang(string ghiChu)
+		public ActionResult DatHang(string ghiChu , string pageType)
 		{
             var cookie = Request.Cookies["ID"];
 		
@@ -305,7 +305,14 @@ namespace HelenSkin.Controllers
                         HOA_DON hoaDon = new HOA_DON();
                         hoaDon.MaGioHang = gioHangChuaCoTrongHoaDon.MaGioHang;
                         hoaDon.NgayTao = DateTime.Now;
-                        hoaDon.TrangThai = 0;
+                        if (pageType == "GioHangChiTiet")
+                        {
+                            hoaDon.TrangThai = 0;
+                        }
+                        else if (pageType == "ThanhToanOff")
+                        {
+                            hoaDon.TrangThai = 3;
+                        }
                         hoaDon.MaDonViVanChuyen = 1;
                         Console.WriteLine(ghiChu);
                         hoaDon.GhiChu = ghiChu;
@@ -326,7 +333,45 @@ namespace HelenSkin.Controllers
 
         public ActionResult ThanhToanOff()
         {
-            return View();
+            var cookie = Request.Cookies["ID"];
+            // check cookie
+            Console.WriteLine(cookie);
+            if (cookie == null)
+            {
+                TempData["tbGioHang"] = "Vui lòng đăng nhập để xem giỏ hàng";
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                var gioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList();
+                var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang));
+
+                IEnumerable<CHI_TIET_GIO_HANG> chiTietGioHang = new List<CHI_TIET_GIO_HANG>();
+
+                if (gioHangChuaCoTrongHoaDon != null)
+                {
+                    chiTietGioHang = _db.db_CHI_TIET_GIO_HANG
+                        .Include(x => x.GIO_HANG)
+                        .Where(x => x.GIO_HANG.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang)
+                        .Include(x => x.SAN_PHAM)
+                        .ThenInclude(x => x.db_DS_MEDIA_HINH_ANH)
+                        .ToList();
+                    Console.WriteLine(gioHangChuaCoTrongHoaDon.MaGioHang);
+                    Console.WriteLine(chiTietGioHang.Count());
+                    foreach (var item in chiTietGioHang)
+                    {
+                        Console.WriteLine("1");
+                        Console.WriteLine(item.MaGioHang);
+                        Console.WriteLine(item.SAN_PHAM.MaSP);
+                    }
+                }
+                else
+                {
+                    // Handle the case where gioHangChuaCoTrongHoaDon is null
+                }
+
+                return View(chiTietGioHang); // Pass chiTietGioHang to the view
+            }
         }
 
         public async Task<JsonResult> GetProducts(string searchString)
