@@ -1,5 +1,18 @@
 ﻿@model SAN_PHAM
+<style>
+    .image-container {
+        display: inline-block;
+        margin-right: 10px; /* Thay đổi khoảng cách giữa các hình ảnh */
+    }
 
+        .image-container img {
+            max-width: 100px;
+            max-height: 100px;
+            display: block;
+            margin-bottom: 5px; /* Khoảng cách giữa hình ảnh và checkbox */
+        }
+
+</style>
 <div class="create-nd">
     <div class="breadcrumbs_area">
         <div class="row">
@@ -21,7 +34,21 @@
         <h2>Thêm sản phẩm</h2>
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label>Hình ảnh</label>
+                <label>Hình ảnh hiện tại (tích vào hình ảnh muốn xóa)</label>
+                @if (Model.db_DS_MEDIA_HINH_ANH != null)
+                {
+                    foreach (var image in Model.db_DS_MEDIA_HINH_ANH)
+                    {
+                        <div class="image-container">
+                            <img src="~/img/product/@image.MediaHinhAnh" class="image" />
+                            <input type="checkbox" name="selectedImages" value="@image.MaDSHinhAnh" id="image-@image.MaDSHinhAnh" />
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="form-group">
+                <label>Chọn hình ảnh mới (nếu có)</label>
                 <input asp-for="HinhAnhTaiLen" class="form-control" multiple id="HinhAnhTaiLen" name="hinhAnhTaiLen">
                 <span asp-validation-for="HinhAnhTaiLen" class="text-danger"></span>
                 <img id="imgpreview" class="pt-2" />
@@ -95,4 +122,21 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+    //image
+    $(document).ready(function () {
+        // Sự kiện khi ô checkbox được thay đổi
+        $('input[type="checkbox"][name="selectedImages"]').change(function () {
+            // Tạo một mảng để lưu trữ giá trị các hình ảnh đã chọn
+            var selectedImages = [];
+
+            // Lặp qua tất cả các ô checkbox và kiểm tra xem ô nào đã được chọn
+            $('input[type="checkbox"][name="selectedImages"]:checked').each(function () {
+                // Lấy giá trị của ô checkbox và thêm vào mảng
+                selectedImages.push($(this).val());
+            });
+
+            // Hiển thị giá trị của các hình ảnh đã chọn trong console (có thể thay đổi cách xử lý tùy theo nhu cầu của bạn)
+            console.log(selectedImages);
+        });
+    });
 </script>

@@ -37,11 +37,11 @@
                                         <div class="col-lg-3">
                                             <p><strong>@item.SAN_PHAM.TenSP</strong></p>
 
-                                            <input asp-asp-for="@item.SoLuong" value="@item.SoLuong" name="quantity" type="number" min="0" max="100" onchange="updateQuantity('@item.MaSP', this.value)" />
+                                            <input asp-asp-for="@item.SoLuong" readonly value="@item.SoLuong" name="quantity" type="number" min="0" max="100"  />
 
                                         </div>
                                         <div class="col-lg-3">
-                                            <a onclick="deleteProduct('@item.MaSP')"><i class="fas fa-trash"></i> Xóa </a>
+                                           
                                             <p> Đơn giá: @item.SAN_PHAM.Gia đ</p>
                                         </div>
                                     </div>
@@ -70,7 +70,7 @@
                                 </p>
                             </div>
                             <div class="cart_subtotal border-bt mt-3">
-                                <p>Địa chỉ </p>
+                                <p>Đ/C:  </p>
                                 <p class="cart_amount">
                                    @Model.FirstOrDefault().GIO_HANG.NGUOI_DUNG.DiaChi
                                 </p>
@@ -90,17 +90,26 @@
                                 </p>
                             </div>
 
-                            <div class="cart_subtotal border-bt mt-3">
+                          @*   <div class="cart_subtotal border-bt mt-3">
                                 <p>Trạng thái</p>
                                 <p class="cart_amount">
                                     Thành công
                                 </p>
-                            </div>
+                            </div> *@
 
                             <div class="cart_subtotal mt-3">
                                 <p>Tổng tiền</p>
                                 <p class="cart_amount">
-                                    10000
+
+                                    @{
+                                        double total = 0;
+                                        for (int i = 0; i < Model.Count(); i++)
+                                        {
+                                            var item = Model.ElementAt(i);
+                                            total += item.SAN_PHAM.Gia * item.SoLuong;
+                                        }
+                                        @total
+                                    }
                                 </p>
                             </div>
                         </div>

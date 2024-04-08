@@ -125,7 +125,7 @@
                                                     <a onclick="addToCart(@sanPham.MaSP, 1)">
                                                         <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
                                                     </a>
-                                                    <a href="single-product.html">Chi tiết</a>
+                                                    <a asp-controller="Home" asp-action="SPChiTiet" asp-route-id="@sanPham.MaSP">Chi tiết</a>
                                                 </div>
                                             </div>
                                             <div class="product_content">
