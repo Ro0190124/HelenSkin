@@ -10,13 +10,14 @@
                     {
                         <div class="col-lg-12 col-md-12">
                             <div class="coupon_code d-flex giohang-sp row py-3">
+                                <div class="col-lg-4">
                                 @if (item.SAN_PHAM.db_DS_MEDIA_HINH_ANH != null && item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.Any())
                                 {
                                         // Kiểm tra xem đường dẫn hình ảnh có tồn tại hay không
                                         var firstImage = item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.FirstOrDefault();
                                         if (firstImage != null && !string.IsNullOrEmpty(firstImage.MediaHinhAnh))
                                         {
-                                            <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:300px; height:300px" />
+                                            <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:300px; height:224px" />
                                         }
                                         else
                                         {
@@ -27,10 +28,9 @@
                                 {
                                     <span>Không có hình ảnh</span>
                                 }
-
-                                <div class="col-lg-3">
+                                </div>
+                                <div class="col-lg-5">
                                     <p><strong>@item.SAN_PHAM.TenSP</strong></p>
-
                                     <input value="@item.SoLuong" name="quantity" type="number" min="0" max="100" onchange="updateQuantity('@item.MaSP', this.value)" />
 
                                 </div>
@@ -53,9 +53,6 @@
                             <div class="cart_subtotal">
                                 <p>Tổng tiền</p>
                                 <p class="cart_amount">
-
-
-
 
                                     @{
                                         double total = 0;
