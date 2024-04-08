@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <a onclick="deleteProduct('@item.MaSP')" style="color: black"><i class="fas fa-trash"></i> Xóa </a>
-                                    <p> Đơn giá: @item.SAN_PHAM.Gia đ</p>
+                                    <p> Đơn giá: @item.SAN_PHAM.Gia.ToString("N0") đ</p>
                                 </div>
                             </div>
                         </div>
@@ -64,8 +64,8 @@
                                             var item = Model.ElementAt(i);
                                             total += item.SAN_PHAM.Gia * item.SoLuong;
                                         }
-                                        @total
-                                    }
+                                        @total.ToString("N0")
+                                    } đ
                                 </p>
                             </div>
                             <div class="ThemNV">
