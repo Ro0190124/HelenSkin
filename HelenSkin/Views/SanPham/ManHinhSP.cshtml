@@ -100,7 +100,7 @@
                             {
                                 @foreach (var sanPham in Model)
                                 {
-                                    <div class="col-lg-3 col-md-6 product-item @sanPham.DANH_MUC.MaDanhMuc">
+                                    <div class="col-lg-4 col-md-6 product-item @sanPham.DANH_MUC.MaDanhMuc">
                                         <div class="single_product">
                                             <div class="product_thumb">
                                                 <a href="single-product.html">
@@ -109,7 +109,7 @@
                                                         var firstImage = sanPham.db_DS_MEDIA_HINH_ANH.FirstOrDefault();
                                                         if (firstImage != null && !string.IsNullOrEmpty(firstImage.MediaHinhAnh))
                                                         {
-                                                            <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:300px; height:300px" />
+                                                            <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:400px; height:300px" />
                                                         }
                                                         else
                                                         {
@@ -148,16 +148,15 @@
             <!--pagination style start-->
             <div class="pagination_style">
                 <div class="item_page">
-                  
+                    <!-- Hiển thị sản phẩm ở đây -->
                 </div>
                 <div class="page_number">
                     <span>Pages: </span>
-                    <ul>
-                        <li>«</li>
-                        <li class="current_number">1</li>
-                        <li><a href="#">2</a></li>
-                        <li>»</li>
-                    </ul>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination" id="pagination">
+                            <!-- Các nút phân trang sẽ được thêm vào đây -->
+                        </ul>
+                    </nav>
                 </div>
             </div>
             <!--pagination style end-->
@@ -256,6 +255,70 @@
             });
         });
     });
+
+    //phân trang 
+    document.addEventListener("DOMContentLoaded", function () {
+    // Số lượng sản phẩm trên mỗi trang
+    var itemsPerPage = 9;
+
+    // Chọn phần tử chứa sản phẩm
+    var paginationUl = document.getElementById('pagination');
+
+    // Chọn tất cả các sản phẩm
+    var productItems = document.querySelectorAll('.product-item');
+
+    // Ẩn tất cả các sản phẩm trừ các sản phẩm của trang đầu tiên
+    for (var i = itemsPerPage; i < productItems.length; i++) {
+        productItems[i].style.display = 'none';
+    }
+
+    // Tính toán số lượng trang
+    var totalPages = Math.ceil(productItems.length / itemsPerPage);
+
+    // Tạo các nút phân trang
+    for (var i = 1; i <= totalPages; i++) {
+        var li = document.createElement('li');
+        li.classList.add('page-item');
+
+        var a = document.createElement('a');
+        a.classList.add('page-link');
+        a.href = '#';
+        a.textContent = i;
+
+        li.appendChild(a);
+        paginationUl.appendChild(li);
+    }
+
+    // Lắng nghe sự kiện click trên các nút phân trang
+    var paginationLinks = paginationUl.querySelectorAll('.page-link');
+    paginationLinks.forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            var currentPage = parseInt(event.target.textContent);
+            var startIndex = (currentPage - 1) * itemsPerPage;
+            var endIndex = startIndex + itemsPerPage;
+
+            // Ẩn tất cả các sản phẩm
+            productItems.forEach(function (item) {
+                item.style.display = 'none';
+            });
+
+            // Hiển thị sản phẩm của trang hiện tại
+            for (var i = startIndex; i < endIndex && i < productItems.length; i++) {
+                productItems[i].style.display = 'block';
+            }
+
+            // Cập nhật lớp active cho nút phân trang được chọn
+            paginationLinks.forEach(function (link) {
+                link.parentNode.classList.remove('active');
+            });
+            this.parentNode.classList.add('active');
+        });
+    });
+
+    // Mặc định hiển thị trang đầu tiên khi trang web được tải
+    paginationLinks[0].click();
+});
 
 
 </script>
