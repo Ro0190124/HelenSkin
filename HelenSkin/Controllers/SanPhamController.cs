@@ -49,37 +49,25 @@ namespace HelenSkin.Controllers
                 HinhAnh = images.Skip(1).ToList()
             });
         }
-		public ActionResult Index(string searchString, string category, bool? status)
-		{
-			IQueryable<SAN_PHAM> sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).Include(sp => sp.db_DS_MEDIA_HINH_ANH);
+        public ActionResult Index(string searchString)
+        {
+            IQueryable<SAN_PHAM> sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).Include(sp => sp.db_DS_MEDIA_HINH_ANH);
 
-			// Tìm kiếm theo tên sản phẩm
-			if (!string.IsNullOrEmpty(searchString))
-			{
-				sanPhams = sanPhams.Where(sp => sp.TenSP.Contains(searchString));
-			}
+            // Tìm kiếm theo tên sản phẩm hoặc danh mục
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                sanPhams = sanPhams.Where(sp => sp.TenSP.Contains(searchString) || sp.DANH_MUC.TenDanhMuc.Contains(searchString) && sp.TrangThai == true);
+            }
 
-			// Tìm kiếm theo danh mục
-			if (!string.IsNullOrEmpty(category))
-			{
-				sanPhams = sanPhams.Where(sp => sp.DANH_MUC.TenDanhMuc.Contains(category));
-			}
-
-			// Tìm kiếm theo trạng thái
-			if (status.HasValue)
-			{
-				sanPhams = sanPhams.Where(sp => sp.TrangThai == status.Value);
-			}
-
-			// Kết thúc câu truy vấn và trả về kết quả
-			return View(sanPhams.ToList());
-		}
+            // Kết thúc câu truy vấn và trả về kết quả
+            return View(sanPhams.ToList());
+        }
 
 
-		public ActionResult ManHinhSP()
+        public ActionResult ManHinhSP()
 		{
            
-            var sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).Include(sp => sp.db_DS_MEDIA_HINH_ANH).ToList();
+            var sanPhams = _db.db_SAN_PHAM.Where(x => x.TrangThai == true).Include(sp => sp.DANH_MUC).Include(sp => sp.db_DS_MEDIA_HINH_ANH).ToList();
 
             return View(sanPhams);
         }
@@ -109,52 +97,59 @@ namespace HelenSkin.Controllers
 			ViewBag.DanhMuc = NCC;
 		}
 
-		// POST: SanPhamController/Create
-		[HttpPost]
-		public async Task<IActionResult> Create(SAN_PHAM sanpham, List<IFormFile> hinhAnhTaiLen)
-		{
-			HamGoiDanhM();
-			if (ModelState.IsValid)
-			{
-				sanpham.NgayTao = DateTime.Now;
-				sanpham.TrangThai = true;
+        // POST: SanPhamController/Create
+        [HttpPost]
+        public async Task<IActionResult> Create(SAN_PHAM sanpham, List<IFormFile> hinhAnhTaiLen)
+        {
+            HamGoiDanhM();
+            if (ModelState.IsValid)
+            {
+                sanpham.NgayTao = DateTime.Now;
+                sanpham.TrangThai = true;
 
-				_db.db_SAN_PHAM.Add(sanpham);
-				_db.SaveChanges();
+                // Kiểm tra nếu danh sách hình ảnh rỗng
+                if (hinhAnhTaiLen == null || hinhAnhTaiLen.Count == 0)
+                {
+                    TempData["ThatBai"] = "Vui lòng tải lên ít nhất một hình ảnh.";
+                    return View(sanpham);
+                }
 
-				// Sau khi đã lưu sản phẩm, gán MaSP cho các hình ảnh và lưu chúng vào cơ sở dữ liệu
-				foreach (var file in hinhAnhTaiLen)
-				{
-					if (file != null && file.Length > 0)
-					{
-						string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "img/product");
-						string imageName = Guid.NewGuid().ToString() + "_" + file.FileName;
-						string filePath = Path.Combine(uploadDir, imageName);
+                _db.db_SAN_PHAM.Add(sanpham);
+                _db.SaveChanges();
 
-						using (var stream = new FileStream(filePath, FileMode.Create))
-						{
-							await file.CopyToAsync(stream);
-						}
+                // Sau khi đã lưu sản phẩm, gán MaSP cho các hình ảnh và lưu chúng vào cơ sở dữ liệu
+                foreach (var file in hinhAnhTaiLen)
+                {
+                    if (file != null && file.Length > 0)
+                    {
+                        string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "img/product");
+                        string imageName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                        string filePath = Path.Combine(uploadDir, imageName);
 
-						// Tạo một đối tượng HinhAnh mới và gán MaSP của sản phẩm vừa được thêm vào
-						DS_MEDIA_HINH_ANH anh = new DS_MEDIA_HINH_ANH();
-						anh.MediaHinhAnh = imageName;
-						anh.MaSP = sanpham.MaSP;
-						_db.db_DS_MEDIA_HINH_ANH.Add(anh);
-						_db.SaveChanges();
-					}
-				}
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+
+                        // Tạo một đối tượng HinhAnh mới và gán MaSP của sản phẩm vừa được thêm vào
+                        DS_MEDIA_HINH_ANH anh = new DS_MEDIA_HINH_ANH();
+                        anh.MediaHinhAnh = imageName;
+                        anh.MaSP = sanpham.MaSP;
+                        _db.db_DS_MEDIA_HINH_ANH.Add(anh);
+                        _db.SaveChanges();
+                    }
+                }
+
+                TempData["ThanhCong"] = "Thêm sản phẩm thành công.";
+                return RedirectToAction("Index");
+            }
+
+            TempData["ThatBai"] = "Thêm sản phẩm thất bại.";
+            return View(sanpham);
+        }
 
 
-				TempData["ThanhCong"] = "Thêm sản phẩm thành công.";
-				return RedirectToAction("Index");
-			}
-
-			TempData["ThatBai"] = "Thêm sản phẩm thất bại.";
-			return View(sanpham);
-		}
-
-		public ActionResult Edit(int id)
+        public ActionResult Edit(int id)
 		{
 			HamGoiDanhM();
 
@@ -180,7 +175,8 @@ namespace HelenSkin.Controllers
 				// Cập nhật thông tin của sản phẩm
 				existingProduct.TenSP= sanpham.TenSP;
 				existingProduct.Gia = sanpham.Gia;
-				existingProduct.MoTa = sanpham.MoTa;
+                existingProduct.SoLuong = sanpham.SoLuong;
+                existingProduct.MoTa = sanpham.MoTa;
 				existingProduct.MaDanhMuc = sanpham.MaDanhMuc;
 
 				// Xử lý ảnh sản phẩm nếu có
@@ -231,6 +227,7 @@ namespace HelenSkin.Controllers
             else
             {
                 sanpham.TrangThai = false;
+				sanpham.SoLuong = 0;
                 _db.db_SAN_PHAM.Update(sanpham);
                 TempData["ThanhCong"] = "Xóa sản phẩm thành công";
                 _db.SaveChanges();
