@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
+using System.Globalization;
+using System.Text;
 
 namespace HelenSkin.Controllers
 {
@@ -63,17 +65,38 @@ namespace HelenSkin.Controllers
             return View(sanPhams.ToList());
         }
 
+        public ActionResult ManHinhSP(string searchString)
+        {
+            IEnumerable<SAN_PHAM> sanPhams = _db.db_SAN_PHAM.Where(x => x.TrangThai == true).Include(sp => sp.DANH_MUC).Include(sp => sp.db_DS_MEDIA_HINH_ANH);
 
-        public ActionResult ManHinhSP()
-		{
-           
-            var sanPhams = _db.db_SAN_PHAM.Where(x => x.TrangThai == true).Include(sp => sp.DANH_MUC).Include(sp => sp.db_DS_MEDIA_HINH_ANH).ToList();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = RemoveDiacritics(searchString).ToLower(); // Chuyển chuỗi tìm kiếm về dạng không dấu và chữ thường
+                sanPhams = sanPhams.Where(sp => RemoveDiacritics(sp.TenSP).Contains(searchString) && sp.TrangThai == true).ToList();
+            }
 
-            return View(sanPhams);
+            return View(sanPhams.ToList());
         }
 
-		// GET: SanPhamController/Details/5
-		public ActionResult Details(int id)
+        public static string RemoveDiacritics(string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC).ToLower();
+        }
+
+        // GET: SanPhamController/Details/5
+        public ActionResult Details(int id)
 		{
 			return View();
 		}

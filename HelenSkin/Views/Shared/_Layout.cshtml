@@ -120,21 +120,9 @@
                                                 </ul>
                                                 <ul>
                                                     <li class="timkiem-layuot px-1">
-                                                        <input type="text" placeholder="Tìm kiếm sản phẩm... " name=" searchString" id="searchString">
-@*                                                         <a href="#" id="searchToggle">
-                                                            <input type="text" placeholder="Tìm kiếm sản phẩm...">
-                                                            <i class="fa fa-search"></i>
-                                                        </a>
-                                                        <div class="tk-trangchu" style="z-index: 100; box-shadow: 0 0 10px rgba(0, 0, 0, 1.5);">
-                                                            <h6><strong>TÌM KIẾM</strong></h6>
-                                                            <div class="search-box">
-                                                                <input type="text" placeholder="Tìm kiếm sản phẩm...">
-                                                                <button type="submit"><i class="fa fa-search"></i></button>
-                                                            </div>
-                                                        </div> *@
+                                                        <input type="text" placeholder="Tìm kiếm sản phẩm... " name="searchString" id="searchString">
                                                         <div id="productInfo" class="search-results mt-5" style="position: absolute; z-index:50; width:600px;"></div>
-
-                                                    </li>                                                      
+                                                    </li>
                                                     <li class="user-icon px-1 dropdown">
                                                         <a href="#" data-toggle="dropdown">
                                                             <i class="fa fa-user"></i>
@@ -313,6 +301,15 @@
                     .catch(error => {
                         console.error("Error fetching data:", error);
                     });
+
+
+            });
+            searchStringInput.addEventListener("keydown", function (event) {
+                console.log("enter");
+                if (event.key === "Enter") {
+                    const searchTerm = searchStringInput.value;
+                    window.location.href = `/SanPham/ManHinhSP?searchString=${encodeURIComponent(searchTerm)}`;
+                }
             });
         });
     </script>
