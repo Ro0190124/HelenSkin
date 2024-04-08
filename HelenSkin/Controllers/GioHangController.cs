@@ -304,7 +304,8 @@ namespace HelenSkin.Controllers
                                     .Select(s => new {
                                         s.TenSP,
                                         s.Gia,
-                                        s.db_DS_MEDIA_HINH_ANH.FirstOrDefault(x => x.MaSP == s.MaSP).MediaHinhAnh
+                                        s.db_DS_MEDIA_HINH_ANH.FirstOrDefault(x => x.MaSP == s.MaSP).MediaHinhAnh,
+                                        s.MaSP,
                                     })
                                     .ToListAsync();
 
