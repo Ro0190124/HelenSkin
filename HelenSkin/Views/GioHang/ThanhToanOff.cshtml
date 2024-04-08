@@ -9,7 +9,7 @@
         </div>
     </form>
 
-    <div id="productInfo" class="search-results"></div>
+    <div id="productInfo" class="search-results" style="position: absolute; z-index:50;"></div>
     <form action="#">
         <!--coupon code area start-->
         <div class="coupon_area">
@@ -56,14 +56,13 @@
                                 </div>
 
                                 <!-- Nút đặt hàng -->
-                                <button type="submit" class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang">Đặt hàng</button>
+                                <button  type="submit" class="btn btn-xanhLa" asp-controller="GioHang" asp-action="DatHang">Đặt hàng</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <img src="~/img/product/b197403a-69af-4365-8182-795b0585398e_pro_2_1.jpg" />
         <!--coupon code area end-->
     </form>
 </div>
@@ -87,19 +86,20 @@
                         data.products.forEach(product => {
                             const imageUrl = `http://localhost:5066/img/product/${product.mediaHinhAnh}`;
                             productInfo.innerHTML += `
-                                <div class="col-lg-12 col-md-12">
-                                    <div class="coupon_code d-flex giohang-sp row py-3">
-                                        <img src="${imageUrl}" alt="Hình ảnh" style="width:100px; height:100px" />
+                               <button style="background-color:none; border:none; width:80%; display: block; ">
+                                    <div class="col-lg-12 col-md-12">
+                                    <div class="coupon_code d-flex giohang-sp row">
+                                        <img class="p-3" src="${imageUrl}" alt="Hình ảnh" style="width:100px; height:100px" />
                                         <div class="col-lg-3">
                                             <p><strong>${product.tenSP}</strong></p>
-                                            <input name="quantity" type="number" min="0" max="100" />
                                         </div>
                                         <div class="col-lg-3">
-                                            <a ><i class="fas fa-trash"></i> Xóa </a>
                                             <p> Đơn giá: ${product.gia.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} đ</p>
+                                                <input name="quantity" type="number" min="1" max="100" style="background-color:white;"" />
                                         </div>
                                     </div>
                                 </div>
+                                </button>
                             `;
                         });
                     } else {
