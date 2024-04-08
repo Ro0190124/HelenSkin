@@ -102,7 +102,7 @@ namespace HelenSkin.Controllers
         // POST: GioHangController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ThemVaoGioHang(int id, int quantity)
+        public ActionResult ThemVaoGioHang(int id, int quantity,string off)
         {
             var cookie = Request.Cookies["ID"];
            // NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == int.Parse(cookie)); // Tìm người dùng
@@ -148,6 +148,10 @@ namespace HelenSkin.Controllers
                       
                         _db.SaveChanges();
                         TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
+                        if (off == "ttoff")
+                        {
+                            return RedirectToAction("ThanhToanOff", "GioHang");
+                        }
                     }
                     else
                     {
@@ -168,6 +172,10 @@ namespace HelenSkin.Controllers
                         _db.db_CHI_TIET_GIO_HANG.Add(newChiTietGioHang);
                         _db.SaveChanges();
                         TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
+                        if(off == "ttoff")
+                        {
+                            return RedirectToAction("ThanhToanOff", "GioHang");
+                        }
                     }
                     else
                     {
