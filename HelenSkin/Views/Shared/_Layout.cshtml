@@ -119,17 +119,22 @@
 
                                                 </ul>
                                                 <ul>
-                                                    <li class="search-icon px-1">
-                                                        <a href="#" id="searchToggle"><i class="fa fa-search"></i></a>
+                                                    <li class="timkiem-layuot px-1">
+                                                        <input type="text" placeholder="Tìm kiếm sản phẩm... " name=" searchString" id="searchString">
+@*                                                         <a href="#" id="searchToggle">
+                                                            <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                                                            <i class="fa fa-search"></i>
+                                                        </a>
                                                         <div class="tk-trangchu" style="z-index: 100; box-shadow: 0 0 10px rgba(0, 0, 0, 1.5);">
                                                             <h6><strong>TÌM KIẾM</strong></h6>
                                                             <div class="search-box">
                                                                 <input type="text" placeholder="Tìm kiếm sản phẩm...">
                                                                 <button type="submit"><i class="fa fa-search"></i></button>
                                                             </div>
-                                                        </div>
-                                                    </li>
-                                                      
+                                                        </div> *@
+                                                        <div id="productInfo" class="search-results mt-5" style="position: absolute; z-index:50; width:600px;"></div>
+
+                                                    </li>                                                      
                                                     <li class="user-icon px-1 dropdown">
                                                         <a href="#" data-toggle="dropdown">
                                                             <i class="fa fa-user"></i>
@@ -263,6 +268,54 @@
     <script src="~/js\plugins.js"></script>
     <script src="~/js\main.js"></script>
     <script src="~/js/js1.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchStringInput = document.getElementById("searchString");
+            const productInfo = document.getElementById("productInfo");
+
+            searchStringInput.addEventListener("input", function () {
+                const searchTerm = searchStringInput.value;
+
+                // Gửi yêu cầu AJAX đến server để tìm kiếm
+                fetch(`/GioHang/GetProducts?searchString=${encodeURIComponent(searchTerm)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Trong contro");
+                        console.log(data.products);
+                        productInfo.innerHTML = "";
+                        if (data.products && data.products.length > 0) {
+                            data.products.forEach(product => {
+                                const imageUrl = `http://localhost:5066/img/product/${product.mediaHinhAnh}`;
+                                productInfo.innerHTML += `
+                                          <button style="background-color:none; border:none; width:80%; display: block; ">
+                                                          <a href="Home/SPChiTiet/${product.maSP}">
+
+                                            <div class="col-lg-12 col-md-12">
+                                            <div class="coupon_code d-flex giohang-sp row">
+                                                        <img class="col-lg-3 p-3" src="${imageUrl}" alt="Hình ảnh" style="width:100px; height:100px" />
+                                                <div class="col-lg-6">
+                                                    <p><strong>${product.tenSP}</strong></p>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <p> Đơn giá: ${product.gia.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} đ</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </a>
+                                        </button>
+                                    `;
+                            });
+                        } else {
+                            productInfo.innerHTML = "";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching data:", error);
+                    });
+            });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
