@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Http;
 using System.Linq;
 
 namespace HelenSkin.Controllers
@@ -16,9 +17,13 @@ namespace HelenSkin.Controllers
 		private readonly ApplicationDbContext _db;
 		private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public SanPhamController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public SanPhamController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
 		{
-			_db = db;
+            _httpContextAccessor = httpContextAccessor;
+
+            _db = db;
 			_webHostEnvironment = webHostEnvironment;
 		}
 
@@ -73,6 +78,7 @@ namespace HelenSkin.Controllers
 
 		public ActionResult ManHinhSP()
 		{
+           
             var sanPhams = _db.db_SAN_PHAM.Include(sp => sp.DANH_MUC).Include(sp => sp.db_DS_MEDIA_HINH_ANH).ToList();
 
             return View(sanPhams);

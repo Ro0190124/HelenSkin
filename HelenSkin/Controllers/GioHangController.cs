@@ -110,7 +110,8 @@ namespace HelenSkin.Controllers
             if (cookie == null)
             {
                 TempData["tbGioHang"] = "Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng";
-                return RedirectToAction("ManHinhSP", "SanPham");
+                // Trả về trang trước đó nếu người dùng chưa đăng nhập
+                return Redirect(Request.Headers["Referer"].ToString());
             }
             else
             {
@@ -153,7 +154,7 @@ namespace HelenSkin.Controllers
                     TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
                 }
             }
-            return RedirectToAction("ManHinhSP", "SanPham"); 
+            return Redirect(Request.Headers["Referer"].ToString());
         }
         [HttpPost]
         public ActionResult UpdateQuantity(int itemId, int newQuantity)
@@ -294,5 +295,20 @@ namespace HelenSkin.Controllers
         {
             return View();
         }
-	}
+
+        public async Task<JsonResult> GetProducts(string searchString)
+        {
+            var sanPhams = await _db.db_SAN_PHAM
+                                    .Where(sp => sp.TrangThai == true && sp.TenSP.Contains(searchString))
+                                    .Include(s => s.db_DS_MEDIA_HINH_ANH)
+                                    .Select(s => new {
+                                        s.TenSP,
+                                        s.Gia,
+                                        s.db_DS_MEDIA_HINH_ANH.FirstOrDefault(x => x.MaSP == s.MaSP).MediaHinhAnh
+                                    })
+                                    .ToListAsync();
+
+            return Json(new { products = sanPhams });
+        }
+    }
 }

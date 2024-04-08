@@ -61,7 +61,7 @@
                         <div class="header_top">
                             <div class="row align-items-center">
                                 <div class="col-lg-6 col-md-6 mt-2">
-                                    <a href="#"><h4 class="logo-helenskin">HelenSkin</h4></a>
+                                    <a asp-controller="Home" asp-action="Index"><h4 class="logo-helenskin">HelenSkin</h4></a>
                                 </div>
                                 <div class="col-lg-6 col-md-6 mt-2">
                                     <div class="header_links">
@@ -101,8 +101,8 @@
                                                     <li class="@(currentController == "SanPham" && currentAction == "ManHinhSP" ? "active" : "")">
                                                         <a asp-area="" asp-controller="SanPham" asp-action="ManHinhSP">SẢN PHẨM</a>
                                                     </li>
-                                                    <li>
-                                                        <a href="portfolio.html">GIỚI THIỆU</a>
+                                                    <li class="@(currentController == "Home" && currentAction == "GioiThieu" ? "active" : "")">
+                                                        <a asp-controller="Home" asp-action="GioiThieu">GIỚI THIỆU</a>
                                                     </li>
                                                     @if (phanquyen)
                                                     {
@@ -121,7 +121,7 @@
                                                 <ul>
                                                     <li class="search-icon px-1">
                                                         <a href="#" id="searchToggle"><i class="fa fa-search"></i></a>
-                                                        <div class="tk-trangchu" style="z-index: 100;">
+                                                        <div class="tk-trangchu" style="z-index: 100; box-shadow: 0 0 10px rgba(0, 0, 0, 1.5);">
                                                             <h6><strong>TÌM KIẾM</strong></h6>
                                                             <div class="search-box">
                                                                 <input type="text" placeholder="Tìm kiếm sản phẩm...">
@@ -134,7 +134,7 @@
                                                         <a href="#" data-toggle="dropdown">
                                                             <i class="fa fa-user"></i>
                                                         </a>
-                                                        <ul class="dropdown-menu">  
+                                                        <ul class="dropdown-menu" style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
                                                             @if (!string.IsNullOrEmpty(userId))
                                                             {                                                           
                                                                 <li><a class="" asp-area="" asp-controller="NguoiDung" asp-action="ThongTinTK">Thông tin tài khoản</a></li>
@@ -148,7 +148,15 @@
                                                         </ul>
                                                     </li>
                                                     <li class="px-1">
-                                                        <a asp-area="" asp-controller="GioHang" asp-action="ChiTietGioHang"><i class="fa fa-shopping-cart"></i></a>
+                                                        @if (phanquyen)
+                                                        {
+                                                            <a asp-area="" asp-controller="GioHang" asp-action="ThanhToanOFf"><i class="fa fa-shopping-cart"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a asp-area="" asp-controller="GioHang" asp-action="ChiTietGioHang"><i class="fa fa-shopping-cart"></i></a>
+                                                        }
+                                                        
                                                     </li>
                                                 </ul>
                                             </nav>
