@@ -163,7 +163,7 @@ namespace HelenSkin.Controllers
 
 		// GET: SanPhamController/Edit/5
 		[HttpPost]
-		public async Task<IActionResult> Edit(int id, SAN_PHAM sanpham, List<IFormFile> hinhAnhTaiLen)
+		public async Task<IActionResult> Edit(int id, SAN_PHAM sanpham, List<IFormFile> hinhAnhTaiLen, int[] selectedImages)
 		{
 			HamGoiDanhM(); 
 
@@ -201,8 +201,28 @@ namespace HelenSkin.Controllers
 					}
 				}
 
-				// Lưu thay đổi vào cơ sở dữ liệu
-				_db.SaveChanges();
+                // Xóa các hình ảnh đã chọn
+                if (selectedImages != null && selectedImages.Length > 0)
+                {
+                    foreach (var imageId in selectedImages)
+                    {
+                        var imageToRemove = existingProduct.db_DS_MEDIA_HINH_ANH.FirstOrDefault(img => img.MaDSHinhAnh == imageId);
+                        if (imageToRemove != null)
+                        {
+                            existingProduct.db_DS_MEDIA_HINH_ANH.Remove(imageToRemove);
+
+                            // Xóa file hình ảnh từ thư mục
+                            string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/product", imageToRemove.MediaHinhAnh);
+                            if (System.IO.File.Exists(imagePath))
+                            {
+                                System.IO.File.Delete(imagePath);
+                            }
+                        }
+                    }
+                }
+
+                // Lưu thay đổi vào cơ sở dữ liệu
+                _db.SaveChanges();
 
 				TempData["ThanhCong"] = "Sửa sản phẩm thành công.";
 				return RedirectToAction("Index");
