@@ -104,6 +104,19 @@ namespace HelenSkin.Controllers
             HamGoiDanhM();
             if (ModelState.IsValid)
             {
+                // Kiểm tra giá và số lượng sản phẩm
+                if (sanpham.Gia >= 5000000)
+                {
+                    TempData["ThatBai"] = "Giá sản phẩm phải nhỏ hơn 5 triệu.";
+                    return View(sanpham);
+                }
+
+                if (sanpham.SoLuong >= 100)
+                {
+                    TempData["ThatBai"] = "Số lượng sản phẩm phải nhỏ hơn 100.";
+                    return View(sanpham);
+                }
+
                 sanpham.NgayTao = DateTime.Now;
                 sanpham.TrangThai = true;
 
@@ -147,6 +160,7 @@ namespace HelenSkin.Controllers
             TempData["ThatBai"] = "Thêm sản phẩm thất bại.";
             return View(sanpham);
         }
+
 
 
         public ActionResult Edit(int id)
