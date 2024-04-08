@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Immutable;
 using System.Net;
 
 namespace HelenSkin.Controllers
@@ -135,23 +136,45 @@ namespace HelenSkin.Controllers
 
                 // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
                 var chiTietGioHang = _db.db_CHI_TIET_GIO_HANG.FirstOrDefault(x => x.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang && x.MaSP == id);
+                SAN_PHAM sp = _db.db_SAN_PHAM.Where(x => x.MaSP == id && x.TrangThai == true).FirstOrDefault();
+                
                 // Nếu sản phẩm đã có trong giỏ hàng thì cập nhật số lượng
                 if (chiTietGioHang != null)
                 {
-                    chiTietGioHang.SoLuong += quantity;
-                    _db.SaveChanges();
-                    TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
+                    //kiểm tra số lượng sản phẩm có đủ không, nếu đủ thì cho phép thêm vào giò, nếu không thì thông báo vào tempdata
+                    if( sp!= null && sp.SoLuong >= quantity)
+                    {
+                        chiTietGioHang.SoLuong += quantity;
+                      
+                        _db.SaveChanges();
+                        TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
+                    }
+                    else
+                    {
+                        TempData["SoLuongSP"] = "Số lượng không đủ để thêm";
+
+                    }
+                   
                 }
                 else
                 {
-                    // Nếu sản phẩm chưa có trong giỏ hàng thì thêm mới
-                    CHI_TIET_GIO_HANG newChiTietGioHang = new CHI_TIET_GIO_HANG();
-                    newChiTietGioHang.MaGioHang = gioHangChuaCoTrongHoaDon.MaGioHang;
-                    newChiTietGioHang.MaSP = id;
-                    newChiTietGioHang.SoLuong = quantity;
-                    _db.db_CHI_TIET_GIO_HANG.Add(newChiTietGioHang);
-                    _db.SaveChanges();
-                    TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
+                    if (sp != null &&sp.SoLuong >= quantity)
+                    {
+                        // Nếu sản phẩm chưa có trong giỏ hàng thì thêm mới
+                        CHI_TIET_GIO_HANG newChiTietGioHang = new CHI_TIET_GIO_HANG();
+                        newChiTietGioHang.MaGioHang = gioHangChuaCoTrongHoaDon.MaGioHang;
+                        newChiTietGioHang.MaSP = id;
+                        newChiTietGioHang.SoLuong = quantity;
+                        _db.db_CHI_TIET_GIO_HANG.Add(newChiTietGioHang);
+                        _db.SaveChanges();
+                        TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
+                    }
+                    else
+                    {
+                        TempData["SoLuongSP"] = "Số lượng không đủ để thêm";
+
+                    }
+                  
                 }
             }
             return Redirect(Request.Headers["Referer"].ToString());
@@ -167,8 +190,9 @@ namespace HelenSkin.Controllers
 			// Tìm chi tiết giỏ hàng
 
 			var chiTietGioHang = _db.db_CHI_TIET_GIO_HANG.FirstOrDefault(x => x.MaGioHang == gioHangChuaCoTrongHoaDon.MaGioHang && x.MaSP == itemId);
-			// Cập nhật số lượng
-			if(newQuantity < 1)
+            SAN_PHAM sp = _db.db_SAN_PHAM.Where(x => x.MaSP == itemId && x.TrangThai == true).FirstOrDefault();
+            // Cập nhật số lượng
+            if (newQuantity < 1)
 			{
 				//thông báo temdata 
 				TempData["SoLuongSP"] = "Số lượng sản phẩm phải lớn hơn 0";
@@ -176,11 +200,20 @@ namespace HelenSkin.Controllers
             }
 			else
 			{
-                chiTietGioHang.SoLuong = newQuantity;
-                _db.SaveChanges();
-                // Sau khi cập nhật, bạn có thể trả về một phản hồi, ví dụ:
-                return Json(new { success = true, message = "Số lượng đã được cập nhật thành công." });
+                if (sp != null && sp.SoLuong >= newQuantity)
+                {
+                    chiTietGioHang.SoLuong = newQuantity;
+                    _db.SaveChanges();
+                    // Sau khi cập nhật, bạn có thể trả về một phản hồi, ví dụ:
+                    return Json(new { success = true, message = "Số lượng đã được cập nhật thành công." });
+                }
+                else
+                {
+                    TempData["SoLuongSP"] = "Số lượng không đủ để thêm";
+                    return Json(new { error = true, message = "" });
+                }
             }
+                 
 			
         }
         [HttpPost]
