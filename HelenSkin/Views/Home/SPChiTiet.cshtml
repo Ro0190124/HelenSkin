@@ -37,17 +37,17 @@
                         <span class="new_price">@Model.Gia.ToString() đ</span>
                 </div>
                     <div class="modal_add_to_cart mb-15 row border-bt pt-1 d-flex align-items-center">
-                    <p class="col-ms-4 pr-5">Số lượng: </p>
+                        <p class="col-ms-4 pr-5">Số lượng: </p>
                         <div class="soluong_SPCT quantity col-ms-2 d-flex align-items-center pb-2">
-                            <button class=" minus-btn" type="button">-</button>
-                            <input class="" min="0" max="100" step="2" name="quantity" value="1" />
-                            <button class=" plus-btn" type="button">+</button>
-                    </div>
+                            <button class="minus-btn" type="button">-</button>
+                            <input class="quantity-input" min="0" max="100" step="2" name="quantity" value="1" />
+                            <button class="plus-btn" type="button">+</button>
+                        </div>
                 </div>
                     <div class="bt-SPCT d-flex justify-content-between align-items-end">
-                    <button class="MuaNgay"> Mua ngay </button>
-                     <button class="tvgh"> Thêm vào giỏ hàng </button>
-                </div>
+                        <button class="MuaNgay">Mua ngay</button>
+                        <button class="tvgh" onclick="addToCart(@Model.MaSP, $('.quantity-input').val())">Thêm vào giỏ hàng</button>
+                    </div>
             </div>
         </div>
     </div>
@@ -61,8 +61,23 @@
                 <button class="btn-show-more px-4" onclick="showMore()">Xem thêm</button>
             }
         </div>
-
+        <form id="addToCartForm" method="post" asp-controller="GioHang" asp-action="ThemVaoGioHang" style="display: none;">
+            <input type="hidden" name="id" id="productId" />
+            <input type="hidden" name="quantity" id="quantity" value="1" min="1" />
+        </form>
 </div>
+ 
+
+    <script>
+        function addToCart(productId, quantity) {
+            // Set the values of the hidden inputs in the form
+            document.getElementById('productId').value = productId;
+            document.getElementById('quantity').value = quantity;
+
+            // Submit the form
+            document.getElementById('addToCartForm').submit();
+        }
+    </script>
 <style>
         .soluong_SPCT input{
                 background-color: transparent;
