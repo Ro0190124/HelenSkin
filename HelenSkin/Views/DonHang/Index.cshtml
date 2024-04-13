@@ -22,6 +22,9 @@
                 <a asp-controller="DonHang" asp-action="Index" asp-route-value="4">
                     <button class="@(TempData["currentValue"]?.ToString() == "4" ? "active" : "")">Đã hủy</button>
                 </a>
+                <a asp-controller="DonHang" asp-action="Index" asp-route-value="5">
+                    <button class="@(TempData["currentValue"]?.ToString() == "5" ? "active" : "")">Tại quầy</button>
+                </a>
             </div>
         </div>
     </div>
@@ -65,7 +68,12 @@
                 {
                     status = "Giao thành công";
                 }
-                else { status = " Đã bị hùy"; }
+                else if (item.TrangThai == 4) { status = " Đã bị hùy"; }
+                else
+                {
+                    status = "Tại quầy";
+                }
+
                 int index = Model.ToList().FindIndex(x => x.MaHD == item.MaHD);
 
                 <tr>

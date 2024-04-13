@@ -321,7 +321,7 @@ namespace HelenSkin.Controllers
                         }
                         else if (pageType == "ThanhToanOff")
                         {
-                            hoaDon.TrangThai = 3;
+                            hoaDon.TrangThai = 5;
                             hoaDon.MaDonViVanChuyen = 3; // kh null được :(
 
                         }
