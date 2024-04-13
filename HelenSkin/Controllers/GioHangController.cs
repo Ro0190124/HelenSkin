@@ -278,8 +278,8 @@ namespace HelenSkin.Controllers
 		public ActionResult DatHang(string ghiChu , string pageType)
 		{
             var cookie = Request.Cookies["ID"];
-		
             // check cookie
+            int maHD = 0;
             Console.WriteLine(cookie);
             var gioHang = _db.db_GIO_HANG.Where(x => x.MaNguoiDung == int.Parse(cookie)).ToList(); // Trả về giỏ hàng của người dùng
             var gioHangChuaCoTrongHoaDon = gioHang.FirstOrDefault(x => !_db.db_HOA_DON.Any(y => y.MaGioHang == x.MaGioHang)); // Trả về giỏ hàng của người dùng chưa có trong hóa đơn
@@ -316,17 +316,21 @@ namespace HelenSkin.Controllers
                         if (pageType == "GioHangChiTiet")
                         {
                             hoaDon.TrangThai = 0;
+                            hoaDon.MaDonViVanChuyen = 1;
+
                         }
                         else if (pageType == "ThanhToanOff")
                         {
                             hoaDon.TrangThai = 3;
+                            hoaDon.MaDonViVanChuyen = 3; // kh null được :(
+
                         }
-                        hoaDon.MaDonViVanChuyen = 1;
                         Console.WriteLine(ghiChu);
                         hoaDon.GhiChu = ghiChu;
                         _db.db_HOA_DON.Add(hoaDon);
                         _db.SaveChanges();
                         TempData["tbDatHang"] = "Đặt hàng thành công!";
+                        maHD = hoaDon.MaHD;
                     }
 
 					
@@ -336,7 +340,11 @@ namespace HelenSkin.Controllers
 				
 				
 			}
-			return RedirectToAction("Index", "Home");
+            if (pageType == "ThanhToanOff")
+            {
+                return RedirectToAction("ChiTietDonHangND", "DonHang", new { id = maHD });
+            }
+            return RedirectToAction("Index", "Home");
 		}
 
         public ActionResult ThanhToanOff()

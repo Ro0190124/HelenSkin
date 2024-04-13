@@ -7,47 +7,41 @@
             <div class="row">
                 <div class="col-lg-8 col-md-8">
                     <div class="col-lg-12 col-md-12">
-                        <div class="coupon_code d-flex donhang-sp row py-3">
+                        <div class="coupon_code d-flex donhang-sp row pb-3">
                             @foreach (var item in Model)
                             {
-
-
-
-
-                                <div class="col-lg-12 col-md-12">
+                                <div class="col-lg-12 col-md-12 mt-3">
                                     <div class="coupon_code d-flex giohang-sp row py-3">
-                                        @if (item.SAN_PHAM.db_DS_MEDIA_HINH_ANH != null && item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.Any())
-                                        {
-                                            // Kiểm tra xem đường dẫn hình ảnh có tồn tại hay không
-                                            var firstImage = item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.FirstOrDefault();
-                                            if (firstImage != null && !string.IsNullOrEmpty(firstImage.MediaHinhAnh))
+                                        <div class="col-lg-2">
+
+                                            @if (item.SAN_PHAM.db_DS_MEDIA_HINH_ANH != null && item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.Any())
                                             {
-                                                <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:300px; height:300px" />
+
+                                                var firstImage = item.SAN_PHAM.db_DS_MEDIA_HINH_ANH.FirstOrDefault();
+                                                if (firstImage != null && !string.IsNullOrEmpty(firstImage.MediaHinhAnh))
+                                                {
+                                                    <img src="~/img/product/@firstImage.MediaHinhAnh" alt="Hình ảnh" style="width:100px; height=auto;" />
+                                                }
+                                                else
+                                                {
+                                                    <span>Đường dẫn hình ảnh không hợp lệ</span>
+                                                }
                                             }
                                             else
                                             {
-                                                <span>Đường dẫn hình ảnh không hợp lệ</span>
+                                                <span>Không có hình ảnh</span>
                                             }
-                                        }
-                                        else
-                                        {
-                                            <span>Không có hình ảnh</span>
-                                        }
-
-                                        <div class="col-lg-3">
-                                            <p><strong>@item.SAN_PHAM.TenSP</strong></p>
-
-                                            <input asp-asp-for="@item.SoLuong" readonly value="@item.SoLuong" name="quantity" type="number" min="0" max="100"  />
-
                                         </div>
-                                        <div class="col-lg-3">
-
+                                        <div class="col-lg-7 d-flex flex-column justify-content-between align-items-start">
+                                            <p><strong>@item.SAN_PHAM.TenSP</strong></p>
+                                            <input asp-asp-for="@item.SoLuong" readonly value="@item.SoLuong" name="quantity" type="number" min="0" max="100" />
+                                        </div>
+                                        <div class="col-lg-3 d-flex flex-column justify-content-between align-items-end">
                                             <span class="product_price"> Đơn giá: @item.SAN_PHAM.Gia.ToString("N0")đ</span>
                                         </div>
                                     </div>
                                 </div>
                             }
-
 
                         </div>
                     </div>
