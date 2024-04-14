@@ -95,6 +95,7 @@ namespace HelenSkin.Controllers
             {
                 var nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.MatKhau == matKhau && x.TrangThai == true);
                 var CheckTK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.TrangThai == true);
+                var CheckTKkhoa = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.TenTaiKhoan == tenTaiKhoan && x.TrangThai == false);
                 var CheckMK = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MatKhau == matKhau && x.TrangThai == true);
                 if(tenTaiKhoan == null)
                 {
@@ -107,6 +108,11 @@ namespace HelenSkin.Controllers
                     ModelState.AddModelError("MatKhau", "Mật khẩu không được để trống");// ổn kh bạn hay là để mai fix tiếp :<
                     return View();
 
+                }
+                if (CheckTKkhoa == null)
+                {
+                    ModelState.AddModelError("TenTaiKhoan", "Tài khoản này đã bị khóa");// ổn kh bạn hay là để mai fix tiếp :<
+                    return View();
                 }
                 if (CheckTK == null)
                 {

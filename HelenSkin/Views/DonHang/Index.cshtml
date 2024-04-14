@@ -22,9 +22,12 @@
                 <a asp-controller="DonHang" asp-action="Index" asp-route-value="4">
                     <button class="@(TempData["currentValue"]?.ToString() == "4" ? "active" : "")">Đã hủy</button>
                 </a>
+                @if(phanquyenCookie){
                 <a asp-controller="DonHang" asp-action="Index" asp-route-value="5">
                     <button class="@(TempData["currentValue"]?.ToString() == "5" ? "active" : "")">Tại quầy</button>
                 </a>
+                }
+
             </div>
         </div>
     </div>
