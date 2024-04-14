@@ -4,7 +4,7 @@
     <form method="get" style="margin-bottom: 1rem !important; margin-left: 1.5rem !important; padding-left: 9px;">
         <div>
             <div class="ND_TimKiem">
-                <input type="text" placeholder="Tìm kiếm sản phẩm (Tên sản phẩm)..." name="timkiem" id="timkiem">
+                <input type="text" placeholder="Tìm kiếm sản phẩm (Tên sản phẩm)..." name="timkiem" id="timkiem" autocomplete="off">
             </div>
         </div>
     </form>
@@ -140,6 +140,13 @@
                 .catch(error => {
                     console.error("Error fetching data:", error);
                 });
+        });
+        timkiemInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();  // Ngăn chặn hành vi mặc định
+                const searchTerm = timkiemInput.value;
+                window.location.href = `/SanPham/ManHinhSP?searchString=${encodeURIComponent(searchTerm)}`;
+            }
         });
     });
     function addToCart(productId, quantity) {

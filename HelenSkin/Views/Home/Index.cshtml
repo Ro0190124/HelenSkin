@@ -95,7 +95,7 @@
                                     </div>
                                     <div class="product_content">
                                         <span class="product_price">@item.Gia.ToString("N0") đ</span>
-                                        <h3 class="product_title"><a href="single-product.html">@item.TenSP </a></h3>
+                                        <h3 class="product_title"><a asp-controller="Home" asp-action="SPChiTiet" asp-route-id="@item.MaSP">@item.TenSP </a></h3>
                                     </div>
                                 </div>
                             </div>
