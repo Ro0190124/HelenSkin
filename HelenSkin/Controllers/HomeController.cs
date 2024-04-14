@@ -109,7 +109,7 @@ namespace HelenSkin.Controllers
                     return View();
 
                 }
-                if (CheckTKkhoa == null)
+                if (CheckTKkhoa != null)
                 {
                     ModelState.AddModelError("TenTaiKhoan", "Tài khoản này đã bị khóa");// ổn kh bạn hay là để mai fix tiếp :<
                     return View();
