@@ -52,15 +52,16 @@ namespace HelenSkin.Controllers
             foreach (var item in obj)
             {
                 double totalPrice = 0;
+                var sp = _db.db_CHI_TIET_GIO_HANG
+                                    .Include(x => x.GIO_HANG)
+                                    .Where(x => x.GIO_HANG.MaGioHang == item.MaGioHang)
+                                    .Select(x => new { Price = x.SAN_PHAM.Gia, Quantity = x.SoLuong })
+                                    .ToList();
 
-                var prices = _db.db_CHI_TIET_GIO_HANG.Include(x => x.GIO_HANG)
-                                                      .Where(x => x.GIO_HANG.MaGioHang == item.MaGioHang)
-                                                      .Select(x => x.SAN_PHAM.Gia)
-                                                      .ToList();
 
-                foreach (var price in prices)
+                foreach (var i in sp)
                 {
-                    totalPrice += price;
+                    totalPrice += i.Price * i.Quantity ;
                 }
 
                 total.Add(totalPrice);
