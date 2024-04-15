@@ -124,15 +124,24 @@
                         </td>
                     }
                     @*  đang giao *@
-                    @if (phanquyenCookie== false && item.TrangThai == 2)
+                    @if ( item.TrangThai == 2)
                     {
                         <td class="ND_Table_Icon d-flex justify-content-around">
-                            <div class="bgr-x">
-                                <a class="btn btn-success" asp-controller="DonHang" asp-action="NhanHang" asp-route-id="@item.MaHD">Đã nhận</a>
-                            </div>
-                            <div class="bgr-x">
-                                <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
-                            </div>
+                            @if (phanquyenCookie == true)
+                            {
+                                <div class="bgr-x">
+                                    <a class="btn btn-success" asp-controller="DonHang" asp-action="NhanHang" asp-route-id="@item.MaHD">Đã nhận</a>
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="bgr-x">
+                                    <a class="btn btn-danger delete-btn" asp-controller="DonHang" asp-action="Cancel" asp-route-id="@item.MaHD">Hủy</a>
+                                </div>
+                            }
+
+                          
                         </td>
                     }
                     @*  đã giao
