@@ -141,28 +141,16 @@ namespace HelenSkin.Controllers
                 // Nếu sản phẩm đã có trong giỏ hàng thì cập nhật số lượng
                 if (chiTietGioHang != null)
                 {
-                    //kiểm tra số lượng sản phẩm có đủ không, nếu đủ thì cho phép thêm vào giò, nếu không thì thông báo vào tempdata
-                    if( sp!= null && sp.SoLuong >= quantity)
-                    {
-                        chiTietGioHang.SoLuong += quantity;
-                      
-                        _db.SaveChanges();
-                        TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
-                        if (off == "ttoff")
-                        {
-                            return RedirectToAction("ThanhToanOff", "GioHang");
-                        }
-                    }
-                    else
-                    {
-                        TempData["SoLuongSP"] = "Số lượng không đủ để thêm";
+                    chiTietGioHang.SoLuong += quantity;
 
-                    }
+                    _db.SaveChanges();
+                    //kiểm tra số lượng sản phẩm có đủ không, nếu đủ thì cho phép thêm vào giò, nếu không thì thông báo vào tempdata
+                   
                    
                 }
                 else
                 {
-                    if (sp != null &&sp.SoLuong >= quantity)
+                    if (sp != null )
                     {
                         // Nếu sản phẩm chưa có trong giỏ hàng thì thêm mới
                         CHI_TIET_GIO_HANG newChiTietGioHang = new CHI_TIET_GIO_HANG();
@@ -179,7 +167,7 @@ namespace HelenSkin.Controllers
                     }
                     else
                     {
-                        TempData["SoLuongSP"] = "Số lượng không đủ để thêm";
+                        TempData["SoLuongSP"] = "Khong thể thêm";
 
                     }
                   
@@ -208,7 +196,7 @@ namespace HelenSkin.Controllers
             }
 			else
 			{
-                if (sp != null && sp.SoLuong >= newQuantity)
+                if (sp != null)
                 {
                     chiTietGioHang.SoLuong = newQuantity;
                     _db.SaveChanges();
@@ -217,7 +205,7 @@ namespace HelenSkin.Controllers
                 }
                 else
                 {
-                    TempData["SoLuongSP"] = "Số lượng không đủ để thêm";
+                    
                     return Json(new { error = true, message = "" });
                 }
             }
