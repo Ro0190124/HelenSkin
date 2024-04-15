@@ -120,7 +120,7 @@
                                                 </ul>
                                                 <ul>
                                                     <li class="timkiem-layuot px-1">
-                                                        <input type="text" placeholder="Tìm kiếm sản phẩm... " name="searchString" id="searchString">
+                                                        <input type="text" placeholder="Tìm kiếm sản phẩm... " name="searchString" id="searchString" autocomplete="off">
                                                         <div id="productInfo" class="search-results mt-5" style="position: absolute; z-index:50; width:600px;"></div>
                                                     </li>
                                                     <li class="user-icon px-1 dropdown">
@@ -201,10 +201,10 @@
                             <h3>LIÊN KẾT</h3>
                             <ul>
                                 <li><a href="#">Tìm kiếm</a></li>
-                                <li><a href="#">Giới thiệu</a></li>
-                                <li><a href="#">Chính sách bảo mật</a></li>
-                                <li><a href="#">Chính sách và các quy định</a></li>
-                                <li><a href="#">Liên hệ</a></li>
+                                <li><a asp-controller="Home" asp-action="GioiThieu">Giới thiệu</a></li>
+                                <li><a asp-controller="Home" asp-action="GioiThieu">Chính sách bảo mật</a></li>
+                                <li><a asp-controller="Home" asp-action="GioiThieu">Chính sách và các quy định</a></li>
+                                <li><a asp-controller="Home" asp-action="GioiThieu">Liên hệ</a></li>
                             </ul>
                         </div>
                     </div>
@@ -212,9 +212,9 @@
                         <div class="footer_widget">
                             <h3>Dịch vụ khách hàng</h3>
                             <ul>
-                                <li><a href="#">Sản phẩm khuyến mãi</a></li>
-                                <li><a href="#">Sản phẩm nổi bật</a></li>
-                                <li><a href="#">Tất cả sản phẩm</a></li>
+                                <li><a asp-controller="Home" asp-action="Index">Sản phẩm khuyến mãi</a></li>
+                                <li><a asp-controller="Home" asp-action="Index">Sản phẩm nổi bật</a></li>
+                                <li><a asp-controller="SanPham" asp-action="ManHinhSP">Tất cả sản phẩm</a></li>
                                 <li>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="footer_social text-right">

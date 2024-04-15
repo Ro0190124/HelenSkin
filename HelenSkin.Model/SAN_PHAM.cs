@@ -21,12 +21,12 @@ namespace HelenSkin.Model
 
         public string TenSP { get; set; }
 
-        [Range(0.01, Double.MaxValue, ErrorMessage = "Giá phải lớn hơn 0")]
+        [Range(0.01, 5000000, ErrorMessage = "Giá phải lớn hơn 0 và không vượt quá 5 triệu")]
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "Giá chỉ chấp nhận kí tự số")]
         [Required(ErrorMessage = "Giá không được trống")]
         public double Gia { get; set; }
 
-        [Range(0.01, Double.MaxValue, ErrorMessage = "Số lượng phải lớn hơn 0")]
+        [Range(1, 100, ErrorMessage = "Số lượng phải lớn hơn 0 và không vượt quá 100")]
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "Số lượng chỉ chấp nhận kí tự số")]
         [Required(ErrorMessage = "Số lượng không được trống")]
         public int SoLuong { get; set; }

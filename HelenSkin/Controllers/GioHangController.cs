@@ -284,6 +284,11 @@ namespace HelenSkin.Controllers
 				if(chiTietGioHang == null)
 				{
 					TempData["tbDatHangLoi"] = "Không có sản phẩm trong giò hàng";
+                    if (pageType == "ThanhToanOff")
+                    {
+                        return RedirectToAction("ThanhToanOff", "GioHang");
+
+                    }
                     return RedirectToAction("ChiTietGioHang", "GioHang");
                 }
 				else

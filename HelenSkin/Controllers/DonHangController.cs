@@ -129,14 +129,25 @@ namespace HelenSkin.Controllers
         public ActionResult Cancel(int id)
         {
 
-            HOA_DON hoaDon = _db.db_HOA_DON.Where(x => x.MaHD == id).First();
+            HOA_DON hoaDon = _db.db_HOA_DON.Include("GIO_HANG").Where(x => x.MaHD == id).First();
             int demtt = _db.db_HOA_DON.Count(x => x.GIO_HANG.NGUOI_DUNG.MaND == x.GIO_HANG.MaNguoiDung && x.TrangThai==4);
             if (demtt >= 4)
             {
-                // Cập nhật trạng thái của NGUOI_DUNG thành 0
-                int idnd = int.Parse(HttpContext.Request.Cookies["ID"]);
+                int idnd = hoaDon.GIO_HANG.MaNguoiDung; // Lấy MaND từ GioHang đầu tiên
                 NGUOI_DUNG nguoidung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == idnd);
+
+                bool pq = bool.Parse(HttpContext.Request.Cookies["PhanQuyen"]);
+                if (pq)
+                {
+                    hoaDon.TrangThai = 4;
+                    _db.SaveChanges();
+                    TempData["tbDonHang"] = "Đã hủy đơn hàng";
+                    ViewBag.CurrentValue = "4";
+                    TempData["currentValue"] = 4;
+                    return RedirectToAction("Index", "DonHang");
+                }
                 nguoidung.TrangThai = false;
+                hoaDon.TrangThai = 4;
                 _db.SaveChanges();
                 TempData["tbDonHang"] = "Bạn đã hủy 4 đơn hàng. Tài khoản của bạn đã bị khóa.";
                 Response.Cookies.Delete("ID");
