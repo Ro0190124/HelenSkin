@@ -122,9 +122,9 @@ namespace HelenSkin.Controllers
 			TempData["tbDatHang"] = "Đã xác nhận đơn hàng";
             ViewBag.CurrentValue = "0";
 			TempData["currentValue"] = 0;
-            return RedirectToAction("Index", "DonHang");
+            return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
 
-		}
+        }
 
         public ActionResult Cancel(int id)
         {
@@ -152,14 +152,14 @@ namespace HelenSkin.Controllers
                 TempData["tbDonHang"] = "Bạn đã hủy 4 đơn hàng. Tài khoản của bạn đã bị khóa.";
                 Response.Cookies.Delete("ID");
                 Response.Cookies.Delete("PhanQuyen");
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
             }
             hoaDon.TrangThai = 4;
             _db.SaveChanges();
             TempData["tbDonHang"] = "Đã hủy đơn hàng";
             ViewBag.CurrentValue = "4";
 			TempData["currentValue"] = 4;
-            return RedirectToAction("Index", "DonHang");
+            return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
         }
         public ActionResult GiaoHang(int id)
         {
@@ -169,7 +169,7 @@ namespace HelenSkin.Controllers
             TempData["tbDatHang"] = "Đơn hàng đang được giao";
             ViewBag.CurrentValue = "2";
 			TempData["currentValue"] = 2;
-            return RedirectToAction("Index", "DonHang");
+            return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
         }
         public ActionResult NhanHang(int id)
         {
@@ -178,7 +178,7 @@ namespace HelenSkin.Controllers
 			TempData["currentValue"] = 3;
             _db.SaveChanges();
             TempData["tbDatHang"] = "Hàng đã được giao thành công";
-            return RedirectToAction("Index", "DonHang");
+            return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
         }
 
         public ActionResult ChiTietDonHang(int id)
