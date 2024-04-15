@@ -158,7 +158,7 @@ namespace HelenSkin.Controllers
             _db.SaveChanges();
             TempData["tbDonHang"] = "Đã hủy đơn hàng";
             ViewBag.CurrentValue = "4";
-			TempData["currentValue"] = 4;
+			TempData["currentValue"] = 3;
             return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
         }
         public ActionResult GiaoHang(int id)
@@ -167,15 +167,15 @@ namespace HelenSkin.Controllers
             hoaDon.TrangThai = 2;
             _db.SaveChanges();
             TempData["tbDatHang"] = "Đơn hàng đang được giao";
-            ViewBag.CurrentValue = "2";
-			TempData["currentValue"] = 2;
+            ViewBag.CurrentValue = "1";
+			TempData["currentValue"] = 1;
             return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
         }
         public ActionResult NhanHang(int id)
         {
             HOA_DON hoaDon = _db.db_HOA_DON.Where(x => x.MaHD == id).First();
             hoaDon.TrangThai = 3;
-			TempData["currentValue"] = 3;
+			TempData["currentValue"] = 2;
             _db.SaveChanges();
             TempData["tbDatHang"] = "Hàng đã được giao thành công";
             return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
