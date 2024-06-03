@@ -50,25 +50,46 @@
 
 
                 </div>
-
+                @{
+                    var phanquyenCookie = Context.Request.Cookies["PhanQuyen"];
+                    bool phanquyen = false;
+                    if (!string.IsNullOrEmpty(phanquyenCookie))
+                    {
+                        bool.TryParse(phanquyenCookie, out phanquyen);
+                    }
+                }
 
                 <div class="col-lg-4 col-md-4">
                     <div class="coupon_code">
                         <h3>Thông tin đơn hàng</h3>
                         <div class="coupon_inner">
-
+                            @if(phanquyen == true)
+                            {
+                                <div class="cart_subtotal border-bt mt-3">
+                                    <p>Ngày tạo </p>
+                                    <p class="cart_amount">
+                                        @ViewBag.HoaDon.NgayTao
+                                    </p>
+                                </div>
+                            }else
+                            {
                             <div class="cart_subtotal border-bt mt-3">
                                 <p>Ngày đặt </p>
                                 <p class="cart_amount">
                                     @ViewBag.HoaDon.NgayTao
                                 </p>
                             </div>
+                            }
+
+                            @if(phanquyen == false){
                             <div class="cart_subtotal border-bt mt-3">
                                 <p>Đ/C:  </p>
                                 <p class="cart_amount">
                                    @Model.FirstOrDefault().GIO_HANG.NGUOI_DUNG.DiaChi
                                 </p>
-                            </div>
+                            </div>                                
+                            }
+
 
                             <div class="cart_subtotal border-bt mt-3">
                                 <p>Ghi chú</p>
@@ -102,8 +123,9 @@
                                             var item = Model.ElementAt(i);
                                             total += item.SAN_PHAM.Gia * item.SoLuong;
                                         }
-                                        @total
-                                    }
+                                        @total.ToString("N0")
+                                        
+                                    } đ
                                 </p>
                             </div>
                         </div>
