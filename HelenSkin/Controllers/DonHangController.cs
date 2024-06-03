@@ -130,8 +130,8 @@ namespace HelenSkin.Controllers
         {
 
             HOA_DON hoaDon = _db.db_HOA_DON.Include("GIO_HANG").Where(x => x.MaHD == id).First();
-            int demtt = _db.db_HOA_DON.Count(x => x.GIO_HANG.MaNguoiDung == hoaDon.GIO_HANG.MaNguoiDung && x.TrangThai ==4);
-            if (demtt >= 2)
+            int demtt = _db.db_HOA_DON.Count(x => x.GIO_HANG.NGUOI_DUNG.MaND == x.GIO_HANG.MaNguoiDung && x.TrangThai==4);
+            if (demtt >= 4)
             {
                 int idnd = hoaDon.GIO_HANG.MaNguoiDung; // Lấy MaND từ GioHang đầu tiên
                 NGUOI_DUNG nguoidung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == idnd);
@@ -144,21 +144,22 @@ namespace HelenSkin.Controllers
                     TempData["tbDonHang"] = "Đã hủy đơn hàng";
                     ViewBag.CurrentValue = "4";
                     TempData["currentValue"] = 4;
-                    return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
+                    return RedirectToAction("Index", "DonHang");
                 }
                 nguoidung.TrangThai = false;
                 hoaDon.TrangThai = 4;
                 _db.SaveChanges();
-                TempData["tbDonHang"] = "Bạn đã hủy 5 đơn hàng. Tài khoản của bạn đã bị khóa.";
+                TempData["tbDonHang"] = "Bạn đã hủy 4 đơn hàng. Tài khoản của bạn đã bị khóa.";
                 Response.Cookies.Delete("ID");
                 Response.Cookies.Delete("PhanQuyen");
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
             }
             hoaDon.TrangThai = 4;
             _db.SaveChanges();
             TempData["tbDonHang"] = "Đã hủy đơn hàng";
+            ViewBag.CurrentValue = "4";
 			TempData["currentValue"] = 3;
-            return RedirectToAction("Index", "DonHang");
+            return RedirectToAction("Index", "DonHang", new { value = TempData["currentValue"] });
         }
         public ActionResult GiaoHang(int id)
         {

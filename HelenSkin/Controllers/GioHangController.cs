@@ -105,6 +105,7 @@ namespace HelenSkin.Controllers
         public ActionResult ThemVaoGioHang(int id, int quantity,string off)
         {
             var cookie = Request.Cookies["ID"];
+            bool pq = bool.Parse(HttpContext.Request.Cookies["PhanQuyen"]);
 
             // NGUOI_DUNG nguoiDung = _db.db_NGUOI_DUNG.FirstOrDefault(x => x.MaND == int.Parse(cookie)); // Tìm người dùng
 
@@ -160,7 +161,6 @@ namespace HelenSkin.Controllers
                         newChiTietGioHang.SoLuong = quantity;
                         _db.db_CHI_TIET_GIO_HANG.Add(newChiTietGioHang);
                         _db.SaveChanges();
-                        bool pq = bool.Parse(HttpContext.Request.Cookies["PhanQuyen"]);
                         TempData["tbThemVaoGioHang"] = "Thêm vào giỏ hàng thành công!";
                         if(off == "ttoff")
                         {
